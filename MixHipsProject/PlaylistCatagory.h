@@ -12,9 +12,10 @@
 @interface PlaylistCatagory : NSObject <AVAudioPlayerDelegate>
 @property AVAudioPlayer *player;
 + (id)defaultCatalog;
--(void)playStart;
+-(void)playStart:(NSString *)soundid;
 -(void)stop;
 -(void)pause;
+-(void)next:(NSString *)soundid;
 -(void)playMusic:(NSURL *)url;
 -(double)returnTime;
 -(int)returnVolumeValue;

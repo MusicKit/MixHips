@@ -11,17 +11,36 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import "AFHTTPRequestOperationManager.h"
 #import "PlaylistCatagory.h"
+#import "AlbumList.h"
+#import "HotArtistCell.h"
+#import "AlbumProfileViewController.h"
+#import "AlbumMusicViewController.h"
+#import "MyCell.h"
+
 #define IMAGE_NUM 3
 
-@interface HomingViewController ()<UIScrollViewDelegate>
+@interface HomingViewController ()<UIScrollViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
 {
     int loadedPageCount;
     UIScrollView *_scrollView;
     UIPageControl *pageControl;
     NSTimer *timer;
+    NSMutableArray *HotArtist;
+    NSMutableArray *HotAlbum;
+    NSMutableArray *userName_Album;
+    NSMutableArray *albumID_Album;
+    NSInteger setSmallSize;
+    NSInteger scrolltime;
+    NSMutableArray *userID;
+    
+    CGRect currentCollectionFrame;
 }
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *toggleButton;
+@property (weak, nonatomic) IBOutlet UICollectionView *hotAlbumCollectionView;
 @property (strong, nonatomic) UIProgressView *progressBar;
+@property (nonatomic,strong) NSMutableArray *collectionData;
+@property (nonatomic,strong) NSMutableArray *allCells;
 
 
 @end
@@ -31,6 +50,9 @@
     PlaylistCatagory *playCatagory;
 }
 
+
+
+/*
 -(IBAction)toggleButton:(id)sender{
  
     
@@ -58,103 +80,146 @@
         
     }
 }
+ */
 
 -(void)updateProgress:(NSTimer *)timer{
     self.progressBar.progress = playCatagory.player.currentTime / playCatagory.player.duration;
 }
 
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    if(collectionView == self.hotAlbumCollectionView)
+    NSLog(@"index %d",indexPath.row);
+}
 
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    if([segue.identifier isEqual:[NSString stringWithFormat:@"album"]]){
+        AlbumMusicViewController *dest1 = (AlbumMusicViewController *)segue.destinationViewController;
+        NSIndexPath *indexPath1= [self.hotAlbumCollectionView indexPathForCell:sender];
+        dest1.album_ID =[albumID_Album objectAtIndex:indexPath1.row];
+        dest1.user_Name =[userName_Album objectAtIndex:indexPath1.row];
+    }
+    if([segue.identifier isEqual:[NSString stringWithFormat:@"artist"]]){
+        AlbumProfileViewController *dest = (AlbumProfileViewController *)segue.destinationViewController;
+        NSIndexPath *indexPath = [self.collectionView indexPathForCell:sender];
+        
+        
+        dest.user_ID = [userID objectAtIndex:indexPath.row];
+
+    }
+
+    //[self performSegueWithIdentifier:@"album" sender:sender];
+    //[self performSegueWithIdentifier:@"artist" sender:sender];
+    //AlbumMusicViewController *dest1 = (AlbumMusicViewController *)segue.destinationViewController;
+    //AlbumProfileViewController *dest = (AlbumProfileViewController *)segue.destinationViewController;
+
+    
+    
+
+   // dest1.user_ID = [userID objectAtIndex:indexPath1.row];
+}
 
 
 
 ///////////////////////////////////
 
--(void)loadContentsPage:(int)pageNo{
-    if(pageNo <0|| pageNo <loadedPageCount || pageNo >= IMAGE_NUM)
-        return;
-    
-    if(pageNo == 0){
-        float width = _scrollView.frame.size.width;
-        float height = _scrollView.frame.size.height;
-        
-//        NSString *fileName = [NSString stringWithFormat:@"ball%d", pageNo];
-//        NSString *filePath = [[NSBundle mainBundle]pathForResource:fileName ofType:@"png"];
-//        UIImage *image = [UIImage imageWithContentsOfFile:filePath];
-        UIImageView *imageView = [[UIImageView alloc]init];
-        imageView.backgroundColor = [UIColor clearColor];
-        imageView.frame = CGRectMake(width * pageNo, 0, width, height);
-        [_scrollView addSubview:imageView];
 
+
+//network hotuser
+- (void)test:(NSDictionary *)dic {
+    NSDictionary *dd = [NSDictionary dictionaryWithDictionary:dic];
+    NSArray *abc = [dd objectForKey:@"hot_user"];
+    userID = [[NSMutableArray alloc]init];
+    NSMutableArray *image = [[NSMutableArray alloc]init];
+    NSMutableArray *userName = [[NSMutableArray alloc]init];
+        HotArtist = [[NSMutableArray alloc]init];
+    for(int i=0;i<3;i++)
+    {
+        [userID addObject:[abc[i] objectForKey:@"user_id"]];
+        [image addObject:[abc[i] objectForKey:@"user_img_url"]];
         
-         
+        [userName addObject:[abc[i] objectForKey:@"user_name"]];
+        [HotArtist addObject:[AlbumList hotArtistList:userID[i] userName:userName[i] userImg:image[i]]];
     }
-    else if(pageNo == 1){
-        //개인동의서
+    [self.collectionView reloadData];
+    NSLog(@"%@",HotArtist);
+}
+
+-(void)AFNetworkingAD{
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSDictionary *parameters = @{@"foo":@"bar"};
+    [manager POST: @"http://mixhips.nowanser.cloulu.com/request_hot_user" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        //        NSLog(@"JSON: %@", responseObject);
+        [self test:responseObject];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+    }];
+}
+
+//networ hotalbum
+- (void)albumtest:(NSDictionary *)dic {
+    NSDictionary *dd = [NSDictionary dictionaryWithDictionary:dic];
+    NSArray *abc = [dd objectForKey:@"hot_album"];
+    albumID_Album = [[NSMutableArray alloc]init];
+    NSMutableArray *albumImage = [[NSMutableArray alloc]init];
+    NSMutableArray *albumName = [[NSMutableArray alloc]init];
+    userName_Album = [[NSMutableArray alloc]init];
+    NSMutableArray *likeCount = [[NSMutableArray alloc]init];
+    HotAlbum = [[NSMutableArray alloc]init];
+    for(int i=0;i<9;i++)
+    {
+        [albumID_Album addObject:[abc[i] objectForKey:@"album_id"]];
+        [albumImage addObject:[abc[i] objectForKey:@"album_img_url"]];
         
-        float width = _scrollView.frame.size.width;
-        float height = _scrollView.frame.size.height;
-        
-        UIView *view = [[UIView alloc]init];
-        view.frame = CGRectMake(width *pageNo, 0, width, height);
-        [_scrollView addSubview:view];
-        
+        [albumName addObject:[abc[i] objectForKey:@"album_name"]];
+        [userName_Album addObject:[abc[i] objectForKey:@"user_name"]];
+        [likeCount addObject:[abc[i] objectForKey:@"like_count"]];
+        [HotAlbum addObject:[AlbumList hotAlbumList:albumID_Album[i] album_name:albumName[i] album_img:albumImage[i] user_name:userName_Album[i] like_count:likeCount[i]]];
     }
-    else if(pageNo == 2){
-        //별명 작성 버튼
-        
-        float width = _scrollView.frame.size.width;
-        float height = _scrollView.frame.size.height;
-        
-        UIView *view = [[UIView alloc]init];
-        view.frame = CGRectMake(width *pageNo, 0, width, height);
-        [_scrollView addSubview:view];
-    }
-    loadedPageCount++;
-     
-    
-    /*
-    if(pageNo <0|| pageNo <loadedPageCount || pageNo >= IMAGE_NUM)
-        return;
-    
-    float width = _scrollView.frame.size.width;
-    float height = _scrollView.frame.size.height;
-    
-    NSString *fileName = [NSString stringWithFormat:@"ball%d", pageNo];
-    NSString *filePath = [[NSBundle mainBundle]pathForResource:fileName ofType:@"png"];
-    UIImage *image = [UIImage imageWithContentsOfFile:filePath];
-    UIImageView *imageView = [[UIImageView alloc]initWithImage:image];
-    imageView.frame = CGRectMake(width * pageNo, 0, width, height);
-    [_scrollView addSubview:imageView];
-    loadedPageCount++;
-     */
+    [self.hotAlbumCollectionView reloadData];
+}
+
+-(void)AFNetworkingAlbum{
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSDictionary *parameters = @{@"foo":@"bar"};
+    [manager POST: @"http://mixhips.nowanser.cloulu.com/request_hot_album" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        //        NSLog(@"JSON: %@", responseObject);
+        [self albumtest:responseObject];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+    }];
 }
 
 
-
--(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
-    float width = scrollView.frame.size.width;
-    float offsetX = scrollView.contentOffset.x;
-    int pageNo = floor(offsetX / width);
-    pageControl.currentPage = pageNo;
-  
-    
-    [self loadContentsPage:pageNo-1];
-    [self loadContentsPage:pageNo];
-    [self loadContentsPage:pageNo+1];
+-(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
+    NSInteger i ;
+    if(collectionView == self.hotAlbumCollectionView){
+        [self.hotAlbumCollectionView setContentSize:CGSizeMake(960, 100)];
+        i = [HotAlbum count];
+    }
+    if(collectionView == self.collectionView){
+        i = [HotArtist count];
+    }
+    return i;
 }
 
-//-(void)AFNetworking{
-//    NSNumber *k = [NSNumber numberWithInt:1];
-//    NSNumber *j = [NSNumber numberWithInt:15];
-//    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-//    NSDictionary *parameters = @{@"user_id": k,
-//                                 @"album_id":j};
-//    [manager POST:@"http://mixhips.nowanser.cloulu.com/request_album" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//        NSLog(@"JSON: %@", responseObject);
-//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        NSLog(@"Error: %@", error);
-//    }];
-//}
+-(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+    UICollectionViewCell *cell;
+    if(collectionView == self.collectionView) {
+    HotArtistCell *cell1 = [collectionView dequeueReusableCellWithReuseIdentifier:@"HotArtist_cell" forIndexPath:indexPath];
+    self.list = [HotArtist objectAtIndex:indexPath.row];
+    [cell1 setProductInfo:self.list];
+        cell = cell1;
+    }
+    if(collectionView == self.hotAlbumCollectionView){
+        [self.hotAlbumCollectionView setContentSize:CGSizeMake(960, 100)];
+        MyCell *cell2 = [collectionView dequeueReusableCellWithReuseIdentifier:@"HotAlbumlist" forIndexPath:indexPath];
+        //cell2.label.text = [self.collectionData objectAtIndex:indexPath.row];
+        self.list = [HotAlbum objectAtIndex:indexPath.row];
+        [cell2 setProductInfo:self.list];
+        cell = cell2;
+    }
+    return cell;
+}
 
 
 - (void)viewDidLoad
@@ -166,32 +231,14 @@
     self.progressBar = [[UIProgressView alloc] initWithFrame:CGRectMake(93, 25, 200, 2)];
     [self.navigationController.toolbar addSubview:self.progressBar];
 
-    
-    
-    //float width = _scrollView.frame.size.width;
-    float heigth = _scrollView.bounds.size.height;
-    
-    _scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 20, 320, 160)];
-    [self.view addSubview:_scrollView];
-    
-    _scrollView.delegate = self;
-    _scrollView.pagingEnabled = YES;
-    _scrollView.contentSize = CGSizeMake(320 * IMAGE_NUM, heigth);
-    _scrollView.backgroundColor = [UIColor clearColor];
-    
-    pageControl.frame = CGRectMake(160, 52, 39, 37);
-    pageControl.numberOfPages = IMAGE_NUM;
-    
-    [_scrollView addSubview:pageControl];
-    loadedPageCount =0;
-    
-    [self loadContentsPage:0];
-    [self loadContentsPage:1];
-    
-   // [self AFNetworking];
+    scrolltime = 0;
+    setSmallSize = -1;
+   
 }
 
 -(void)viewWillAppear:(BOOL)animated{
+    [self AFNetworkingAD];
+    [self AFNetworkingAlbum];
     [self.navigationController setNavigationBarHidden:YES];
     //[self.navigationController setToolbarHidden:NO];
 //    playCatagory = [[PlaylistCatagory defaultCatalog]init];

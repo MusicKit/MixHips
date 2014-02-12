@@ -12,7 +12,8 @@
 @interface MyAlbumCell()
 @property (weak, nonatomic) IBOutlet UILabel *musicName;
 @property (weak, nonatomic) IBOutlet UIButton *commentButton;
-@property (weak, nonatomic) IBOutlet UILabel *musicNum;
+@property (weak, nonatomic) IBOutlet UILabel *albumNum;
+
 
 
 @end
@@ -21,9 +22,10 @@
 
 
 
-- (void) setProductInfo:(AlbumList *)list
+- (void) setProductInfo:(AlbumList *)list indexPath:(NSInteger)index
 {
-    self.musicName.text = list.songTitle;
+    self.musicName.text = list.sound_name;
+    self.albumNum.text = [NSString stringWithFormat:@"%d",index+1];
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier

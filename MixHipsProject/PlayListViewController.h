@@ -13,4 +13,5 @@
 @interface PlayListViewController : UIViewController
 //@property AVAudioPlayer *player;
 @property (strong, nonatomic) AlbumList *albumList;
+-(NSString *)returnIndexRow:(NSInteger)indexRow;
 @end

@@ -10,5 +10,5 @@
 #import "AlbumList.h"
 
 @interface AlbumCell : UITableViewCell
-- (void) setProductInfo:(AlbumList *)list;
+- (void) setProductInfo:(AlbumList *)list indexPath:(NSInteger)index;
 @end

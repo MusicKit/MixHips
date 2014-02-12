@@ -10,16 +10,33 @@
 #import "AlbumCatalog.h"
 #import "AlbumList.h"
 #import "MyPageCollectionViewCell.h"
+#import "UIImageView+AFNetworking.h"
+#import "AFHTTPRequestOperationManager.h"
+#import "MyAlbumViewController.h"
+#import "FollowViewController.h"
 
 @interface MyPageViewController ()<UIImagePickerControllerDelegate, UIActionSheetDelegate ,UINavigationControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 @property (weak, nonatomic) IBOutlet UIImageView *profileImage;
 //@property (weak, nonatomic) IBOutlet UIButton *button1;
 @property (weak, nonatomic) IBOutlet UILabel *Message;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (weak, nonatomic) IBOutlet UILabel *FollowingCount;
+@property (weak, nonatomic) IBOutlet UILabel *FollowerCount;
 
 @end
 
-@implementation MyPageViewController
+@implementation MyPageViewController{
+    NSMutableArray *albumlist;
+    NSString *follwer;
+    NSString *following;
+    NSString *userImg;
+    NSString *userSay1;
+    NSString *userID;
+    NSString *userName;
+    NSMutableArray *albumID;
+    UITextField *searchField;
+}
+
 
 -(IBAction)getprofileMessage:(id)sender{
     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"MixHips" message:@"한마디" delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"등록", nil];
@@ -33,9 +50,9 @@
         NSLog(@"취소");
     }
     else if(alertView.firstOtherButtonIndex == buttonIndex){
-        UITextField *searchField = [alertView textFieldAtIndex:0];
-        NSLog(@"%@",searchField.text);
+        searchField = [alertView textFieldAtIndex:0];
         self.Message.text = searchField.text;
+        [self AFNetworkingADSay];
     }
 }
 
@@ -95,47 +112,120 @@
     //[picker dismissModalViewControllerAnimated:YES];
 }
 
+//network say
+-(void)AFNetworkingADSay{
+   // NSString *d = [NSString stringWithFormat:@"%@",searchField.text];
+    NSString *i = [NSString stringWithFormat:@"7"]; ///   본인 아이디
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSDictionary *parameters = @{@"foo":@"bar", @"user_id":i , @"user_say":searchField.text};
+    [manager POST: @"http://mixhips.nowanser.cloulu.com/update_user_say" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                NSLog(@"JSON: %@", responseObject);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+    }];
+}
+
+- (void)test:(NSDictionary *)dic {
+    NSDictionary *dd = [NSDictionary dictionaryWithDictionary:dic];
+    
+    userID = [NSString stringWithFormat:@"%@",[dd objectForKey:@"user_id"]];
+    userName = [NSString stringWithFormat:@"%@",[dd objectForKey:@"user_name"]];
+    follwer = [NSString stringWithFormat:@"%@",[dd objectForKey:@"follower"]];
+    following = [NSString stringWithFormat:@"%@", [dd objectForKey:@"following"]];
+    userImg = [NSString stringWithFormat:@"%@", [dd objectForKey:@"user_img_url"]];
+    userSay1 = [NSString stringWithFormat:@"%@",[dd objectForKey:@"user_say"]];
+    
+    NSLog(@"img : %@",userImg);
+    
+    NSArray *album = [dd objectForKey:@"albums"];
+    albumID = [[NSMutableArray alloc]init];
+    NSMutableArray *albumImg = [[NSMutableArray alloc]init];
+    NSMutableArray *albumName = [[NSMutableArray alloc]init];
+    NSMutableArray *like = [[NSMutableArray alloc]init];
+    albumlist = [[NSMutableArray alloc]init];
+    for(int i=0;i<album.count;i++)
+    {
+        [albumID addObject:[album[i] objectForKey:@"album_id"]];
+        [albumImg addObject:[album[i] objectForKey:@"album_img_url"]];
+        [albumName addObject:[album[i] objectForKey:@"album_name"]];
+        [like addObject:[album[i] objectForKey:@"like_count"]];
+        
+        [albumlist addObject:[AlbumList hotArtistAlbumlist:albumID[i] album_img:albumImg[i] album_name:albumName[i] like:like[i]]];
+    }
+    NSLog(@"arr %@",albumName);
+    NSLog(@"counn ; %d",albumlist.count);
+    [self.collectionView reloadData];
+}
+
+-(void)AFNetworkingAD{
+    NSString *d = [NSString stringWithFormat:@"7"];
+    NSString *i = [NSString stringWithFormat:@"7"]; ///   본인 아이디
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSDictionary *parameters = @{@"foo":@"bar", @"my_id(user_id(본인))":i , @"user_id":d};
+    [manager POST: @"http://mixhips.nowanser.cloulu.com/request_user" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        //        NSLog(@"JSON: %@", responseObject);
+        [self test:responseObject];
+        [self setProfile];
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+    }];
+}
+
+-(void)setProfile{
+    self.title = userName;
+    self.Message.text = userSay1;
+    self.FollowerCount.text = [NSString stringWithFormat:@"%@",follwer];
+    self.FollowingCount.text = [NSString stringWithFormat:@"%@",following];
+    NSString *url = @"http://mixhips.nowanser.cloulu.com/";
+     url = [url stringByAppendingString:userImg];
+    NSURL *userURL = [NSURL URLWithString:userImg];
+    [self.profileImage setImageWithURL:userURL];
+}
+
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    if([segue.identifier isEqualToString:[NSString stringWithFormat:@"album"]]){
+        MyAlbumViewController *dest = (MyAlbumViewController *)segue.destinationViewController;
+        NSIndexPath *indexPath = [self.collectionView indexPathForCell:sender];
+        dest.album_ID = albumID[indexPath.row];
+        dest.user_ID = userID;
+    }
+    if([segue.identifier isEqualToString:@"following"]){
+        FollowViewController *dest = (FollowViewController *)segue.destinationViewController;
+        dest.user_ID = userID;
+    }
+    if([segue.identifier isEqualToString:@"follower"]){
+        
+    }
+    
+    //AlbumList *list = [[listCatalog defaultCatalog] albumAt:indexPath.row];
+    //dest.list = list;
+}
 
 // -------------- 콜렉션 뷰-----------------
--(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-//    if(indexPath.row == ([[AlbumCatalog defaultCatalog] numberOfAlbum])){
-//        [self performSegueWithIdentifier:@"edit_cell" sender:nil];
-//        
-//        NSLog(@"%d",[[AlbumCatalog defaultCatalog]numberOfAlbum]);
-//    }
-//    else{
-//        [self performSegueWithIdentifier:@"myalbumjoin" sender:nil];
-//   }
-}
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-	return ([[AlbumCatalog defaultCatalog] numberOfAlbum] + 1);
+    NSLog(@"counn ; %d",albumlist.count);
+	return albumlist.count+1;
 }
 
 - (UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
 	MyPageCollectionViewCell* cell;
-    if (indexPath.row == ([[AlbumCatalog defaultCatalog] numberOfAlbum])) {
+    if (indexPath.row == albumlist.count) {
         cell= [collectionView dequeueReusableCellWithReuseIdentifier:@"IMG_CELL_ID1" forIndexPath:indexPath];
     }
     else {
+        
         cell= [collectionView dequeueReusableCellWithReuseIdentifier:@"albumlist_cell" forIndexPath:indexPath];
-        AlbumList *albumlist = [[AlbumCatalog defaultCatalog] albumAt:indexPath.row];
-        [cell setAlbumInfo:albumlist];
+        NSLog(@"rr r %d",albumlist.count);
+        self.list = [albumlist objectAtIndex:indexPath.row];
+        NSLog(@"%@",self.list);
+        
+        [cell setAlbumInfo:self.list];
     }
-	/*
-     // 선택 상태에 따른 셀UI 업데이트
-     // "#3. 셀에 대해 더 깊이 파고들어가보자" 글에 있는 약간의 수정 부분에 대한 해결방법. 아래의 두줄이 있을때와 없을때를 비교해보세요.
-     cell.layer.borderColor = (cell.selected) ? [UIColor yellowColor].CGColor : nil;
-     cell.layer.borderWidth = (cell.selected) ? 5.0f : 0.0f;
-     
-     // 표시할 이미지 설정
-     UIImageView* imgView = (UIImageView*)[cell.contentView viewWithTag:100];
-     if (imgView) imgView.image = self.dataList[indexPath.section][indexPath.row];
-     
-     
-     */
 	return cell;
 }
 
@@ -153,7 +243,9 @@
 ///////////////////////////////////////////////////////////////////////////
 
 
-
+-(void)viewWillAppear:(BOOL)animated{
+    [self AFNetworkingAD];
+}
 
 - (void)viewDidLoad
 {
@@ -162,7 +254,6 @@
 	
 	
 	//[self updateData];
-    [self.collectionView reloadData];
 }
 
 - (void)didReceiveMemoryWarning

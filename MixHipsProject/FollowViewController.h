@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AlbumList.h"
 
 @interface FollowViewController : UIViewController
-
+@property (strong,nonatomic) AlbumList *list;
+@property (strong, nonatomic)NSString *user_ID;
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @end

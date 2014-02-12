@@ -10,7 +10,7 @@
 
 @implementation Newslist
 
-+(id)newsList:(int)ad_id ad_menu:(NSString *)ad_menu ad_title:(NSString *)ad_title{
++(id)newsList:(NSString *)ad_id ad_menu:(NSString *)ad_menu ad_title:(NSString *)ad_title{
     Newslist *list = [[Newslist alloc]init];
     list.ad_id = ad_id;
     list.ad_menu  = ad_menu;

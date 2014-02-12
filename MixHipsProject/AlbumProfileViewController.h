@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AlbumList.h"
 
 @interface AlbumProfileViewController : UIViewController
+@property (strong,nonatomic) AlbumList *list;
+@property (strong, nonatomic) NSString *user_ID;
+
 
 @end

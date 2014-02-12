@@ -26,7 +26,7 @@
 static NewsCatalog *_instance = nil;
 + (id)defaultCatalog
 {
-    NSLog(@"434");
+
     if (nil == _instance) {
         _instance = [[NewsCatalog alloc] init];
     }
@@ -36,8 +36,6 @@ static NewsCatalog *_instance = nil;
 - (id) init
 {
     self = [super init];
-    NSLog(@"aaaa");
-    
     if (self) {
         [self AFNetworkingAD];
         good = [[NSArray alloc] init];
@@ -49,7 +47,6 @@ static NewsCatalog *_instance = nil;
 
 - (void)test:(NSDictionary *)dic {
     NSDictionary *dd = [NSDictionary dictionaryWithDictionary:dic];
-    NSLog(@"%@",dd);
     abc = [dd objectForKey:@"ad_list"];
     adID = [[NSMutableArray alloc]init];
     adMenu = [[NSMutableArray alloc]init];
@@ -60,16 +57,10 @@ static NewsCatalog *_instance = nil;
         [adID addObject:[abc[i] objectForKey:@"ad_id"]];
         [adMenu addObject:[abc[i] objectForKey:@"ad_menu"]];
         [adTitle addObject:[abc[i] objectForKey:@"ad_title"]];
-        [newslist addObject:[Newslist newsList:(int)adID[i] ad_menu:adMenu[i] ad_title:adTitle[i]]];
+        [newslist addObject:[Newslist newsList:adID[i] ad_menu:adMenu[i] ad_title:adTitle[i]]];
 
     }
     good = newslist;
-    NSLog(@"%@", newslist);
-    NSLog(@"%d",good.count);
-    
-    NSLog(@"newlist %@",newslist);
-    NSLog(@"menu %@",adMenu);
-    NSLog(@"title %@",adTitle);
     [self.newsVC reloadTable];
     
 }
@@ -79,6 +70,7 @@ static NewsCatalog *_instance = nil;
     [manager POST: @"http://mixhips.nowanser.cloulu.com/request_ad_list" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
 //        NSLog(@"JSON: %@", responseObject);
         [self test:responseObject];
+        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
     }];

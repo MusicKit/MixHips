@@ -11,6 +11,7 @@
 #import "Player.h"
 #import "AppDelegate.h"
 #import "PlaylistCatagory.h"
+#import "RequestCenter.h"
 
 @interface PlayerViewController ()<AVAudioPlayerDelegate, AVAudioRecorderDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *play;
@@ -28,9 +29,14 @@
 @implementation PlayerViewController{
     PlaylistCatagory *playCatagory;
     PlayListViewController *list;
+    NSInteger indexPathRow;
     NSTimer *timer;
 }
 @synthesize player;
+
+-(void)returnIndexPath:(NSInteger)indexPath{
+    indexPathRow =indexPath;
+}
 
 -(IBAction)loopMusic:(id)sender{
     playCatagory.player.numberOfLoops = -1;
@@ -59,9 +65,20 @@
         
         timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(timeFired:) userInfo:nil repeats:YES];
         [self.play setTitle:@"Pause" forState:UIControlStateNormal];
-        [playCatagory playStart];
+        [playCatagory playStart:self.soundID];
         
     }
+}
+
+-(IBAction)fastButton:(id)sender{
+    indexPathRow++;
+    [playCatagory next:[list returnIndexRow:indexPathRow]];
+    
+}
+
+-(IBAction)rewindButton:(id)sender{
+    indexPathRow--;
+    [playCatagory playStart:[list returnIndexRow:indexPathRow]];
 }
 -(void)timeFired:(NSTimer *)t{
      if(playCatagory.player.playing == YES){
@@ -92,6 +109,23 @@
 }
 
 
+-(void)net{
+    RequestCenter *requestCenter = [[RequestCenter alloc] init];
+    
+    NSString *i = [NSString stringWithFormat:@"7"];
+    
+    
+    NSURL *urlCurrent = [NSURL URLWithString:@"http://mixhips.nowanser.cloulu.com/fetch_sounds"];
+    NSMutableURLRequest *requestCurrent = [NSMutableURLRequest requestWithURL:urlCurrent];
+    NSDictionary *dicRequest = @{@"키":@"값", @"sounds_id":i};
+    NSDictionary *dicResult = [requestCenter setSyncRequest:requestCurrent withOption:dicRequest];
+    
+    ////////////////////
+//    NSString *soundID = [NSString stringWithFormat:@"%@",[dicResult objectForKey:@"sound_id"]];
+//    NSString *albumID = [NSString stringWithFormat:@"%@",[dicResult objectForKey:@"album_id"]];
+//    NSString *soundName = [NSString stringWithFormat:@"%@",[dicResult objectForKey:@"sound_name"]];
+//    NSString *soundURL = [NSString stringWithFormat:@"%@",[dicResult objectForKey:@"sound_url"]];
+}
 
 
 
@@ -107,6 +141,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self net];
     self.volumeSlider.hidden = YES;
 	// Do any additional setup after loading the view.
     [self.navigationController setToolbarHidden:YES];

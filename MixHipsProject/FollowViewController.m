@@ -7,43 +7,77 @@
 //
 
 #import "FollowViewController.h"
-
+#import "AFHTTPRequestOperationManager.h"
+#import "AlbumList.h"
+#import "FollowingCell.h"
+#import "AlbumProfileViewController.h"
 @interface FollowViewController () <UICollectionViewDelegate, UICollectionViewDataSource>
-@property (weak, nonatomic) IBOutlet UIControl *hideView;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *searchButton;
-@property (weak, nonatomic) IBOutlet UISearchBar *searchView;
-@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+
+
+
 
 @end
 
-@implementation FollowViewController
-
-//앨범 검색 버튼 눌렀을때
--(IBAction)searchAlbum:(id)sender{
-    float height = self.searchView.frame.size.height;
-    self.collectionView.center = CGPointMake(self.collectionView.center.x, self.collectionView.center.y + height);
-    [self.searchView becomeFirstResponder];
-    self.hideView.hidden = NO;
-    self.searchView.hidden = NO;
-    self.searchButton.enabled = NO;
+@implementation FollowViewController{
+    NSMutableArray *userID;
+    NSMutableArray *user_img;
+    NSMutableArray *user_name;
+    NSMutableArray *followingList;
 }
-//여백 눌렀을때 키보드 사라짐
--(IBAction)dismissKeyboard:(id)sender{
-    float height = self.searchView.frame.size.height;
-    self.collectionView.center = CGPointMake(self.collectionView.center.x, self.collectionView.center.y - height);
+
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    AlbumProfileViewController *dest = (AlbumProfileViewController *)segue.destinationViewController;
+    NSIndexPath *indexPath = [self.collectionView indexPathForCell:sender];
+    dest.user_ID = [userID objectAtIndex:indexPath.row];
+    //AlbumList *list = [[listCatalog defaultCatalog] albumAt:indexPath.row];
+    //dest.list = list;
+}
+
+//network
+- (void)test:(NSDictionary *)dic {
+    NSDictionary *dd = [NSDictionary dictionaryWithDictionary:dic];
+    NSArray *following = [dd objectForKey:@"following_list"];
     
-    [self.searchView resignFirstResponder];
-    self.hideView.hidden = YES;
-    self.searchView.hidden = YES;
-    self.searchButton.enabled = YES;
+    NSLog(@"aaqawrawr%@",following);
+    userID = [[NSMutableArray alloc]init];
+    user_img = [[NSMutableArray alloc]init];
+    user_name = [[NSMutableArray alloc]init];
+    
+    followingList = [[NSMutableArray alloc]init];
+    for(int i=0;i<following.count;i++)
+    {
+        [userID addObject:[following[i] objectForKey:@"user_id"]];
+        [user_img addObject:[following[i] objectForKey:@"user_img_url"]];
+        [user_name addObject:[following[i] objectForKey:@"user_name"]];
+        
+        [followingList addObject:[AlbumList followList:userID[i] user_name:user_name[i] user_img:user_img[i]]];
+    }
+    NSLog(@"ffff%@",followingList);
+
+
+}
+-(void)AFNetworkingAD{
+    NSString *i = [NSString stringWithFormat:@"7"];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSDictionary *parameters = @{@"foo":@"bar", @"user_id":i};
+    [manager POST: @"http://mixhips.nowanser.cloulu.com/show_following" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        //        NSLog(@"JSON: %@", responseObject);
+        [self test:responseObject];
+        [self.collectionView reloadData];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+    }];
 }
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    return 15;
+    return followingList.count;
 }
 
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"follow_cell" forIndexPath:indexPath];
+    FollowingCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"follow_cell" forIndexPath:indexPath];
+    self.list = [followingList objectAtIndex:indexPath.row];
+    [cell setPlaylistInfo:self.list];
     return cell;
 }
 
@@ -56,11 +90,15 @@
     return self;
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    [self AFNetworkingAD];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.hideView.hidden = YES;
+    
 }
 
 - (void)didReceiveMemoryWarning

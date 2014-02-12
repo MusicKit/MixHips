@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AlbumList.h"
+
 
 @interface ListViewController : UIViewController
-
+@property (strong,nonatomic) AlbumList *list;
 @end

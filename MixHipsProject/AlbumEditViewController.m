@@ -35,7 +35,7 @@
     else{
         cell = [tableView dequeueReusableCellWithIdentifier:@"list_cell" forIndexPath:indexPath];
         AlbumList *albumlist = [[Catalog defaultCatalog] musicAt:indexPath.row];
-        [cell setProductInfo:albumlist];
+        [cell setProductInfo:albumlist indexPath:indexPath.row];
     }
     return cell;
 }

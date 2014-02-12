@@ -8,10 +8,11 @@
 
 #import "MyPageCollectionViewCell.h"
 #import "AlbumList.h"
+#import "UIImageView+AFNetworking.h"
 @interface MyPageCollectionViewCell()
-@property (weak, nonatomic) IBOutlet UIImageView *albumImage;
 @property (weak, nonatomic) IBOutlet UILabel *albumName;
 @property (weak, nonatomic) IBOutlet UILabel *like;
+@property (weak, nonatomic) IBOutlet UIImageView *albumImg;
 
 @end
 
@@ -19,9 +20,13 @@
 
 - (void) setAlbumInfo:(AlbumList *)list
 {
-    self.albumName.text = list.albumName;
-    self.albumImage.image = [UIImage imageNamed:list.albumImage];
-    self.like.text = list.like;
+    self.albumName.text = list.album_name;
+    self.like.text = [NSString stringWithFormat:@"%@",list.like_count];
+    NSString *url = @"http://mixhips.nowanser.cloulu.com";
+    url = [url stringByAppendingString:list.album_img];
+    NSURL *imgURL = [NSURL URLWithString:url];
+    [self.albumImg setImageWithURL:imgURL];
+
 }
 
 

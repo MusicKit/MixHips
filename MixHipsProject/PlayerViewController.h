@@ -12,6 +12,8 @@
 @interface PlayerViewController : UIViewController
 
 @property AVAudioPlayer *player;
+@property (strong, nonatomic) NSString *soundID;
 
+-(void)returnIndexPath:(NSInteger)indexPath;
 
 @end

@@ -7,11 +7,16 @@
 //
 
 #import "PlaylistCatagory.h"
+#import "RequestCenter.h"
+#import "PlayListDB.h"
 
 
 @implementation PlaylistCatagory{
     NSMutableArray *list;
     NSTimer *timer;
+    NSString *purl;
+    NSString *musicURL;
+    NSString* urlTextEscaped;
 }
 @synthesize player;
 
@@ -29,15 +34,44 @@ static PlaylistCatagory *_instance = nil;
 {
     self = [super init];
     if (self) {
-        list = [[NSMutableArray alloc]initWithObjects:@"http://www.ggotnuri.co.kr/day.mp3", nil];
+        //list = [[NSMutableArray alloc]initWithObjects:@"http://www.ggotnuri.co.kr/day.mp3", nil];
     }
     return self;
 }
 
-
--(void)playStart{
+-(void)net:(NSString *)soundid{
+    RequestCenter *requestCenter = [[RequestCenter alloc] init];
+    //
+    NSString *i = [NSString stringWithFormat:@"%@",soundid];
     
-    NSURL *urlForPlay = [NSURL URLWithString:@"http://www.ggotnuri.co.kr/day.mp3"];
+    
+    NSURL *urlCurrent = [NSURL URLWithString:@"http://mixhips.nowanser.cloulu.com/fetch_sounds"];
+    NSMutableURLRequest *requestCurrent = [NSMutableURLRequest requestWithURL:urlCurrent];
+    NSDictionary *dicRequest = @{@"키":@"값", @"sounds_id":i};
+    NSDictionary *dicResult = [requestCenter setSyncRequest:requestCurrent withOption:dicRequest];
+    NSLog(@"%@",dicResult);
+    NSArray *soundlist = [dicResult objectForKey:@"sounds_list"];
+    ////////////////////
+    NSMutableArray *soundURL = [[NSMutableArray alloc]init];
+    [soundURL addObject:[soundlist[0] objectForKey:@"sound_url"]];   // NSLog(@"url: %@",soundID);
+    
+    //NSString *albumID = [NSString stringWithFormat:@"%@",[dicResult objectForKey:@"album_id"]];
+    //NSString *soundName = [NSString stringWithFormat:@"%@",[dicResult objectForKey:@"sound_name"]];
+    purl = [NSString stringWithFormat:@"%@",soundURL[0]];
+    
+    musicURL = [NSString stringWithFormat:@"http://mixhips.nowanser.cloulu.com%@",purl];
+    urlTextEscaped = [musicURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSLog(@"%@",urlTextEscaped);
+}
+
+
+
+-(void)playStart:(NSString *)soundid{
+    [self net:soundid];
+    //NSURL *urlForPlay = [NSURL URLWithString:@"http://mixhips.nowanser.cloulu.com/uploads/sound/3/5/day1.mp3"];
+    NSURL *urlForPlay = [NSURL URLWithString:urlTextEscaped];
+    
+
     [self playMusic:urlForPlay];
 }
 
@@ -49,8 +83,8 @@ static PlaylistCatagory *_instance = nil;
     [player pause];
 }
 
--(void)next{
-    
+-(void)next:(NSString *)soundid{
+    [self net:soundid];
 }
 
 -(void)prev{

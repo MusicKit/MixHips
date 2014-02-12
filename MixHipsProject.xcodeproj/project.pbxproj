@@ -29,6 +29,18 @@
 		0005EF2018A4BE3D00A207C0 /* music_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 0005EF1D18A4BE3D00A207C0 /* music_icon.png */; };
 		0005EF2118A4BE3D00A207C0 /* news_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 0005EF1E18A4BE3D00A207C0 /* news_icon.png */; };
 		0005EF2318A4BF0B00A207C0 /* playlist_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 0005EF2218A4BF0B00A207C0 /* playlist_icon.png */; };
+		0009A26518A608140036DFF3 /* RequestCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0009A26418A608140036DFF3 /* RequestCenter.m */; };
+		0009A26818A6096B0036DFF3 /* HotArtistCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0009A26718A6096B0036DFF3 /* HotArtistCell.m */; };
+		0009A26F18A60FC70036DFF3 /* ArtistProfileAlbumCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0009A26E18A60FC70036DFF3 /* ArtistProfileAlbumCell.m */; };
+		0009A28F18A9D04B0036DFF3 /* ListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0009A28E18A9D04B0036DFF3 /* ListViewCell.m */; };
+		0009A2A318A9F3770036DFF3 /* AFNetworkActivityIndicatorManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0009A29518A9F3770036DFF3 /* AFNetworkActivityIndicatorManager.m */; };
+		0009A2A418A9F3770036DFF3 /* UIActivityIndicatorView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 0009A29718A9F3770036DFF3 /* UIActivityIndicatorView+AFNetworking.m */; };
+		0009A2A518A9F3770036DFF3 /* UIAlertView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 0009A29918A9F3770036DFF3 /* UIAlertView+AFNetworking.m */; };
+		0009A2A618A9F3770036DFF3 /* UIButton+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 0009A29B18A9F3770036DFF3 /* UIButton+AFNetworking.m */; };
+		0009A2A718A9F3770036DFF3 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 0009A29D18A9F3770036DFF3 /* UIImageView+AFNetworking.m */; };
+		0009A2A818A9F3770036DFF3 /* UIProgressView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 0009A2A018A9F3770036DFF3 /* UIProgressView+AFNetworking.m */; };
+		0009A2A918A9F3770036DFF3 /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 0009A2A218A9F3770036DFF3 /* UIWebView+AFNetworking.m */; };
+		0009A2AC18AA04BA0036DFF3 /* NewsDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0009A2AB18AA04BA0036DFF3 /* NewsDetailViewController.m */; };
 		002990B818A1F2A200262CF1 /* AlbumEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 002990B718A1F2A200262CF1 /* AlbumEditViewController.m */; };
 		002990BB18A2003F00262CF1 /* EdicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 002990BA18A2003F00262CF1 /* EdicCell.m */; };
 		002990BE18A2168100262CF1 /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = 002990BD18A2168100262CF1 /* Player.m */; };
@@ -45,7 +57,6 @@
 		00621E52188615930030A1BD /* cart.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 00621E51188615930030A1BD /* cart.jpeg */; };
 		00660097188DFCB3001A2095 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00660095188DFCB3001A2095 /* FacebookSDK.framework */; };
 		00660098188DFCB3001A2095 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00660096188DFCB3001A2095 /* Parse.framework */; };
-		006B0A12189607230048D367 /* Cell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 006B0A11189607230048D367 /* Cell.xib */; };
 		006B0A6118962CE80048D367 /* PlayListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 006B0A6018962CE80048D367 /* PlayListViewController.m */; };
 		006B0A6418962E7D0048D367 /* PlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 006B0A6318962E7D0048D367 /* PlayerViewController.m */; };
 		006B0A66189630FE0048D367 /* images.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 006B0A65189630FE0048D367 /* images.jpeg */; };
@@ -84,6 +95,11 @@
 		00F748A218A1D7D5004A38CE /* album1.png in Resources */ = {isa = PBXBuildFile; fileRef = 00F7489F18A1D7D5004A38CE /* album1.png */; };
 		00F748A318A1D7D5004A38CE /* album2.png in Resources */ = {isa = PBXBuildFile; fileRef = 00F748A018A1D7D5004A38CE /* album2.png */; };
 		00F748A418A1D7D5004A38CE /* Album3.png in Resources */ = {isa = PBXBuildFile; fileRef = 00F748A118A1D7D5004A38CE /* Album3.png */; };
+		00FFB20A18AB250A000B482E /* MyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 00FFB20718AB250A000B482E /* MyCell.m */; };
+		00FFB20B18AB250A000B482E /* MyFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 00FFB20918AB250A000B482E /* MyFlowLayout.m */; };
+		00FFB21218AB8312000B482E /* FollowingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 00FFB21118AB8312000B482E /* FollowingCell.m */; };
+		00FFB21518AB9492000B482E /* FollowerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 00FFB21418AB9492000B482E /* FollowerViewController.m */; };
+		00FFB21818AB9E9C000B482E /* FollowerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 00FFB21718AB9E9C000B482E /* FollowerCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -127,6 +143,31 @@
 		0005EF1D18A4BE3D00A207C0 /* music_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = music_icon.png; sourceTree = "<group>"; };
 		0005EF1E18A4BE3D00A207C0 /* news_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = news_icon.png; sourceTree = "<group>"; };
 		0005EF2218A4BF0B00A207C0 /* playlist_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = playlist_icon.png; sourceTree = "<group>"; };
+		0009A26318A608140036DFF3 /* RequestCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestCenter.h; sourceTree = "<group>"; };
+		0009A26418A608140036DFF3 /* RequestCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestCenter.m; sourceTree = "<group>"; };
+		0009A26618A6096B0036DFF3 /* HotArtistCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotArtistCell.h; sourceTree = "<group>"; };
+		0009A26718A6096B0036DFF3 /* HotArtistCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotArtistCell.m; sourceTree = "<group>"; };
+		0009A26D18A60FC70036DFF3 /* ArtistProfileAlbumCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArtistProfileAlbumCell.h; sourceTree = "<group>"; };
+		0009A26E18A60FC70036DFF3 /* ArtistProfileAlbumCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArtistProfileAlbumCell.m; sourceTree = "<group>"; };
+		0009A28D18A9D04B0036DFF3 /* ListViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListViewCell.h; sourceTree = "<group>"; };
+		0009A28E18A9D04B0036DFF3 /* ListViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListViewCell.m; sourceTree = "<group>"; };
+		0009A29418A9F3770036DFF3 /* AFNetworkActivityIndicatorManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFNetworkActivityIndicatorManager.h; sourceTree = "<group>"; };
+		0009A29518A9F3770036DFF3 /* AFNetworkActivityIndicatorManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFNetworkActivityIndicatorManager.m; sourceTree = "<group>"; };
+		0009A29618A9F3770036DFF3 /* UIActivityIndicatorView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActivityIndicatorView+AFNetworking.h"; sourceTree = "<group>"; };
+		0009A29718A9F3770036DFF3 /* UIActivityIndicatorView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActivityIndicatorView+AFNetworking.m"; sourceTree = "<group>"; };
+		0009A29818A9F3770036DFF3 /* UIAlertView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+AFNetworking.h"; sourceTree = "<group>"; };
+		0009A29918A9F3770036DFF3 /* UIAlertView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+AFNetworking.m"; sourceTree = "<group>"; };
+		0009A29A18A9F3770036DFF3 /* UIButton+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+AFNetworking.h"; sourceTree = "<group>"; };
+		0009A29B18A9F3770036DFF3 /* UIButton+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+AFNetworking.m"; sourceTree = "<group>"; };
+		0009A29C18A9F3770036DFF3 /* UIImageView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+AFNetworking.h"; sourceTree = "<group>"; };
+		0009A29D18A9F3770036DFF3 /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
+		0009A29E18A9F3770036DFF3 /* UIKit+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIKit+AFNetworking.h"; sourceTree = "<group>"; };
+		0009A29F18A9F3770036DFF3 /* UIProgressView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIProgressView+AFNetworking.h"; sourceTree = "<group>"; };
+		0009A2A018A9F3770036DFF3 /* UIProgressView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIProgressView+AFNetworking.m"; sourceTree = "<group>"; };
+		0009A2A118A9F3770036DFF3 /* UIWebView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWebView+AFNetworking.h"; sourceTree = "<group>"; };
+		0009A2A218A9F3770036DFF3 /* UIWebView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWebView+AFNetworking.m"; sourceTree = "<group>"; };
+		0009A2AA18AA04BA0036DFF3 /* NewsDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsDetailViewController.h; sourceTree = "<group>"; };
+		0009A2AB18AA04BA0036DFF3 /* NewsDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsDetailViewController.m; sourceTree = "<group>"; };
 		002990B618A1F2A200262CF1 /* AlbumEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumEditViewController.h; sourceTree = "<group>"; };
 		002990B718A1F2A200262CF1 /* AlbumEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumEditViewController.m; sourceTree = "<group>"; };
 		002990B918A2003F00262CF1 /* EdicCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EdicCell.h; sourceTree = "<group>"; };
@@ -151,7 +192,6 @@
 		00621E51188615930030A1BD /* cart.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cart.jpeg; sourceTree = "<group>"; };
 		00660095188DFCB3001A2095 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 		00660096188DFCB3001A2095 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
-		006B0A11189607230048D367 /* Cell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Cell.xib; sourceTree = "<group>"; };
 		006B0A5F18962CE80048D367 /* PlayListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayListViewController.h; sourceTree = "<group>"; };
 		006B0A6018962CE80048D367 /* PlayListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayListViewController.m; sourceTree = "<group>"; };
 		006B0A6218962E7D0048D367 /* PlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerViewController.h; sourceTree = "<group>"; };
@@ -216,6 +256,16 @@
 		00F7489F18A1D7D5004A38CE /* album1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = album1.png; sourceTree = "<group>"; };
 		00F748A018A1D7D5004A38CE /* album2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = album2.png; sourceTree = "<group>"; };
 		00F748A118A1D7D5004A38CE /* Album3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Album3.png; sourceTree = "<group>"; };
+		00FFB20618AB250A000B482E /* MyCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyCell.h; sourceTree = "<group>"; };
+		00FFB20718AB250A000B482E /* MyCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyCell.m; sourceTree = "<group>"; };
+		00FFB20818AB250A000B482E /* MyFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyFlowLayout.h; sourceTree = "<group>"; };
+		00FFB20918AB250A000B482E /* MyFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyFlowLayout.m; sourceTree = "<group>"; };
+		00FFB21018AB8312000B482E /* FollowingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FollowingCell.h; sourceTree = "<group>"; };
+		00FFB21118AB8312000B482E /* FollowingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FollowingCell.m; sourceTree = "<group>"; };
+		00FFB21318AB9492000B482E /* FollowerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FollowerViewController.h; sourceTree = "<group>"; };
+		00FFB21418AB9492000B482E /* FollowerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FollowerViewController.m; sourceTree = "<group>"; };
+		00FFB21618AB9E9C000B482E /* FollowerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FollowerCell.h; sourceTree = "<group>"; };
+		00FFB21718AB9E9C000B482E /* FollowerCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FollowerCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -281,6 +331,9 @@
 		0003706B1883F35500BB943F /* MixHipsProject */ = {
 			isa = PBXGroup;
 			children = (
+				00FFB20F18AB82FE000B482E /* Follow */,
+				0009A29318A9F3770036DFF3 /* UIKit+AFNetworking */,
+				0009A26C18A60F060036DFF3 /* ArtistProfile */,
 				0005EF1018A49E1200A207C0 /* NetWorking */,
 				002990C518A22B2A00262CF1 /* img */,
 				00F7487918A0CE8D004A38CE /* AFNetworking */,
@@ -336,10 +389,45 @@
 		0005EF1018A49E1200A207C0 /* NetWorking */ = {
 			isa = PBXGroup;
 			children = (
+				0009A26318A608140036DFF3 /* RequestCenter.h */,
+				0009A26418A608140036DFF3 /* RequestCenter.m */,
 				0005EF1118A49E2600A207C0 /* NetWorkingCenter.h */,
 				0005EF1218A49E2600A207C0 /* NetWorkingCenter.m */,
 			);
 			name = NetWorking;
+			sourceTree = "<group>";
+		};
+		0009A26C18A60F060036DFF3 /* ArtistProfile */ = {
+			isa = PBXGroup;
+			children = (
+				002DB76118890DC10030BB60 /* AlbumProfileViewController.h */,
+				002DB76218890DC10030BB60 /* AlbumProfileViewController.m */,
+				0009A26D18A60FC70036DFF3 /* ArtistProfileAlbumCell.h */,
+				0009A26E18A60FC70036DFF3 /* ArtistProfileAlbumCell.m */,
+			);
+			name = ArtistProfile;
+			sourceTree = "<group>";
+		};
+		0009A29318A9F3770036DFF3 /* UIKit+AFNetworking */ = {
+			isa = PBXGroup;
+			children = (
+				0009A29418A9F3770036DFF3 /* AFNetworkActivityIndicatorManager.h */,
+				0009A29518A9F3770036DFF3 /* AFNetworkActivityIndicatorManager.m */,
+				0009A29618A9F3770036DFF3 /* UIActivityIndicatorView+AFNetworking.h */,
+				0009A29718A9F3770036DFF3 /* UIActivityIndicatorView+AFNetworking.m */,
+				0009A29818A9F3770036DFF3 /* UIAlertView+AFNetworking.h */,
+				0009A29918A9F3770036DFF3 /* UIAlertView+AFNetworking.m */,
+				0009A29A18A9F3770036DFF3 /* UIButton+AFNetworking.h */,
+				0009A29B18A9F3770036DFF3 /* UIButton+AFNetworking.m */,
+				0009A29C18A9F3770036DFF3 /* UIImageView+AFNetworking.h */,
+				0009A29D18A9F3770036DFF3 /* UIImageView+AFNetworking.m */,
+				0009A29E18A9F3770036DFF3 /* UIKit+AFNetworking.h */,
+				0009A29F18A9F3770036DFF3 /* UIProgressView+AFNetworking.h */,
+				0009A2A018A9F3770036DFF3 /* UIProgressView+AFNetworking.m */,
+				0009A2A118A9F3770036DFF3 /* UIWebView+AFNetworking.h */,
+				0009A2A218A9F3770036DFF3 /* UIWebView+AFNetworking.m */,
+			);
+			path = "UIKit+AFNetworking";
 			sourceTree = "<group>";
 		};
 		002990C518A22B2A00262CF1 /* img */ = {
@@ -364,10 +452,10 @@
 		002DB76018890DA30030BB60 /* Sub */ = {
 			isa = PBXGroup;
 			children = (
+				00E84D4D189F4F2200779BC2 /* AlbumList.h */,
+				00E84D4E189F4F2200779BC2 /* AlbumList.m */,
 				0070FADC18A0AEC400999267 /* AlbumMusicViewController.h */,
 				0070FADD18A0AEC400999267 /* AlbumMusicViewController.m */,
-				002DB76118890DC10030BB60 /* AlbumProfileViewController.h */,
-				002DB76218890DC10030BB60 /* AlbumProfileViewController.m */,
 				006B0A73189761FD0048D367 /* CommentViewController.h */,
 				006B0A74189761FD0048D367 /* CommentViewController.m */,
 				0070FAE218A0AF4B00999267 /* AlbumCell.h */,
@@ -387,8 +475,6 @@
 				00F7489A18A1D0F1004A38CE /* MyPageCollectionViewCell.m */,
 				0057F83F1887B46000C2F1C8 /* MyPageViewController.h */,
 				0057F8401887B46000C2F1C8 /* MyPageViewController.m */,
-				006B0ABD18979AED0048D367 /* FollowViewController.h */,
-				006B0ABE18979AED0048D367 /* FollowViewController.m */,
 			);
 			name = MyPage;
 			sourceTree = "<group>";
@@ -396,9 +482,10 @@
 		0057F8431887C86200C2F1C8 /* List */ = {
 			isa = PBXGroup;
 			children = (
-				006B0A11189607230048D367 /* Cell.xib */,
 				0057F84D1887C98D00C2F1C8 /* ListViewController.h */,
 				0057F84E1887C98D00C2F1C8 /* ListViewController.m */,
+				0009A28D18A9D04B0036DFF3 /* ListViewCell.h */,
+				0009A28E18A9D04B0036DFF3 /* ListViewCell.m */,
 			);
 			name = List;
 			sourceTree = "<group>";
@@ -408,6 +495,12 @@
 			children = (
 				007414691890E8EE00E59BE7 /* HomingViewController.h */,
 				0074146A1890E8EE00E59BE7 /* HomingViewController.m */,
+				0009A26618A6096B0036DFF3 /* HotArtistCell.h */,
+				0009A26718A6096B0036DFF3 /* HotArtistCell.m */,
+				00FFB20618AB250A000B482E /* MyCell.h */,
+				00FFB20718AB250A000B482E /* MyCell.m */,
+				00FFB20818AB250A000B482E /* MyFlowLayout.h */,
+				00FFB20918AB250A000B482E /* MyFlowLayout.m */,
 			);
 			name = Home;
 			sourceTree = "<group>";
@@ -424,6 +517,8 @@
 				0005EF1518A4A06600A207C0 /* Newslist.m */,
 				0005EF1718A4A4A100A207C0 /* NewsCatalog.h */,
 				0005EF1818A4A4A100A207C0 /* NewsCatalog.m */,
+				0009A2AA18AA04BA0036DFF3 /* NewsDetailViewController.h */,
+				0009A2AB18AA04BA0036DFF3 /* NewsDetailViewController.m */,
 			);
 			name = News;
 			sourceTree = "<group>";
@@ -470,8 +565,6 @@
 				006B0A7118975C750048D367 /* MyAlbumViewController.m */,
 				00E84D4A189F4E5300779BC2 /* MyAlbumCell.h */,
 				00E84D4B189F4E5300779BC2 /* MyAlbumCell.m */,
-				00E84D4D189F4F2200779BC2 /* AlbumList.h */,
-				00E84D4E189F4F2200779BC2 /* AlbumList.m */,
 				00E84D50189F4F7E00779BC2 /* Catalog.h */,
 				00E84D51189F4F7E00779BC2 /* Catalog.m */,
 				00F7489C18A1D30E004A38CE /* AlbumCatalog.h */,
@@ -504,6 +597,21 @@
 				00F7488C18A0CE8D004A38CE /* AFURLSessionManager.m */,
 			);
 			path = AFNetworking;
+			sourceTree = "<group>";
+		};
+		00FFB20F18AB82FE000B482E /* Follow */ = {
+			isa = PBXGroup;
+			children = (
+				006B0ABD18979AED0048D367 /* FollowViewController.h */,
+				006B0ABE18979AED0048D367 /* FollowViewController.m */,
+				00FFB21018AB8312000B482E /* FollowingCell.h */,
+				00FFB21118AB8312000B482E /* FollowingCell.m */,
+				00FFB21318AB9492000B482E /* FollowerViewController.h */,
+				00FFB21418AB9492000B482E /* FollowerViewController.m */,
+				00FFB21618AB9E9C000B482E /* FollowerCell.h */,
+				00FFB21718AB9E9C000B482E /* FollowerCell.m */,
+			);
+			name = Follow;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -596,7 +704,6 @@
 				0005EF2118A4BE3D00A207C0 /* news_icon.png in Resources */,
 				0005EF1B18A4BDBA00A207C0 /* my_icon.png in Resources */,
 				0078193818A38295001B91DD /* top_bAR.png in Resources */,
-				006B0A12189607230048D367 /* Cell.xib in Resources */,
 				006B0A6B189633C50048D367 /* music2.mp3 in Resources */,
 				0003707E1883F35500BB943F /* Images.xcassets in Resources */,
 				00DB2971188682590021F951 /* f0073492_4de45928698b7.png in Resources */,
@@ -634,6 +741,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0009A2A518A9F3770036DFF3 /* UIAlertView+AFNetworking.m in Sources */,
 				00F7489318A0CE8D004A38CE /* AFURLRequestSerialization.m in Sources */,
 				00F7489218A0CE8D004A38CE /* AFURLConnectionOperation.m in Sources */,
 				0005EF0F18A499BC00A207C0 /* NewsCell.m in Sources */,
@@ -641,38 +749,54 @@
 				00E84D4F189F4F2200779BC2 /* AlbumList.m in Sources */,
 				000370761883F35500BB943F /* AppDelegate.m in Sources */,
 				00F7489518A0CE8D004A38CE /* AFURLSessionManager.m in Sources */,
+				0009A2A918A9F3770036DFF3 /* UIWebView+AFNetworking.m in Sources */,
 				006B0A6118962CE80048D367 /* PlayListViewController.m in Sources */,
 				00F7489B18A1D0F1004A38CE /* MyPageCollectionViewCell.m in Sources */,
+				00FFB21818AB9E9C000B482E /* FollowerCell.m in Sources */,
 				0074146B1890E8EE00E59BE7 /* HomingViewController.m in Sources */,
+				0009A2AC18AA04BA0036DFF3 /* NewsDetailViewController.m in Sources */,
+				0009A2A718A9F3770036DFF3 /* UIImageView+AFNetworking.m in Sources */,
 				00E84D52189F4F7E00779BC2 /* Catalog.m in Sources */,
 				0005EF1918A4A4A100A207C0 /* NewsCatalog.m in Sources */,
+				0009A2A318A9F3770036DFF3 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				002990B818A1F2A200262CF1 /* AlbumEditViewController.m in Sources */,
 				00F7489118A0CE8D004A38CE /* AFSecurityPolicy.m in Sources */,
 				002990BE18A2168100262CF1 /* Player.m in Sources */,
 				00F7488D18A0CE8D004A38CE /* AFHTTPRequestOperation.m in Sources */,
+				0009A28F18A9D04B0036DFF3 /* ListViewCell.m in Sources */,
 				00E84D5F189F6C1600779BC2 /* PlayListDB.m in Sources */,
 				0005EF1318A49E2600A207C0 /* NetWorkingCenter.m in Sources */,
 				006B0A75189761FD0048D367 /* CommentViewController.m in Sources */,
 				006B0A7218975C750048D367 /* MyAlbumViewController.m in Sources */,
 				002990BB18A2003F00262CF1 /* EdicCell.m in Sources */,
+				0009A2A818A9F3770036DFF3 /* UIProgressView+AFNetworking.m in Sources */,
+				0009A26818A6096B0036DFF3 /* HotArtistCell.m in Sources */,
 				0070FADE18A0AEC400999267 /* AlbumMusicViewController.m in Sources */,
 				0057F84F1887C98D00C2F1C8 /* ListViewController.m in Sources */,
 				0005EF1618A4A06600A207C0 /* Newslist.m in Sources */,
+				00FFB20B18AB250A000B482E /* MyFlowLayout.m in Sources */,
 				0070FAE418A0AF4B00999267 /* AlbumCell.m in Sources */,
 				00F7488F18A0CE8D004A38CE /* AFHTTPSessionManager.m in Sources */,
 				002990CA18A3144200262CF1 /* PlaylistCatagory.m in Sources */,
 				00E84D56189F572400779BC2 /* PlaylistCell.m in Sources */,
+				00FFB21218AB8312000B482E /* FollowingCell.m in Sources */,
+				0009A2A418A9F3770036DFF3 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
+				0009A26518A608140036DFF3 /* RequestCenter.m in Sources */,
 				0057F8491887C97700C2F1C8 /* NewsViewController.m in Sources */,
 				00B0CE5E1890C9630022928F /* LogLogViewController.m in Sources */,
 				00F7488E18A0CE8D004A38CE /* AFHTTPRequestOperationManager.m in Sources */,
+				0009A26F18A60FC70036DFF3 /* ArtistProfileAlbumCell.m in Sources */,
 				006B0ABF18979AED0048D367 /* FollowViewController.m in Sources */,
 				000370721883F35500BB943F /* main.m in Sources */,
 				006B0A6418962E7D0048D367 /* PlayerViewController.m in Sources */,
 				0057F8411887B46000C2F1C8 /* MyPageViewController.m in Sources */,
+				0009A2A618A9F3770036DFF3 /* UIButton+AFNetworking.m in Sources */,
+				00FFB21518AB9492000B482E /* FollowerViewController.m in Sources */,
 				00F7489018A0CE8D004A38CE /* AFNetworkReachabilityManager.m in Sources */,
 				00F7489418A0CE8D004A38CE /* AFURLResponseSerialization.m in Sources */,
 				00E84D4C189F4E5300779BC2 /* MyAlbumCell.m in Sources */,
 				00F7489E18A1D30E004A38CE /* AlbumCatalog.m in Sources */,
+				00FFB20A18AB250A000B482E /* MyCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

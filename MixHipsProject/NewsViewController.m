@@ -12,12 +12,12 @@
 #import "NewsCell.h"
 #import "NewsCatalog.h"
 #import "Newslist.h"
+#import "NewsDetailViewController.h"
 
 @interface NewsViewController ()<UIAlertViewDelegate , UITableViewDataSource, UITableViewDelegate>
-@property (weak, nonatomic) IBOutlet UISearchBar *searchView;
+
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *searchButton;
-@property (weak, nonatomic) IBOutlet UIView *hideView;
+
 
 @end
 
@@ -27,50 +27,14 @@
 }
 
 
--(IBAction)searchNews:(id)sender{
-    float height = self.searchView.frame.size.height;
-    
-    self.tableView.center = CGPointMake(self.tableView.center.x, self.tableView.center.y + height);
-    [self.searchView becomeFirstResponder];
-    self.hideView.hidden= NO;
-    self.searchButton.enabled = NO;
-    self.searchView.hidden = NO;
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    NewsDetailViewController *dest = (NewsDetailViewController *)segue.destinationViewController;
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
+       Newslist *list = [[NewsCatalog defaultCatalog] newsAt:indexPath.row];
+    dest.newsList = list;
 }
-
--(IBAction)closeSearchbar:(id)sender{
-    float height = self.searchView.frame.size.height;
-    
-    self.tableView.center = CGPointMake(self.tableView.center.x, self.tableView.center.y - height);
-    [self.searchView resignFirstResponder];
-    self.hideView.hidden = YES;
-    self.searchButton.enabled =YES;
-    self.searchView.hidden = YES;
-}
-//- (void)test:(NSDictionary *)dic {
-//    NSDictionary *dd = [NSDictionary dictionaryWithDictionary:dic];
-//    NSLog(@"%@",dd);
-//    NSArray *abc = [dd objectForKey:@"ad_list"];
-//    for(int i=0;i<abc.count;i++)
-//    {
-//        NSLog(@"ad_id=%@",[abc[i] objectForKey:@"ad_id"]);
-//    }
-//
-//
-//    
-//}
-//-(void)AFNetworkingAD:(NSInteger)num{
-//    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-//    NSDictionary *parameters = @{@"foo":@"bar"};
-//    [manager POST: @"http://mixhips.nowanser.cloulu.com/request_ad_list" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//        NSLog(@"JSON: %@", responseObject);
-//      [self test:responseObject];
-//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        NSLog(@"Error: %@", error);
-//    }];
-//}
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    NSLog(@"count: %d", [[NewsCatalog defaultCatalog] numberOfNews]);
         return [[NewsCatalog defaultCatalog] numberOfNews];
 }
 
@@ -106,9 +70,7 @@
 	// Do any additional setup after loading the view.
     [[NewsCatalog defaultCatalog] selectDelegate:self];
     newlist = [NewsCatalog defaultCatalog];
-    
-    self.hideView.hidden = YES;
-    self.searchView.hidden = YES;
+
     [self.tableView setSeparatorInset:UIEdgeInsetsZero];
 //    [self.tableView reloadData];
 }

@@ -20,52 +20,30 @@
 
 
 @implementation PlayListViewController{
+    PlayerViewController *player;
     PlayListDB *_playlist;
-    NSArray *musicFiles;
-    Playlist *list;
 }
-/*
-//음악 파일 재생
--(void)playMusic:(NSURL *)url{
-    if(nil!=self.player){
-        if([self.player isPlaying]){
-            [self.player stop];
-        }
-        
-        //플레이어 초기화
-        self.player = nil;
-        
-    }
-    
-    __autoreleasing NSError *error;
-    self.player = [[AVAudioPlayer alloc]initWithContentsOfURL:url error:&error];
-    self.player.delegate = self;
-    
-    [self.player play];
-    
-    //
-    if([player prepareToPlay]){
-        self.status.text = [NSString stringWithFormat:@"재생 중:%@",[[url path]lastPathComponent]];
-        [player play];
-        
-        //타이머 시작
-        timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateProgress:) userInfo:nil repeats:YES];
-    }
- //
+//
+-(NSString *)returnIndexRow:(NSInteger)indexRow{
+    NSString *soundID = [_playlist getSoundIdAtIndex:indexRow];
+    NSLog(@"soundid L : %@",soundID);
+    return soundID;
 }
-*/
--(IBAction)play:(id)sender{
+//
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    PlayerViewController *dest = (PlayerViewController *)segue.destinationViewController;
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [_playlist fetchMovies];
+    ///////////
+    [player returnIndexPath:indexPath.row];
+    NSString *soundID = [_playlist getSoundIdAtIndex:indexPath.row];
     
-}
-/*
--(IBAction)stop:(id)sender{
-    [self.player stop];
+    dest.soundID = soundID;
+    
+    NSLog(@"soundid: %@",soundID);
 }
 
--(void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag{
-    
-}
-*/
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
     if(UITableViewCellEditingStyleDelete == editingStyle){
         [_playlist deleteMusic:indexPath];
@@ -82,23 +60,13 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     PlaylistCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PLAYLIST_CELL" forIndexPath:indexPath];
+    NSString *ddd = [_playlist getSoundIdAtIndex:indexPath.row];
+    NSLog(@"soundidekekek : %@",ddd);
     NSString *name = [_playlist getNameOfMovieAtIndex:indexPath.row];
     NSString *nickName = [_playlist getNickNameOfMusicAtIndex:indexPath.row];
     [cell setPlaylistInfo:name nickName:nickName];
     return cell;
 }
-
-/*
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    
-    
-    NSString *fileName = [musicFiles objectAtIndex:indexPath.row];
-    NSURL *urlForPlay = [[NSBundle mainBundle]URLForResource:fileName withExtension:nil];
-    [self playMusic:urlForPlay];
-    //[self performSegueWithIdentifier:@"play" sender:self];
-}
- */
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -113,14 +81,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    
-    musicFiles = [[NSArray alloc]initWithObjects:@"music1.mp3", @"music2.mp3",@"music3.mp3", nil];
-    
-    //다른 어플리케이션의 음악 재생을 멈추지 않는 정책
-    AVAudioSession *session = [AVAudioSession sharedInstance];
-    __autoreleasing NSError *error = nil;
-    [session setCategory:AVAudioSessionCategoryAmbient error:&error];
-    [self.tableView setSeparatorInset:UIEdgeInsetsZero];
+
     
     _playlist = [PlayListDB sharedPlaylist];
     [_playlist fetchMovies];

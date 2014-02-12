@@ -9,14 +9,16 @@
 #import "AlbumCell.h"
 @interface AlbumCell()
 @property (weak, nonatomic) IBOutlet UILabel *musicName;
+@property (weak, nonatomic) IBOutlet UILabel *soundNum;
 
 @end
 
 @implementation AlbumCell
 
-- (void) setProductInfo:(AlbumList *)list
+- (void) setProductInfo:(AlbumList *)list indexPath:(NSInteger)index
 {
-    self.musicName.text = list.songTitle;
+    self.musicName.text = list.sound_name;
+    self.soundNum.text = [NSString stringWithFormat:@"%d",index+1];
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier

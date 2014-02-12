@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AlbumList.h"
 
 @interface MyPageViewController : UIViewController
-
+@property (strong,nonatomic) AlbumList *list;
 @end
