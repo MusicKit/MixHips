@@ -88,6 +88,23 @@
     return list;
 }
 
+//comment
++(id)comment:(NSString *)user_id user_name:(NSString *)user_name user_img:(NSString *)user_img commentID:(NSString *)commentID commentTime:(NSString *)commentTime contents:(NSString *)contents{
+    AlbumList *list = [[AlbumList alloc]init];
+    list.user_id = user_id;
+    list.user_img = user_img;
+    list.user_Name = user_name;
+    list.comment_id = commentID;
+    list.comment_time = commentTime;
+    list.contents = contents;
+    return list;
+    
+}
+
+
+
+
+
 //sound
 
 

@@ -131,7 +131,7 @@ static PlayListDB *_instance = nil;
 }
 
 -(NSArray *)data:(NSIndexPath *)indexPath{
-    return data[indexPath.row];
+    return _sound_ID[indexPath.row];
 }
 
 -(NSInteger)deleteMusic:(NSIndexPath *)indexpath{
@@ -147,6 +147,10 @@ static PlayListDB *_instance = nil;
     }
     NSInteger movieID = (NSInteger)sqlite3_last_insert_rowid(db);
     return movieID;
+}
+
+-(NSArray *)data{
+    return _sound_ID;
 }
 
 

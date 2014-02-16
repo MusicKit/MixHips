@@ -11,7 +11,9 @@
 #import "AlbumList.h"
 #import "FollowingCell.h"
 #import "AlbumProfileViewController.h"
-@interface FollowViewController () <UICollectionViewDelegate, UICollectionViewDataSource>
+#import "PlaylistCatagory.h"
+#import "FollowDelegate.h"
+@interface FollowViewController () <UICollectionViewDelegate, UICollectionViewDataSource, FollowDelegate>
 
 
 
@@ -19,20 +21,34 @@
 @end
 
 @implementation FollowViewController{
+    PlaylistCatagory *playCatagory;
     NSMutableArray *userID;
     NSMutableArray *user_img;
     NSMutableArray *user_name;
     NSMutableArray *followingList;
 }
 
+-(IBAction)toggleButton:(id)sender{
+    if(playCatagory.player.rate == 1.0){
+        [playCatagory pause];
+    }
+    else{
+        [playCatagory.player play];
+    }
+}
+
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
-    AlbumProfileViewController *dest = (AlbumProfileViewController *)segue.destinationViewController;
-    NSIndexPath *indexPath = [self.collectionView indexPathForCell:sender];
-    dest.user_ID = [userID objectAtIndex:indexPath.row];
-    //AlbumList *list = [[listCatalog defaultCatalog] albumAt:indexPath.row];
-    //dest.list = list;
+    if([segue.identifier isEqualToString:[NSString stringWithFormat:@"userName"]]){
+        AlbumProfileViewController *dest = (AlbumProfileViewController *)segue.destinationViewController;
+        NSIndexPath *indexPath = [self.collectionView indexPathForCell:sender];
+        dest.user_ID = [userID objectAtIndex:indexPath.row];
+        //AlbumList *list = [[listCatalog defaultCatalog] albumAt:indexPath.row];
+        //dest.list = list;
+    }
+    
 }
+
 
 //network
 - (void)test:(NSDictionary *)dic {
@@ -78,6 +94,7 @@
     FollowingCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"follow_cell" forIndexPath:indexPath];
     self.list = [followingList objectAtIndex:indexPath.row];
     [cell setPlaylistInfo:self.list];
+    cell.delegate = self;
     return cell;
 }
 
@@ -92,6 +109,7 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [self AFNetworkingAD];
+    playCatagory = [PlaylistCatagory defaultCatalog];
 }
 
 - (void)viewDidLoad

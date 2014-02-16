@@ -10,6 +10,7 @@
 #import "AlbumProfileViewController.h"
 #import "AFHTTPRequestOperationManager.h"
 #import "FollowerCell.h"
+#import "PlaylistCatagory.h"
 
 @interface FollowerViewController ()<UICollectionViewDataSource, UICollectionViewDelegate>
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
@@ -18,18 +19,30 @@
 
 @implementation FollowerViewController
 {
+    PlaylistCatagory *playCatagory;
     NSMutableArray *userID;
     NSMutableArray *user_img;
     NSMutableArray *user_name;
     NSMutableArray *followerList;
 }
 
+-(IBAction)toggleButton:(id)sender{
+    if(playCatagory.player.rate == 1.0){
+        [playCatagory pause];
+    }
+    else{
+        [playCatagory.player play];
+    }
+}
+
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    if([segue.identifier isEqualToString:[NSString stringWithFormat:@"userName"]]){
     AlbumProfileViewController *dest = (AlbumProfileViewController *)segue.destinationViewController;
     NSIndexPath *indexPath = [self.collectionView indexPathForCell:sender];
     dest.user_ID = [userID objectAtIndex:indexPath.row];
     //AlbumList *list = [[listCatalog defaultCatalog] albumAt:indexPath.row];
     //dest.list = list;
+    }
 }
 
 //network
@@ -78,6 +91,7 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [self AFNetworkingAD];
+    playCatagory = [PlaylistCatagory defaultCatalog];
 }
 
 

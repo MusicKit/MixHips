@@ -10,5 +10,6 @@
 #import "AlbumList.h"
 
 @interface AlbumCell : UITableViewCell
+@property (strong,nonatomic) NSString *soundid;
 - (void) setProductInfo:(AlbumList *)list indexPath:(NSInteger)index;
 @end

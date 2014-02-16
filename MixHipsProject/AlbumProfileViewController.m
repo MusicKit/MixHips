@@ -43,6 +43,16 @@
     PlaylistCatagory *playCatagory;
     NSString *abc;
 }
+
+-(IBAction)toggleButton:(id)sender{
+    if(playCatagory.player.rate == 1.0){
+        [playCatagory pause];
+    }
+    else{
+        [playCatagory.player play];
+    }
+}
+
 /*
 -(IBAction)toggleButton:(id)sender{
     
@@ -69,7 +79,6 @@
 
 -(IBAction)followButton:(id)sender{
     [self AFNetworkingADFollow];
-    [self AFNetworkingAD];
 }
 //network like{
 -(void)AFNetworkingADFollow{
@@ -79,6 +88,7 @@
     NSDictionary *parameters = @{@"send_id":i , @"receive_id":d};
     [manager POST: @"http://mixhips.nowanser.cloulu.com/action_follow" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"JSON: %@", responseObject);
+        [self AFNetworkingAD];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
     }];
@@ -143,18 +153,26 @@
     url = [url stringByAppendingString:userImg];
     NSURL *imgURL = [NSURL URLWithString:url];
     [self.userImg setImageWithURL:imgURL];
+
 }
 
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    if([segue.identifier isEqualToString:[NSString stringWithFormat:@"%@", @"soundlist"]]){
+
     AlbumMusicViewController *dest = (AlbumMusicViewController *)segue.destinationViewController;
     NSIndexPath *indexPath = [self.collectionView indexPathForCell:sender];
     dest.album_ID = albumID[indexPath.row];
     dest.user_ID = userID;
     dest.user_Name = userName;
+    }
     //AlbumList *list = [[listCatalog defaultCatalog] albumAt:indexPath.row];
     //dest.list = list;
+    if(segue.identifier == [NSString stringWithFormat:@"%@", @"musiclist"]){
+    }
 }
+
+
 
 
 
@@ -189,27 +207,28 @@
    // self.userImg =
     
     
-    if(playCatagory.player.playing==NO){
-        NSMutableArray *items = [self.toolbarItems mutableCopy];
-        [items removeObjectAtIndex:1];
-        [items insertObject:self.toggleButton atIndex:1];
-        [self.navigationController.toolbar setItems:items animated:NO];
-        NSLog(@"1");
-    }
-    else if(playCatagory.player.playing == YES){
-        NSMutableArray *items = [self.toolbarItems mutableCopy];
-        [items removeObjectAtIndex:1];
-        UIBarButtonItem *pauseButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemPause target:self action:@selector(toggleButton:)];
-        [items insertObject:pauseButton atIndex:1];
-        NSLog(@"44");
-        [self.navigationController.toolbar setItems:items animated:NO];
-    }
+//    if(playCatagory.player.playing==NO){
+//        NSMutableArray *items = [self.toolbarItems mutableCopy];
+//        [items removeObjectAtIndex:1];
+//        [items insertObject:self.toggleButton atIndex:1];
+//        [self.navigationController.toolbar setItems:items animated:NO];
+//        NSLog(@"1");
+//    }
+//    else if(playCatagory.player.playing == YES){
+//        NSMutableArray *items = [self.toolbarItems mutableCopy];
+//        [items removeObjectAtIndex:1];
+//        //UIBarButtonItem *pauseButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemPause target:self action:@selector(toggleButton:)];
+//       // [items insertObject:pauseButton atIndex:1];
+//        NSLog(@"44");
+//        [self.navigationController.toolbar setItems:items animated:NO];
+//    }
 
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.navigationController.toolbar.hidden = NO;;
     [self AFNetworkingAD];
     self.tabBarController.tabBar.barTintColor = [UIColor orangeColor];
     abc=self.list.user_id;

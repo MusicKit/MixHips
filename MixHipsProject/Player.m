@@ -13,21 +13,30 @@
 @end
 
 @implementation Player{
-    NSArray *musicFiles;
-    NSTimer *timer;
+    NSInteger *indexPath;
 }
 
--(void)playMusic:(NSURL *)url{
-    if(self.player !=nil){
-        if([self.player isPlaying]){
-            [self.player stop];
-        }
-        
-        self.Player = nil;
-        
-        [timer invalidate];
-        timer = nil;
+static Player *_instance = nil;
+
++ (id)defaultCatalog
+{
+    if (nil == _instance) {
+        _instance = [[Player alloc] init];
     }
+    return _instance;
+}
+
+- (id) init
+{
+    self = [super init];
+    if (self) {
+    }
+    return self;
+}
+
+- (NSUInteger)returnIndexPath
+{
+    return self.indexPathRow;
 }
 
 @end

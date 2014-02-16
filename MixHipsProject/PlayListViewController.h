@@ -9,9 +9,11 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 #import "AlbumList.h"
+#import "IndexPath.h"
 
 @interface PlayListViewController : UIViewController
 //@property AVAudioPlayer *player;
+@property (weak) id<IndexPath> delegate;
 @property (strong, nonatomic) AlbumList *albumList;
 -(NSString *)returnIndexRow:(NSInteger)indexRow;
 @end

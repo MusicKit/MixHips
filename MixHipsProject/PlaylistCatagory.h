@@ -9,8 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
 
-@interface PlaylistCatagory : NSObject <AVAudioPlayerDelegate>
-@property AVAudioPlayer *player;
+@interface PlaylistCatagory : NSObject <AVPlayerItemLegibleOutputPushDelegate ,AVPlayerItemOutputPullDelegate, AVPlayerItemOutputPushDelegate>
+@property AVPlayer *player;
 + (id)defaultCatalog;
 -(void)playStart:(NSString *)soundid;
 -(void)stop;

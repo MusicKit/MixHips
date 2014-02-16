@@ -8,6 +8,8 @@
 
 #import "MyAlbumCell.h"
 #import "AlbumList.h"
+#import "SoundIDCatagory.h"
+
 
 @interface MyAlbumCell()
 @property (weak, nonatomic) IBOutlet UILabel *musicName;
@@ -18,9 +20,14 @@
 
 @end
 
-@implementation MyAlbumCell
+@implementation MyAlbumCell{
+    SoundIDCatagory *soundCatagory;
+}
 
-
+-(IBAction)commentButton:(id)sender{
+    soundCatagory = [SoundIDCatagory defaultCatalog];
+    [[SoundIDCatagory defaultCatalog] setSoundid:self.soundid];
+}
 
 - (void) setProductInfo:(AlbumList *)list indexPath:(NSInteger)index
 {

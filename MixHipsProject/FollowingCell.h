@@ -9,8 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "AlbumList.h"
 #import "FollowViewController.h"
+#import "FollowDelegate.h"
 
 @interface FollowingCell : UICollectionViewCell
+@property (weak,nonatomic) id<FollowDelegate> delegate;
 @property (weak, nonatomic) IBOutlet UIImageView *userImg;
 @property (weak, nonatomic) IBOutlet UILabel *userName;
 @property (weak, nonatomic) IBOutlet UIButton *followingButton;

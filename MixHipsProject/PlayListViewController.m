@@ -12,6 +12,9 @@
 #import "Playlist.h"
 #import "PlayerViewController.h"
 #import "Catalog.h"
+#import "PlaylistCatagory.h"
+#import "Player.h"
+
 
 @interface PlayListViewController () <UITableViewDataSource, UITableViewDelegate, AVAudioPlayerDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -22,27 +25,32 @@
 @implementation PlayListViewController{
     PlayerViewController *player;
     PlayListDB *_playlist;
+    PlaylistCatagory *play;
 }
-//
--(NSString *)returnIndexRow:(NSInteger)indexRow{
-    NSString *soundID = [_playlist getSoundIdAtIndex:indexRow];
-    NSLog(@"soundid L : %@",soundID);
-    return soundID;
+
+-(void)returnIndexPath{
+    
 }
+
 //
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
-    PlayerViewController *dest = (PlayerViewController *)segue.destinationViewController;
+    player = (PlayerViewController *)segue.destinationViewController;
     NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
+    NSLog(@"sjflsjdlf %d",indexPath.row);
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     [_playlist fetchMovies];
     ///////////
-    [player returnIndexPath:indexPath.row];
-    NSString *soundID = [_playlist getSoundIdAtIndex:indexPath.row];
-    
-    dest.soundID = soundID;
-    
-    NSLog(@"soundid: %@",soundID);
+
 }
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    Player *playerCata = [Player defaultCatalog];
+    playerCata.indexPathRow = indexPath.row;
+    NSString *soundID = [_playlist getSoundIdAtIndex:indexPath.row];
+    NSLog(@"play soundID : %@",soundID);
+    [play playStart:soundID];
+}
+
 
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
     if(UITableViewCellEditingStyleDelete == editingStyle){
@@ -77,14 +85,22 @@
     return self;
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+//    self.navigationController.toolbarHidden = YES;
+    [_playlist fetchMovies];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
 
-    
+    play = [[PlaylistCatagory defaultCatalog]init];
     _playlist = [PlayListDB sharedPlaylist];
     [_playlist fetchMovies];
+    [self.navigationController setNavigationBarHidden:NO];
+    
     [self.tableView setSeparatorInset:UIEdgeInsetsZero];
     [self.tableView reloadData];
     
@@ -94,10 +110,6 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
--(void)viewWillAppear:(BOOL)animated{
-    [_playlist fetchMovies];
 }
 
 @end

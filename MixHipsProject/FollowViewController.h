@@ -13,4 +13,6 @@
 @property (strong,nonatomic) AlbumList *list;
 @property (strong, nonatomic)NSString *user_ID;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+
+-(void)AFNetworkingAD;
 @end

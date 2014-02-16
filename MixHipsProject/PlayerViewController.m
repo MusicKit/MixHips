@@ -12,6 +12,7 @@
 #import "AppDelegate.h"
 #import "PlaylistCatagory.h"
 #import "RequestCenter.h"
+#import "PlayListDB.h"
 
 @interface PlayerViewController ()<AVAudioPlayerDelegate, AVAudioRecorderDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *play;
@@ -27,20 +28,27 @@
 @end
 
 @implementation PlayerViewController{
+    PlayListDB *playDB;
+    Player *playerCata;
     PlaylistCatagory *playCatagory;
     PlayListViewController *list;
-    NSInteger indexPathRow;
+    NSInteger indexPath;
+   // NSInteger indexPathRow;
     NSTimer *timer;
+    NSArray *listTrack;
 }
 @synthesize player;
 
--(void)returnIndexPath:(NSInteger)indexPath{
-    indexPathRow =indexPath;
-}
 
--(IBAction)loopMusic:(id)sender{
-    playCatagory.player.numberOfLoops = -1;
-}
+
+//-(void)returnIndexPath:(NSInteger)indexPath{
+//    indexPathRow =indexPath;
+//    NSLog(@"ffffffff %d",indexPathRow);
+//}
+
+//-(IBAction)loopMusic:(id)sender{
+//    playCatagory.player.numberOfLoops = -1;
+//}
 
 -(IBAction)showVolume:(id)sender{
     if(self.volumnButton.tag == 1){
@@ -53,46 +61,74 @@
     }
 }
 
--(IBAction)toggleButton:(id)sender{
 
-    if(playCatagory.player.playing == YES){
-        [timer invalidate];
-        timer = nil;
-        [self.play setTitle:@"Play" forState:UIControlStateNormal];
-        [playCatagory pause];
-    }
-    else if(playCatagory.player.playing==NO){
-        
-        timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(timeFired:) userInfo:nil repeats:YES];
-        [self.play setTitle:@"Pause" forState:UIControlStateNormal];
-        [playCatagory playStart:self.soundID];
-        
-    }
+
+-(IBAction)sliderChange:(id)sender{
+    [playCatagory pause];
+    CMTime t = CMTimeMake(self.progressSlider.value,1);
+    [player seekToTime:t];
+    [playCatagory playStart:self.soundID];
+}
+
+//-(IBAction) valueChangeSliderTimer:(id)sender{
+//    [playCatagory pause];
+//    isPlaying = FALSE;
+//    [btnPauseAndPlay setTitle:@"Play" forState:UIControlStateNormal];
+//    
+//    float timeInSecond = self.progressSlider.value;
+//    
+//    timeInSecond *= 1000;
+//    CMTime cmTime = CMTimeMake(timeInSecond, 1000);
+//    
+//    [avplayer seekToTime:cmTime toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
+//}
+
+-(IBAction)stop:(id)sender{
+    [playCatagory pause];
+    
+}
+
+-(IBAction)toggleButton:(id)sender{
+    playerCata = [Player defaultCatalog];
+    NSLog(@"list : %@", listTrack[indexPath]);
+    self.soundID = [NSString stringWithFormat:@"%@",listTrack[indexPath]];
+    [playCatagory playStart:self.soundID];
 }
 
 -(IBAction)fastButton:(id)sender{
-    indexPathRow++;
-    [playCatagory next:[list returnIndexRow:indexPathRow]];
-    
+    playerCata = [Player defaultCatalog];
+    playerCata.indexPathRow++;
+    if(playerCata.indexPathRow > listTrack.count-1){
+        playerCata.indexPathRow = 0;
+        self.soundID= [NSString stringWithFormat:@"%@",listTrack[playerCata.indexPathRow]];
+        [playCatagory playStart:self.soundID];
+    }
+    else{
+    self.soundID = [NSString stringWithFormat:@"%@",listTrack[playerCata.indexPathRow]];
+    [playCatagory playStart:self.soundID];
+    }
 }
 
 -(IBAction)rewindButton:(id)sender{
-    indexPathRow--;
-    [playCatagory playStart:[list returnIndexRow:indexPathRow]];
+    playerCata = [Player defaultCatalog];
+    playerCata.indexPathRow--;
+
+    self.soundID = [NSString stringWithFormat:@"%@",listTrack[playerCata.indexPathRow]];
+    [playCatagory playStart:self.soundID];
 }
 -(void)timeFired:(NSTimer *)t{
-     if(playCatagory.player.playing == YES){
-    double time = [playCatagory returnTime];
-//    self.progressSlider.minimumValue = 0;
-//    self.progressSlider.maximumValue = time;
-    [self.progressSlider setValue:time animated:NO];
-    
-    self.progressLabel.text = [NSString stringWithFormat:@"%i:%.02i",(int)time/60, (int)time %60];
-
-      }
-        else{
-            [self.progressSlider setValue:0 animated:YES];
-        }
+//     if(playCatagory.player.playing == YES){
+//    double time = [playCatagory returnTime];
+////    self.progressSlider.minimumValue = 0;
+////    self.progressSlider.maximumValue = time;
+//    [self.progressSlider setValue:time animated:NO];
+//    
+//    self.progressLabel.text = [NSString stringWithFormat:@"%i:%.02i",(int)time/60, (int)time %60];
+//
+//      }
+//        else{
+//            [self.progressSlider setValue:0 animated:YES];
+//        }
 }
 
 
@@ -109,23 +145,6 @@
 }
 
 
--(void)net{
-    RequestCenter *requestCenter = [[RequestCenter alloc] init];
-    
-    NSString *i = [NSString stringWithFormat:@"7"];
-    
-    
-    NSURL *urlCurrent = [NSURL URLWithString:@"http://mixhips.nowanser.cloulu.com/fetch_sounds"];
-    NSMutableURLRequest *requestCurrent = [NSMutableURLRequest requestWithURL:urlCurrent];
-    NSDictionary *dicRequest = @{@"키":@"값", @"sounds_id":i};
-    NSDictionary *dicResult = [requestCenter setSyncRequest:requestCurrent withOption:dicRequest];
-    
-    ////////////////////
-//    NSString *soundID = [NSString stringWithFormat:@"%@",[dicResult objectForKey:@"sound_id"]];
-//    NSString *albumID = [NSString stringWithFormat:@"%@",[dicResult objectForKey:@"album_id"]];
-//    NSString *soundName = [NSString stringWithFormat:@"%@",[dicResult objectForKey:@"sound_name"]];
-//    NSString *soundURL = [NSString stringWithFormat:@"%@",[dicResult objectForKey:@"sound_url"]];
-}
 
 
 
@@ -138,10 +157,16 @@
     return self;
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    playDB = [PlayListDB sharedPlaylist];
+    listTrack =  [playDB data];
+    NSLog(@"data : %@",listTrack);
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self net];
+    playerCata = [Player defaultCatalog];
     self.volumeSlider.hidden = YES;
 	// Do any additional setup after loading the view.
     [self.navigationController setToolbarHidden:YES];
@@ -160,15 +185,15 @@
 }
 
 -(void)viewDidAppear:(BOOL)animated{
-    if(playCatagory.player.playing == YES){
-        [self.play setTitle:@"pause" forState:UIControlStateNormal];
-        NSLog(@"555");
-    }
-    else if(playCatagory.player.playing==NO){
-        [self.play setTitle:@"play" forState:UIControlStateNormal];
-        NSLog(@"666");
-    }
-    player.volume = self.volumeSlider.value;
+//    if(playCatagory.player.playing == YES){
+//        [self.play setTitle:@"pause" forState:UIControlStateNormal];
+//        NSLog(@"555");
+//    }
+//    else if(playCatagory.player.playing==NO){
+//        [self.play setTitle:@"play" forState:UIControlStateNormal];
+//        NSLog(@"666");
+//    }
+//    player.volume = self.volumeSlider.value;
 }
 
 

@@ -8,6 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface EdicCell : UITableViewCell
+@interface EdicCell : UITableViewCell<UITextFieldDelegate>
+@property (weak, nonatomic) IBOutlet UITextField *soundName;
+@property (weak, nonatomic) IBOutlet UILabel *soundNum;
+@property (weak, nonatomic) IBOutlet UIButton *editButton;
+@property (nonatomic) NSInteger indexPathRow;
+
+-(void)setInfo:(NSInteger)indexPathRow;
 
 @end

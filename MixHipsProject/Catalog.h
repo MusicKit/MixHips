@@ -12,4 +12,5 @@
 + (id)defaultCatalog;
 - (NSUInteger)numberOfMusic;
 - (id)musicAt:(NSUInteger)index;
+
 @end

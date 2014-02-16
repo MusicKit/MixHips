@@ -8,10 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
+#import "AlbumList.h"
 
 @interface PlayerViewController : UIViewController
 
-@property AVAudioPlayer *player;
+@property AVPlayer *player;
+
+@property (strong, nonatomic) AlbumList *list;
 @property (strong, nonatomic) NSString *soundID;
 
 -(void)returnIndexPath:(NSInteger)indexPath;

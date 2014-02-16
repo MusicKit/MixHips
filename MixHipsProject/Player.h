@@ -12,5 +12,8 @@
 @interface Player : NSObject 
 
 @property AVAudioPlayer *player;
+@property (nonatomic) NSInteger indexPathRow;
 
++ (id)defaultCatalog;
+- (NSUInteger)returnIndexPath;
 @end

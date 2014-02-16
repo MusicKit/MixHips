@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AlbumList.h"
 
 @interface CommentViewController : UIViewController
-
+@property (strong,nonatomic) AlbumList *list;
 @end

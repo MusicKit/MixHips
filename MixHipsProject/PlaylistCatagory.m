@@ -7,16 +7,21 @@
 //
 
 #import "PlaylistCatagory.h"
-#import "RequestCenter.h"
+#import "AFHTTPRequestOperationManager.h"
 #import "PlayListDB.h"
+#import "Player.h"
 
 
 @implementation PlaylistCatagory{
+    PlayListDB *playDB;
+    Player *playerlist;
     NSMutableArray *list;
     NSTimer *timer;
     NSString *purl;
     NSString *musicURL;
     NSString* urlTextEscaped;
+    NSInteger indexPathRow;
+    NSArray *listTrack;
 }
 @synthesize player;
 
@@ -34,49 +39,52 @@ static PlaylistCatagory *_instance = nil;
 {
     self = [super init];
     if (self) {
-        //list = [[NSMutableArray alloc]initWithObjects:@"http://www.ggotnuri.co.kr/day.mp3", nil];
     }
     return self;
 }
 
--(void)net:(NSString *)soundid{
-    RequestCenter *requestCenter = [[RequestCenter alloc] init];
-    //
-    NSString *i = [NSString stringWithFormat:@"%@",soundid];
-    
-    
-    NSURL *urlCurrent = [NSURL URLWithString:@"http://mixhips.nowanser.cloulu.com/fetch_sounds"];
-    NSMutableURLRequest *requestCurrent = [NSMutableURLRequest requestWithURL:urlCurrent];
-    NSDictionary *dicRequest = @{@"키":@"값", @"sounds_id":i};
-    NSDictionary *dicResult = [requestCenter setSyncRequest:requestCurrent withOption:dicRequest];
-    NSLog(@"%@",dicResult);
-    NSArray *soundlist = [dicResult objectForKey:@"sounds_list"];
-    ////////////////////
+- (void)test:(NSDictionary *)dic {
+    NSDictionary *dd = [NSDictionary dictionaryWithDictionary:dic];
+    NSArray *soundlist = [dd objectForKey:@"sounds_list"];
     NSMutableArray *soundURL = [[NSMutableArray alloc]init];
-    [soundURL addObject:[soundlist[0] objectForKey:@"sound_url"]];   // NSLog(@"url: %@",soundID);
-    
-    //NSString *albumID = [NSString stringWithFormat:@"%@",[dicResult objectForKey:@"album_id"]];
-    //NSString *soundName = [NSString stringWithFormat:@"%@",[dicResult objectForKey:@"sound_name"]];
+
+    [soundURL addObject:[soundlist[0] objectForKey:@"sound_url"]];
     purl = [NSString stringWithFormat:@"%@",soundURL[0]];
     
     musicURL = [NSString stringWithFormat:@"http://mixhips.nowanser.cloulu.com%@",purl];
     urlTextEscaped = [musicURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSLog(@"%@",urlTextEscaped);
+}
+-(void)AFNetworkingPlay:(NSString *)soundid{
+    NSString *i = [NSString stringWithFormat:@"%@",soundid];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSDictionary *parameters = @{@"foo":@"bar", @"sounds_id":i};
+    [manager POST: @"http://mixhips.nowanser.cloulu.com/fetch_sounds" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        //        NSLog(@"JSON: %@", responseObject);
+        [self test:responseObject];
+        NSURL *urlForPlay = [NSURL URLWithString:urlTextEscaped];
+        [self playMusic:urlForPlay];
+        NSLog(@"music url : %@",urlForPlay);
+       // [self.collectionView reloadData];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+    }];
+}
+
+- (NSTimeInterval) availableDuration;
+{
+    NSArray *loadedTimeRanges = [[self.player currentItem] loadedTimeRanges];
+    CMTimeRange timeRange = [[loadedTimeRanges objectAtIndex:0] CMTimeRangeValue];
+    float startSeconds = CMTimeGetSeconds(timeRange.start);
+    float durationSeconds = CMTimeGetSeconds(timeRange.duration);
+    NSTimeInterval result = startSeconds + durationSeconds;
+    return result;
 }
 
 
 
 -(void)playStart:(NSString *)soundid{
-    [self net:soundid];
-    //NSURL *urlForPlay = [NSURL URLWithString:@"http://mixhips.nowanser.cloulu.com/uploads/sound/3/5/day1.mp3"];
-    NSURL *urlForPlay = [NSURL URLWithString:urlTextEscaped];
-    
-
-    [self playMusic:urlForPlay];
-}
-
--(void)stop{
-    [player stop];
+    NSLog(@"play 11111");
+    [self AFNetworkingPlay:soundid];
 }
 
 -(void)pause{
@@ -84,7 +92,7 @@ static PlaylistCatagory *_instance = nil;
 }
 
 -(void)next:(NSString *)soundid{
-    [self net:soundid];
+    //[self net:soundid];
 }
 
 -(void)prev{
@@ -96,48 +104,47 @@ static PlaylistCatagory *_instance = nil;
     
 }
 
--(double)returnTime{
-    return player.currentTime;
-}
-
--(int)returnVolumeValue{
-    return player.volume;
-
-}
-
+//-(double)returnTime{
+//    return player.currentTime;
+//}
+//
+//-(int)returnVolumeValue{
+//    return player.volume;
+//
+//}
 
 
 -(void)playMusic:(NSURL *)url{
-    if(nil!=player){
-        if([player isPlaying]){
-            //            [timer invalidate];
-            //            timer = nil;
-            [player stop];
-        }
-        
-        //플레이어 초기화
-        player = nil;
-        
-        //타이머 처리
-        //        [timer invalidate];
-        //        timer = nil;
-    }
+    playDB = [PlayListDB sharedPlaylist];
+    AVPlayerItem* playerItem = [AVPlayerItem playerItemWithURL:url];
     
-    __autoreleasing NSError *error;
-    NSData *songFile = [[NSData alloc] initWithContentsOfURL:url options:NSDataReadingMappedIfSafe error:&error ];
-    player = [[AVAudioPlayer alloc] initWithData:songFile error:nil];
-    player.delegate = self;
+    // Subscribe to the AVPlayerItem's DidPlayToEndTime notification.
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(itemDidFinishPlaying:) name:AVPlayerItemDidPlayToEndTimeNotification object:playerItem];
     
-    if([player prepareToPlay]){
-        
-        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
-        [[AVAudioSession sharedInstance] setActive: YES error: nil];
-        
-        //        timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(timeFired:) userInfo:nil repeats:YES];
-        [player play];
-    }
+    // Pass the AVPlayerItem to a new player
+    player = [[AVPlayer alloc] initWithPlayerItem:playerItem];
+    
+    // Begin playback
+    [player play];
+
 }
 
+-(void)itemDidFinishPlaying:(NSNotification *) notification {
+    // Will be called when AVPlayer finishes playing playerItem
+    playerlist = [Player defaultCatalog];
+    playerlist.indexPathRow++;
+    
+    listTrack =  [playDB data];
+    if(playerlist.indexPathRow > listTrack.count-1){
+        playerlist.indexPathRow = 0;
+        NSString *soundid = [NSString stringWithFormat:@"%@",listTrack[playerlist.indexPathRow]];
+        [self AFNetworkingPlay:soundid];
+    }
+    else{
+        NSString *soundid = [NSString stringWithFormat:@"%@",listTrack[playerlist.indexPathRow]];
+       [self AFNetworkingPlay:soundid];
+    }
+}
 
 
 

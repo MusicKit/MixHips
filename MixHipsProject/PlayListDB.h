@@ -21,4 +21,5 @@
 -(NSInteger)deleteMusic:(NSIndexPath *)indexpath;
 -(NSString *)getSoundIdAtIndex:(NSInteger)index;
 -(NSArray *)data:(NSIndexPath *)indexPath;
+-(NSArray *)data;
 @end

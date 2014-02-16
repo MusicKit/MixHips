@@ -13,6 +13,7 @@
 
 
 @implementation FollowingCell{
+    FollowViewController *followVC;
     NSString *user_id;
 }
 
@@ -30,23 +31,34 @@
 }
 
 -(IBAction)following:(id)sender{
-    [self AFNetworkingADFollow];
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"MixHips" message:@"해제하시겠습니까?" delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인", nil];
+    alert.alertViewStyle = UIAlertViewStyleDefault;
+    [alert show];
+}
 
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+        if(alertView.cancelButtonIndex == buttonIndex){
+            NSLog(@"취소");
+        }
+        else if(alertView.firstOtherButtonIndex == buttonIndex){
+            [self AFNetworkingADFollow];
+            NSLog(@"fff%@",user_id);
+        }
 }
 
 -(void)AFNetworkingADFollow{
     NSString *d = [NSString stringWithFormat:@"%@",user_id];
-    NSLog(@"ididi : %@",user_id);
     NSString *i = [NSString stringWithFormat:@"7"]; ///   본인 아이디
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{@"send_id":i , @"receive_id":d};
     [manager POST: @"http://mixhips.nowanser.cloulu.com/action_follow" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"JSON: %@", responseObject);
-        
+        [self.delegate AFNetworkingAD];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
     }];
 }
+
 
 - (id)initWithFrame:(CGRect)frame
 {

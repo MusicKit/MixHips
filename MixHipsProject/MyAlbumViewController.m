@@ -15,11 +15,13 @@
 #import "AFHTTPRequestOperationManager.h"
 #import "UIImageView+AFNetworking.h"
 #import "PlayListDB.h"
+#import "PlaylistCatagory.h"
 
 @interface MyAlbumViewController ()<UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UILabel *albumName;
 @property (weak, nonatomic) IBOutlet UIImageView *albumImg;
+@property (weak, nonatomic) IBOutlet UIButton *allSelectButton;
 
 @end
 
@@ -33,6 +35,16 @@
     NSMutableArray *soundlist;
     PlayListDB *playlist;
     MyAlbumCell *cell;
+    PlaylistCatagory *playCatagory;
+}
+
+-(IBAction)toggleButton:(id)sender{
+    if(playCatagory.player.rate == 1.0){
+        [playCatagory pause];
+    }
+    else{
+        [playCatagory.player play];
+    }
 }
 
 /* 보류
@@ -50,10 +62,20 @@
 }
  */
 
+
+
 -(IBAction)allSelect:(id)sender{
+    if(self.allSelectButton.tag == 0){
     for (NSInteger r = 0; r < [self.tableView numberOfRowsInSection:0]; r++) {
         [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:r inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
-        
+        self.allSelectButton.tag = 1;
+    }
+    }
+    else if(self.allSelectButton.tag == 1){
+    for (NSInteger r = 0; r < [self.tableView numberOfRowsInSection:0]; r++) {
+        [self.tableView deselectRowAtIndexPath:[NSIndexPath indexPathForRow:r inSection:0] animated:NO];
+        self.allSelectButton.tag =0;
+    }
     }
 }
 
@@ -72,6 +94,7 @@
 }
 
 - (void)test:(NSDictionary *)dic {
+    NSLog(@"dic : %@", dic);
     NSDictionary *dd = [NSDictionary dictionaryWithDictionary:dic];
     albumName = [NSString stringWithFormat:@"%@",[dd objectForKey:@"album_name"]];
     albumImgURL = [NSString stringWithFormat:@"%@",[dd objectForKey:@"album_img_url"]];
@@ -102,7 +125,7 @@
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{@"foo":@"bar", @"my_id(user_id(본인))":i , @"album_id":d};
     [manager POST: @"http://mixhips.nowanser.cloulu.com/request_album" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        //        NSLog(@"JSON: %@", responseObject);
+        NSLog(@"JSON: %@", responseObject);
         [self test:responseObject];
         [self setProfile];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -130,6 +153,7 @@
     if(cell.accessoryType== UITableViewCellAccessoryCheckmark){
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
+    cell.soundid = [soundIDArr objectAtIndex:indexPath.row];
     AlbumList *albumlist = [soundlist objectAtIndex:indexPath.row];
     [cell setProductInfo:albumlist indexPath:indexPath.row];
     return cell;
@@ -147,6 +171,8 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [self AFNetworkingAD];
+    playCatagory = [PlaylistCatagory defaultCatalog];
+    self.allSelectButton.tag =0;
 }
 
 - (void)viewDidLoad

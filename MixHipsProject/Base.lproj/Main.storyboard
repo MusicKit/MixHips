@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4510" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="kKQ-RD-XVr">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4510" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="9QM-Rv-4C5">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
     </dependencies>
@@ -16,16 +16,27 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="M1t-Qd-xib">
-                                <rect key="frame" x="8" y="69" width="96" height="107"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eGK-W0-ldf">
+                                <rect key="frame" x="8" y="70" width="96" height="100"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <state key="normal">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="getProfileImage:" destination="Qcq-Ed-BHi" eventType="touchUpInside" id="0oH-Iz-rmi"/>
+                                </connections>
+                            </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="background.png" translatesAutoresizingMaskIntoConstraints="NO" id="VHF-KF-fmS">
                                 <rect key="frame" x="0.0" y="65" width="325" height="333"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="MID.png" translatesAutoresizingMaskIntoConstraints="NO" id="VRx-l5-3j0">
                                 <rect key="frame" x="8" y="64" width="304" height="112"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="M1t-Qd-xib">
+                                <rect key="frame" x="8" y="69" width="96" height="107"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uth-dL-7sa">
@@ -42,7 +53,11 @@
                                 <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <items>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="bc0-ZC-Ng4"/>
-                                    <barButtonItem systemItem="edit" id="jm2-hc-l5t"/>
+                                    <barButtonItem systemItem="edit" id="jm2-hc-l5t">
+                                        <connections>
+                                            <action selector="editBOOL:" destination="Qcq-Ed-BHi" id="AQY-p6-CEE"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
                             </toolbar>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="CHA BOOM" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Ee-PO-F9P">
@@ -102,10 +117,9 @@
                                             <outlet property="albumImg" destination="NRd-Sz-bY5" id="oIC-F8-pjL"/>
                                             <outlet property="albumName" destination="pSQ-bW-8ay" id="uqp-6r-k78"/>
                                             <outlet property="like" destination="Tyf-Ll-yhW" id="wls-oP-mEw"/>
-                                            <segue destination="pbm-fF-tsd" kind="push" identifier="album" id="ifp-qg-AwW"/>
                                         </connections>
                                     </collectionViewCell>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="IMG_CELL_ID1" id="0Br-vT-dIa">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="add_cell" id="0Br-vT-dIa">
                                         <rect key="frame" x="115" y="9" width="90" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -121,7 +135,7 @@
                                         </view>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
-                                            <segue destination="Qrv-00-G3N" kind="push" identifier="edit_cell" id="PhF-ZY-nZg"/>
+                                            <segue destination="Qrv-00-G3N" kind="push" identifier="addAlbum" id="hth-fz-mLq"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -130,16 +144,6 @@
                                     <outlet property="delegate" destination="Qcq-Ed-BHi" id="bL3-VA-YHa"/>
                                 </connections>
                             </collectionView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eGK-W0-ldf">
-                                <rect key="frame" x="8" y="70" width="96" height="100"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="getProfileImage:" destination="Qcq-Ed-BHi" eventType="touchUpInside" id="0oH-Iz-rmi"/>
-                                </connections>
-                            </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="팔로잉" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RZ8-gm-WRd">
                                 <rect key="frame" x="112" y="97" width="45" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -221,12 +225,16 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </view>
                     <toolbarItems>
-                        <barButtonItem title="Item" id="dQv-js-e4j">
+                        <barButtonItem title="목록" id="dQv-js-e4j">
                             <connections>
                                 <segue destination="Iq7-MW-NNL" kind="push" id="MQy-5D-FAd"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem systemItem="play" id="0gS-sE-XXz"/>
+                        <barButtonItem systemItem="play" id="0gS-sE-XXz">
+                            <connections>
+                                <action selector="toggleButton:" destination="Qcq-Ed-BHi" id="iq3-Pr-rEH"/>
+                            </connections>
+                        </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="My Page" id="miI-8d-bRD">
                         <barButtonItem key="backBarButtonItem" title="뒤로" id="BdV-cD-Uc0"/>
@@ -238,11 +246,12 @@
                         <outlet property="Message" destination="y51-Sj-Uq5" id="ofj-eh-v1o"/>
                         <outlet property="collectionView" destination="SIO-ZA-VZK" id="spU-5z-eri"/>
                         <outlet property="profileImage" destination="M1t-Qd-xib" id="NJs-Sz-TO4"/>
+                        <outlet property="toggleButton" destination="0gS-sE-XXz" id="Y8G-Tq-Y00"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cmJ-g5-YTn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="406" y="-130"/>
+            <point key="canvasLocation" x="-168" y="-882"/>
         </scene>
         <!--Play List View Controller - 나의 재생 목록-->
         <scene sceneID="nCg-Ps-AEw">
@@ -265,7 +274,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="55" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="oSc-S6-ozq">
-                                <rect key="frame" x="0.0" y="67" width="320" height="318"/>
+                                <rect key="frame" x="0.0" y="67" width="320" height="320"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -313,7 +322,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <toolbarItems>
-                        <barButtonItem systemItem="pause" id="ZG0-gg-EYs">
+                        <barButtonItem title="목록" id="ZG0-gg-EYs">
                             <connections>
                                 <action selector="stop:" destination="Iq7-MW-NNL" id="BdL-lT-aKP"/>
                             </connections>
@@ -333,7 +342,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SwV-Es-fIF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2218" y="-1010"/>
+            <point key="canvasLocation" x="1773" y="-1138"/>
         </scene>
         <!--Player View Controller - 노래제목-->
         <scene sceneID="ZTc-EA-ipv">
@@ -348,7 +357,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="background.png" translatesAutoresizingMaskIntoConstraints="NO" id="wrH-Cb-0K1">
-                                <rect key="frame" x="0.0" y="65" width="320" height="363"/>
+                                <rect key="frame" x="0.0" y="65" width="320" height="365"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bDd-d4-TbN">
@@ -366,7 +375,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l71-T8-6NT">
-                                <rect key="frame" x="20" y="352" width="30" height="30"/>
+                                <rect key="frame" x="20" y="380" width="30" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="음량">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -376,7 +385,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q8n-9c-Uhf">
-                                <rect key="frame" x="270" y="352" width="30" height="30"/>
+                                <rect key="frame" x="270" y="380" width="30" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="댓글">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -418,7 +427,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </progressView>
                             <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="50" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="Dot-jl-faU">
-                                <rect key="frame" x="62" y="352" width="196" height="34"/>
+                                <rect key="frame" x="57" y="378" width="196" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
                                     <action selector="updateVolume:" destination="b7w-cY-TlR" eventType="valueChanged" id="tgG-VS-0Ja"/>
@@ -446,12 +455,22 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lkt-kj-3PL">
+                                <rect key="frame" x="137" y="325" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="stop:" destination="b7w-cY-TlR" eventType="touchUpInside" id="dg6-4m-dfo"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="노래제목" id="Xro-WX-Upa">
-                        <barButtonItem key="rightBarButtonItem" systemItem="bookmarks" id="UoK-Sr-2SQ"/>
+                        <barButtonItem key="rightBarButtonItem" title="목록" id="UoK-Sr-2SQ"/>
                     </navigationItem>
                     <connections>
                         <outlet property="fastButton" destination="osN-uC-Vlm" id="qgG-XA-flX"/>
@@ -464,7 +483,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UJW-Ex-Iwg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2498" y="-1769"/>
+            <point key="canvasLocation" x="1213" y="-3451"/>
         </scene>
         <!--My Album View Controller - 내 앨범-->
         <scene sceneID="rPB-BJ-Nz1">
@@ -508,6 +527,7 @@
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <connections>
+                                                        <action selector="commentButton:" destination="Alm-dD-aKR" eventType="touchUpInside" id="g0H-wA-cgZ"/>
                                                         <segue destination="rA8-Ld-fxl" kind="push" id="HOX-pX-Kuy"/>
                                                     </connections>
                                                 </button>
@@ -559,20 +579,19 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </containerView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nzy-0X-9Os">
-                                <rect key="frame" x="260" y="215" width="46" height="30"/>
+                                <rect key="frame" x="278" y="215" width="37" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button">
+                                <state key="normal" title="재생">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <action selector="selectMusicPlay:" destination="pbm-fF-tsd" eventType="touchUpInside" id="SdK-Z4-roX"/>
-                                    <segue destination="Iq7-MW-NNL" kind="push" identifier="start" id="jeB-XV-6JY"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t0u-QT-3UJ">
-                                <rect key="frame" x="10" y="215" width="46" height="30"/>
+                                <rect key="frame" x="10" y="215" width="53" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button">
+                                <state key="normal" title="전체선택">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -600,7 +619,11 @@
                                 <segue destination="Iq7-MW-NNL" kind="push" id="OPY-oc-0Mi"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem systemItem="play" id="kPl-Ok-yna"/>
+                        <barButtonItem systemItem="play" id="kPl-Ok-yna">
+                            <connections>
+                                <action selector="toggleButton:" destination="pbm-fF-tsd" id="sH1-cq-JQr"/>
+                            </connections>
+                        </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="내 앨범" id="ULt-6g-fvt" colorLabel="IBBuiltInLabel-Orange">
                         <barButtonItem key="backBarButtonItem" title="&lt;&lt;" id="qBB-U4-Ugp"/>
@@ -609,12 +632,13 @@
                     <connections>
                         <outlet property="albumImg" destination="gDu-UK-itg" id="47X-A2-zFj"/>
                         <outlet property="albumName" destination="Ja4-pR-Vfe" id="gJD-lv-46u"/>
+                        <outlet property="allSelectButton" destination="t0u-QT-3UJ" id="2op-HY-5c1"/>
                         <outlet property="tableView" destination="ASe-jG-S2a" id="Bsd-SN-a40"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="G56-8M-ruX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1097" y="-130"/>
+            <point key="canvasLocation" x="135" y="-10"/>
         </scene>
         <!--Follower View Controller - Follower-->
         <scene sceneID="0E0-Ry-yAI">
@@ -661,22 +685,13 @@
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qyQ-Cz-IVz">
-                                                    <rect key="frame" x="0.0" y="118" width="95" height="30"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <state key="normal" title="팔로잉">
-                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                    </state>
-                                                    <connections>
-                                                        <action selector="following:" destination="6lz-2f-x8u" eventType="touchUpInside" id="fII-ux-aeY"/>
-                                                    </connections>
-                                                </button>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                         <connections>
                                             <outlet property="userImg" destination="suZ-xu-Nqu" id="W74-pb-mQr"/>
                                             <outlet property="userName" destination="LXX-55-vCO" id="efl-m5-bO7"/>
+                                            <segue destination="Kj3-P7-nvz" kind="push" identifier="userName" id="ZyL-j0-JRA"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -688,6 +703,18 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <toolbarItems>
+                        <barButtonItem title="목록" id="LY0-J7-0C5">
+                            <connections>
+                                <segue destination="Iq7-MW-NNL" kind="push" id="tFU-gF-4aJ"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem title="Item" systemItem="play" id="e51-gb-kME">
+                            <connections>
+                                <action selector="toggleButton:" destination="GzD-eC-CoJ" id="Gj1-Js-B7p"/>
+                            </connections>
+                        </barButtonItem>
+                    </toolbarItems>
                     <navigationItem key="navigationItem" title="Follower" id="vmu-i3-tXy"/>
                     <connections>
                         <outlet property="collectionView" destination="0AL-Vv-wvl" id="VWe-Fd-GZA"/>
@@ -695,7 +722,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LHa-6s-7cK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="546" y="515"/>
+            <point key="canvasLocation" x="-252" y="-302"/>
         </scene>
         <!--Follow View Controller - Following-->
         <scene sceneID="7NH-7X-SoD">
@@ -746,7 +773,7 @@
                                                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uCD-l0-Kp7">
                                                     <rect key="frame" x="0.0" y="118" width="95" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <state key="normal" title="팔로잉">
+                                                    <state key="normal" title="해제하기">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <connections>
@@ -760,7 +787,7 @@
                                             <outlet property="followingButton" destination="uCD-l0-Kp7" id="jMG-mg-0rf"/>
                                             <outlet property="userImg" destination="wmy-xp-kr5" id="sfO-Ro-HNx"/>
                                             <outlet property="userName" destination="aBl-WK-HtZ" id="U5F-CF-u54"/>
-                                            <segue destination="Kj3-P7-nvz" kind="push" id="qqP-eH-aUJ"/>
+                                            <segue destination="Kj3-P7-nvz" kind="push" identifier="userName" id="qqP-eH-aUJ"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -772,14 +799,25 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <toolbarItems/>
+                    <toolbarItems>
+                        <barButtonItem title="목록" id="Vr0-cl-80e">
+                            <connections>
+                                <segue destination="Iq7-MW-NNL" kind="push" id="lsW-ht-MXR"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem title="Item" systemItem="play" id="TFM-q8-ira">
+                            <connections>
+                                <action selector="toggleButton:" destination="oaA-kG-rqe" id="MyK-kG-qmD"/>
+                            </connections>
+                        </barButtonItem>
+                    </toolbarItems>
                     <navigationItem key="navigationItem" title="Following" id="xZd-dN-iGE"/>
                     <connections>
                         <outlet property="collectionView" destination="6uc-zI-OjT" id="sTq-Iu-qaR"/>
                     </connections>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="997" y="484"/>
+            <point key="canvasLocation" x="-219" y="206"/>
         </scene>
         <!--Album Edit View Controller - 앨범 편집-->
         <scene sceneID="A8l-XK-1jc">
@@ -793,21 +831,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fMS-1W-ljd" customClass="UIControl">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="240"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="background.png" translatesAutoresizingMaskIntoConstraints="NO" id="qeo-qy-stN">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="f0073492_4de45928698b7.png" translatesAutoresizingMaskIntoConstraints="NO" id="rrz-a8-opy">
-                                <rect key="frame" x="100" y="72" width="120" height="120"/>
+                                <rect key="frame" x="100" y="72" width="120" height="102"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e1Q-gX-MXE">
-                                <rect key="frame" x="128" y="194" width="65" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
                             <containerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tcO-bv-cF6">
                                 <rect key="frame" x="0.0" y="215" width="320" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -821,24 +857,17 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <tableView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="fNk-JC-0ld">
-                                <rect key="frame" x="0.0" y="243" width="320" height="192"/>
+                                <rect key="frame" x="0.0" y="241" width="320" height="158"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="list_cell" editingAccessoryType="checkmark" rowHeight="43" id="d93-h2-ALj" customClass="MyAlbumCell">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="list_cell" editingAccessoryType="checkmark" rowHeight="43" id="d93-h2-ALj" customClass="EdicCell">
                                         <rect key="frame" x="0.0" y="22" width="320" height="43"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="d93-h2-ALj" id="XCC-uH-jkg">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="42"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="그날에 우리" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F2s-qT-2Xn">
-                                                    <rect key="frame" x="58" y="8" width="212" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="01" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g8B-Ez-CVs">
                                                     <rect key="frame" x="20" y="8" width="20" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -846,27 +875,37 @@
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SlG-Qr-v1C">
-                                                    <rect key="frame" x="266" y="6" width="46" height="30"/>
+                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g1X-vW-Q5Z">
+                                                    <rect key="frame" x="262" y="6" width="46" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <state key="normal" title="Button">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                 </button>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="곡명을 입력하세요" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rGH-o3-cS2">
+                                                    <rect key="frame" x="48" y="7" width="198" height="30"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="d93-h2-ALj" id="bgv-CU-tTV"/>
+                                                    </connections>
+                                                </textField>
                                             </subviews>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <accessibility key="accessibilityConfiguration" label="ㅇㄴㄹㅇㄴㄹ"/>
                                         <connections>
-                                            <outlet property="musicName" destination="F2s-qT-2Xn" id="189-dj-G5B"/>
-                                            <outlet property="musicNum" destination="g8B-Ez-CVs" id="e04-RP-AM1"/>
+                                            <outlet property="editButton" destination="g1X-vW-Q5Z" id="K4R-xJ-ut5"/>
+                                            <outlet property="soundName" destination="rGH-o3-cS2" id="sPG-Vk-wWg"/>
+                                            <outlet property="soundNum" destination="g8B-Ez-CVs" id="Daz-yv-ua2"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="add_cell" editingAccessoryType="checkmark" rowHeight="43" id="CGh-lV-9nP" customClass="MyAlbumCell">
-                                        <rect key="frame" x="0.0" y="65" width="320" height="43"/>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="add_cell" editingAccessoryType="checkmark" rowHeight="38" id="CGh-lV-9nP" customClass="EdicCell">
+                                        <rect key="frame" x="0.0" y="65" width="320" height="38"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CGh-lV-9nP" id="Arq-gP-unx">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="42"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="37"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="추 가" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wkb-U5-hRP">
@@ -880,9 +919,6 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <accessibility key="accessibilityConfiguration" label="ㅇㄴㄹㅇㄴㄹ"/>
-                                        <connections>
-                                            <outlet property="musicNum" destination="Wkb-U5-hRP" id="CUj-aY-rcL"/>
-                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <sections/>
@@ -892,11 +928,14 @@
                                 </connections>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i3A-S3-Tld">
-                                <rect key="frame" x="100" y="72" width="120" height="120"/>
+                                <rect key="frame" x="100" y="72" width="120" height="102"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="getProfileImage:" destination="Qrv-00-G3N" eventType="touchUpInside" id="PAd-5w-LgL"/>
+                                </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="top_bAR_2.png" translatesAutoresizingMaskIntoConstraints="NO" id="fJ2-C8-oEK">
                                 <rect key="frame" x="0.0" y="214" width="320" height="2"/>
@@ -910,21 +949,69 @@
                                 <rect key="frame" x="0.0" y="65" width="320" height="2"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gWs-Jk-54X">
+                                <rect key="frame" x="100" y="177" width="120" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="albumNameEdit:" destination="Qrv-00-G3N" eventType="touchUpInside" id="3NZ-GT-Tb3"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="앨범명 Click" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oNg-C4-6SI">
+                                <rect key="frame" x="100" y="182" width="120" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aQ3-7r-cwi">
+                                <rect key="frame" x="254" y="144" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="getProfileImageff:" destination="Qrv-00-G3N" eventType="touchUpInside" id="HeC-gi-FOh"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rX7-lE-RSp">
+                                <rect key="frame" x="254" y="178" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="getProfileImagedd:" destination="Qrv-00-G3N" eventType="touchUpInside" id="qW3-Vs-3Ic"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <toolbarItems>
+                        <barButtonItem title="목록" id="Inf-QP-Zqz"/>
+                        <barButtonItem systemItem="play" id="egy-Y1-oJu"/>
+                    </toolbarItems>
                     <navigationItem key="navigationItem" title="앨범 편집" id="qUL-Ma-54Z">
-                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="WD6-aW-h5K"/>
+                        <barButtonItem key="rightBarButtonItem" title="등록" id="WD6-aW-h5K">
+                            <connections>
+                                <action selector="albumUploadButton:" destination="Qrv-00-G3N" id="MbV-9n-U8Q"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="albumNameButton" destination="e1Q-gX-MXE" id="N4P-DB-pNh"/>
-                        <outlet property="imageButton" destination="i3A-S3-Tld" id="bfh-jC-aO3"/>
+                        <outlet property="albumImg" destination="rrz-a8-opy" id="jWd-rq-dDG"/>
+                        <outlet property="albumName" destination="oNg-C4-6SI" id="iXO-Hd-wN4"/>
+                        <outlet property="albumNameEdit" destination="gWs-Jk-54X" id="bf2-ov-QWe"/>
+                        <outlet property="hideView" destination="fMS-1W-ljd" id="8kV-jE-U04"/>
                         <outlet property="tableView" destination="fNk-JC-0ld" id="bNZ-ci-bLA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vf9-UH-XV2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1475" y="709"/>
+            <point key="canvasLocation" x="599" y="-716"/>
         </scene>
         <!--Comment View Controller - 댓글보기-->
         <scene sceneID="F93-Jl-8za">
@@ -947,7 +1034,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="COMMENT_CELL" rowHeight="67" id="qFn-l5-Oty">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="COMMENT_CELL" rowHeight="67" id="qFn-l5-Oty" customClass="CommentCell">
                                         <rect key="frame" x="0.0" y="22" width="320" height="67"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qFn-l5-Oty" id="Uxo-HT-esU">
@@ -959,26 +1046,35 @@
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 </imageView>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pfV-Lf-oBe">
-                                                    <rect key="frame" x="83" y="7" width="42" height="21"/>
+                                                    <rect key="frame" x="83" y="7" width="47" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Csy-le-7Pa">
-                                                    <rect key="frame" x="83" y="30" width="42" height="21"/>
+                                                    <rect key="frame" x="83" y="30" width="220" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BEq-Ej-FCl">
-                                                    <rect key="frame" x="151" y="7" width="42" height="21"/>
+                                                    <rect key="frame" x="144" y="7" width="82" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="commentTime" destination="BEq-Ej-FCl" id="ybU-dR-nw8"/>
+                                            <outlet property="contents" destination="Csy-le-7Pa" id="JxA-zP-ctj"/>
+                                            <outlet property="userImg" destination="Y5Q-Zf-HsE" id="Z0C-uV-AxC"/>
+                                            <outlet property="userName" destination="pfV-Lf-oBe" id="ORs-Hg-caI"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -990,7 +1086,7 @@
                                 <rect key="frame" x="0.0" y="350" width="320" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="IbQ-qU-s8L">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="댓글을 입력하세요." minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="IbQ-qU-s8L">
                                         <rect key="frame" x="6" y="4" width="273" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -1010,7 +1106,7 @@
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TmH-hu-oOc" customClass="UIControl">
-                                <rect key="frame" x="0.0" y="65" width="320" height="235"/>
+                                <rect key="frame" x="0.0" y="45" width="320" height="176"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <connections>
@@ -1029,12 +1125,18 @@
                         </connections>
                     </view>
                     <toolbarItems>
-                        <barButtonItem title="Item" id="imx-dz-h4j">
+                        <barButtonItem title="목록" id="imx-dz-h4j">
+                            <color key="tintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <segue destination="Iq7-MW-NNL" kind="push" id="Kxf-QD-4oW"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem title="Item" id="0hM-kO-wiZ"/>
+                        <barButtonItem systemItem="play" id="0hM-kO-wiZ">
+                            <color key="tintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <action selector="toggleButton:" destination="rA8-Ld-fxl" id="FV4-gN-QAQ"/>
+                            </connections>
+                        </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="댓글보기" id="q5M-dZ-f5h"/>
                     <connections>
@@ -1046,7 +1148,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6yg-GT-je5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1774" y="257"/>
+            <point key="canvasLocation" x="1423" y="-2728"/>
         </scene>
         <!--Homing View Controller-->
         <scene sceneID="ufC-wZ-h7g">
@@ -1064,13 +1166,6 @@
                                 <rect key="frame" x="-6" y="0.0" width="332" height="435"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="광고 넣을 예정" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jvP-jS-v0D">
-                                <rect key="frame" x="111" y="188" width="98" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <webView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9a9-9f-N5I">
                                 <rect key="frame" x="0.0" y="208" width="320" height="0.0"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1086,6 +1181,7 @@
                             <pageControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="ONU-E3-0Ms">
                                 <rect key="frame" x="141" y="17" width="39" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="currentPageIndicatorTintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </pageControl>
                             <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" tag="2" contentMode="scaleToFill" fixedFrame="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="5gl-He-Riu">
                                 <rect key="frame" x="0.0" y="274" width="318" height="137"/>
@@ -1131,10 +1227,10 @@
                                     <outlet property="delegate" destination="vXZ-lx-hvc" id="W5n-9F-H0N"/>
                                 </connections>
                             </collectionView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="HOT 아티스트" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eN1-S5-s7C">
-                                <rect key="frame" x="29" y="245" width="101" height="21"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="HOT 아티스트" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eN1-S5-s7C">
+                                <rect key="frame" x="12" y="236" width="114" height="28"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -1143,40 +1239,40 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="VHv-9Z-V9S" customClass="MyFlowLayout">
-                                    <size key="itemSize" width="90" height="127"/>
+                                    <size key="itemSize" width="90" height="131"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="7" minY="0.0" maxX="7" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="HotAlbumlist" id="Z1Q-ag-FFA" customClass="MyCell">
-                                        <rect key="frame" x="7" y="4" width="90" height="127"/>
+                                        <rect key="frame" x="7" y="2" width="90" height="131"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="90" height="127"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="90" height="131"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="music_icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="C14-bj-hS9">
-                                                    <rect key="frame" x="0.0" y="0.0" width="90" height="83"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="90" height="87"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 </imageView>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ygK-Tx-Wh6">
-                                                    <rect key="frame" x="0.0" y="79" width="90" height="21"/>
+                                                    <rect key="frame" x="0.0" y="84" width="90" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WIY-Xi-hDd">
-                                                    <rect key="frame" x="0.0" y="92" width="90" height="22"/>
+                                                    <rect key="frame" x="0.0" y="97" width="90" height="22"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yGR-mo-6a9">
-                                                    <rect key="frame" x="0.0" y="105" width="90" height="21"/>
+                                                    <rect key="frame" x="0.0" y="110" width="90" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1200,20 +1296,40 @@
                                     <outlet property="delegate" destination="vXZ-lx-hvc" id="4Gn-9E-uWw"/>
                                 </connections>
                             </collectionView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="m_ad.png" translatesAutoresizingMaskIntoConstraints="NO" id="YbV-Rt-BTv">
+                                <rect key="frame" x="0.0" y="188" width="318" height="49"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="tintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
-                    <toolbarItems/>
+                    <toolbarItems>
+                        <barButtonItem title="목록" id="iEx-SP-U74">
+                            <color key="tintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <segue destination="Iq7-MW-NNL" kind="push" identifier="soundlist" id="cJx-KV-TNr"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem systemItem="play" id="b3X-8d-mTM">
+                            <color key="tintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <action selector="toggleButton:" destination="vXZ-lx-hvc" id="7zx-GG-b9q"/>
+                            </connections>
+                        </barButtonItem>
+                    </toolbarItems>
                     <navigationItem key="navigationItem" id="iuu-xP-BGl"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="collectionView" destination="5gl-He-Riu" id="I5R-uN-Wpa"/>
                         <outlet property="hotAlbumCollectionView" destination="pVE-i6-zf5" id="RAB-ev-Lk6"/>
+                        <outlet property="pageControl" destination="ONU-E3-0Ms" id="EKm-5r-CnW"/>
+                        <outlet property="toggleButton" destination="b3X-8d-mTM" id="IdX-3s-fss"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-366" y="-2415"/>
+            <point key="canvasLocation" x="-194" y="-3119"/>
         </scene>
         <!--Album Profile View Controller - 가수 이름-->
         <scene sceneID="6Uw-2D-tBR">
@@ -1228,11 +1344,11 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="background.png" translatesAutoresizingMaskIntoConstraints="NO" id="uyX-ci-EuM">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="394"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="AMY-lM-7VR">
-                                <rect key="frame" x="0.0" y="178" width="320" height="221"/>
+                                <rect key="frame" x="0.0" y="178" width="320" height="203"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="85s-uV-YV3">
@@ -1278,7 +1394,7 @@
                                             <outlet property="albumImg" destination="8Z8-Kz-Uc0" id="cKd-wu-xfW"/>
                                             <outlet property="albumName" destination="2HK-WA-ecm" id="t2l-HZ-tH2"/>
                                             <outlet property="listCount" destination="0FN-TN-MFp" id="8OT-JW-dd2"/>
-                                            <segue destination="oQ4-K1-Gy3" kind="push" id="JcW-YV-zES"/>
+                                            <segue destination="oQ4-K1-Gy3" kind="push" identifier="soundlist" id="JcW-YV-zES"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -1359,21 +1475,36 @@
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="tintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
-                    <toolbarItems/>
+                    <toolbarItems>
+                        <barButtonItem title="목록" id="Zvy-Qh-u63">
+                            <color key="tintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <segue destination="Iq7-MW-NNL" kind="push" identifier="musiclist" id="Qq2-qy-u8M"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem systemItem="play" id="w2a-4F-vtr">
+                            <color key="tintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <action selector="toggleButton:" destination="Kj3-P7-nvz" id="S81-Wc-IU3"/>
+                            </connections>
+                        </barButtonItem>
+                    </toolbarItems>
                     <navigationItem key="navigationItem" title="가수 이름" id="1dt-z6-cA3"/>
                     <connections>
                         <outlet property="collectionView" destination="AMY-lM-7VR" id="KnN-BH-anw"/>
                         <outlet property="followButton" destination="pn8-55-9xy" id="GFh-mO-jPt"/>
                         <outlet property="followerCount" destination="Btc-Ur-Gzw" id="geJ-H2-cVs"/>
                         <outlet property="followingCount" destination="HgS-FN-4bq" id="Kpa-eo-rTI"/>
+                        <outlet property="toggleButton" destination="w2a-4F-vtr" id="fy8-zy-5cV"/>
                         <outlet property="userImg" destination="624-rP-OKu" id="uQU-he-avg"/>
                         <outlet property="userSay" destination="wW8-eL-6Rh" id="IrV-ls-Rhn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tCg-GA-JYj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1547" y="-1659"/>
+            <point key="canvasLocation" x="496" y="-2680"/>
         </scene>
         <!--Log Log View Controller-->
         <scene sceneID="2Bc-JY-rqc">
@@ -1387,22 +1518,59 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <pageControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="HfK-sR-are">
-                                <rect key="frame" x="141" y="399" width="39" height="37"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="bg.png" translatesAutoresizingMaskIntoConstraints="NO" id="ir7-Xl-9iH">
+                                <rect key="frame" x="0.0" y="20" width="320" height="460"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="pageIndicatorTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </pageControl>
+                            </imageView>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hYq-xd-K5t">
+                                <rect key="frame" x="0.0" y="83" width="320" height="383"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="gold.png" translatesAutoresizingMaskIntoConstraints="NO" id="yJQ-5W-ZHI">
+                                        <rect key="frame" x="11" y="10" width="299" height="363"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    </imageView>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gLa-9q-QxR">
+                                        <rect key="frame" x="20" y="20" width="280" height="307"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    </textView>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hzP-rs-oTS">
+                                        <rect key="frame" x="209" y="335" width="91" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                    </button>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="next.png" translatesAutoresizingMaskIntoConstraints="NO" id="Dee-Pu-7wb">
+                                        <rect key="frame" x="209" y="335" width="91" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Db6-4L-6n1">
+                                <rect key="frame" x="0.0" y="83" width="320" height="383"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
-                        <outlet property="pageControl" destination="HfK-sR-are" id="fiH-3q-kCp"/>
+                        <outlet property="agreementView" destination="hYq-xd-K5t" id="whm-ih-Wxi"/>
+                        <outlet property="backgroundImg" destination="ir7-Xl-9iH" id="ve2-Rp-u8d"/>
+                        <outlet property="faceBookView" destination="Db6-4L-6n1" id="pav-QE-dsw"/>
                         <segue destination="9QM-Rv-4C5" kind="modal" identifier="log" id="kl2-hC-2f7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wZl-Hn-OyF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1034" y="-2165"/>
+            <point key="canvasLocation" x="-1202" y="-2449"/>
         </scene>
         <!--News View Controller - NEWS-->
         <scene sceneID="eOE-Wg-5WT">
@@ -1452,13 +1620,17 @@
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="m_line_2.png" translatesAutoresizingMaskIntoConstraints="NO" id="pGo-SI-qpu">
+                                                    <rect key="frame" x="55" y="0.0" width="1" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                </imageView>
                                             </subviews>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outlet property="ad_menu" destination="Ez3-4C-Kh1" id="n5P-pN-zw2"/>
                                             <outlet property="ad_title" destination="d3F-mR-3ZD" id="6G2-WW-QNQ"/>
-                                            <segue destination="XKP-ba-lQ1" kind="push" id="hby-TX-f6k"/>
+                                            <segue destination="XKP-ba-lQ1" kind="push" identifier="newlist" id="hby-TX-f6k"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -1471,12 +1643,16 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <toolbarItems>
-                        <barButtonItem systemItem="add" id="oD1-hp-kwL">
+                        <barButtonItem title="목록" id="oD1-hp-kwL">
                             <connections>
-                                <segue destination="Iq7-MW-NNL" kind="push" id="8F2-Z8-u3w"/>
+                                <segue destination="Iq7-MW-NNL" kind="push" identifier="musiclist" id="8F2-Z8-u3w"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem systemItem="play" id="0tq-k5-igw"/>
+                        <barButtonItem systemItem="play" id="0tq-k5-igw">
+                            <connections>
+                                <action selector="toggleButton:" destination="h9c-dq-0uZ" id="VWU-2e-W37"/>
+                            </connections>
+                        </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="NEWS" id="h4V-64-ckC"/>
                     <connections>
@@ -1485,7 +1661,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VM0-2H-wgx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="411" y="-828"/>
+            <point key="canvasLocation" x="-181" y="-1480"/>
         </scene>
         <!--News Detail View Controller - 제목-->
         <scene sceneID="XYV-Eh-X5x">
@@ -1511,7 +1687,6 @@
                                 <rect key="frame" x="20" y="67" width="280" height="210"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -1524,12 +1699,16 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="deviceRGB"/>
                     </view>
                     <toolbarItems>
-                        <barButtonItem title="Item" id="toK-3M-GoZ">
+                        <barButtonItem title="목록" id="toK-3M-GoZ">
                             <connections>
                                 <segue destination="Iq7-MW-NNL" kind="push" id="0Ha-0z-Kso"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem systemItem="play" id="gm1-ot-onj"/>
+                        <barButtonItem systemItem="play" id="gm1-ot-onj">
+                            <connections>
+                                <action selector="toggleButton:" destination="XKP-ba-lQ1" id="meZ-xU-zwT"/>
+                            </connections>
+                        </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="제목" id="Kkh-QG-zot"/>
                     <connections>
@@ -1539,7 +1718,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pJX-u6-rrp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="900" y="-828"/>
+            <point key="canvasLocation" x="496" y="-1440"/>
         </scene>
         <!--List View Controller - 최신 앨범-->
         <scene sceneID="4nk-ga-xoC">
@@ -1565,7 +1744,7 @@
                                     <outlet property="delegate" destination="XfV-tD-z6b" id="0UM-PU-OK3"/>
                                 </connections>
                             </searchBar>
-                            <collectionView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="qjE-yu-FIG">
+                            <collectionView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" indicatorStyle="white" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="qjE-yu-FIG">
                                 <rect key="frame" x="0.0" y="66" width="320" height="321"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -1625,30 +1804,6 @@
                                     <outlet property="delegate" destination="XfV-tD-z6b" id="Y31-Ee-V5J"/>
                                 </connections>
                             </collectionView>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QCu-Sv-yl5">
-                                <rect key="frame" x="21" y="76" width="278" height="341"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xKH-HP-UCI">
-                                        <rect key="frame" x="8" y="6" width="30" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="닫기">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="closeAction:" destination="XfV-tD-z6b" eventType="touchUpInside" id="3Jd-TI-wmO"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aRf-KI-O9D">
-                                        <rect key="frame" x="239" y="6" width="30" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="등록">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
                             <view alpha="0.69999999999999996" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JUw-kM-2KS" customClass="UIControl">
                                 <rect key="frame" x="0.0" y="109" width="320" height="240"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -1665,39 +1820,35 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <toolbarItems>
-                        <barButtonItem title="Item" id="4aP-Ca-hQd">
+                        <barButtonItem title="목록" id="4aP-Ca-hQd">
                             <connections>
-                                <segue destination="Iq7-MW-NNL" kind="push" id="JlD-fh-prr"/>
+                                <segue destination="Iq7-MW-NNL" kind="push" id="4bP-3O-Rb2"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem systemItem="play" id="5Nl-l5-dzv"/>
+                        <barButtonItem systemItem="play" id="5Nl-l5-dzv">
+                            <connections>
+                                <action selector="toggleButton:" destination="XfV-tD-z6b" id="Mht-UB-9m9"/>
+                            </connections>
+                        </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="최신 앨범" id="X0A-vk-Mxv">
-                        <barButtonItem key="leftBarButtonItem" title="등록" id="ZAj-0O-dkD">
-                            <connections>
-                                <action selector="registrationButton:" destination="XfV-tD-z6b" id="R9q-e2-ynn"/>
-                            </connections>
-                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="search" id="DCp-Sa-DE6">
+                            <color key="tintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="searchAlbum:" destination="XfV-tD-z6b" id="Yaw-So-Rtf"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="closeButton" destination="xKH-HP-UCI" id="ga7-pT-ZnU"/>
                         <outlet property="collectionView" destination="qjE-yu-FIG" id="huf-LA-sRf"/>
                         <outlet property="hideView" destination="JUw-kM-2KS" id="uQC-dn-XCB"/>
-                        <outlet property="registButton" destination="ZAj-0O-dkD" id="GnJ-Nq-Yld"/>
-                        <outlet property="registrationButton" destination="aRf-KI-O9D" id="p2F-YT-zAE"/>
-                        <outlet property="registrationView" destination="QCu-Sv-yl5" id="umw-mX-7vH"/>
                         <outlet property="searchButton" destination="DCp-Sa-DE6" id="3gl-uE-viY"/>
                         <outlet property="searchView" destination="ibt-Mh-rfR" id="dfr-dt-hOe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lSe-VH-dAC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="890" y="-1440"/>
+            <point key="canvasLocation" x="849" y="-2031"/>
         </scene>
         <!--Album Music View Controller - 그날에 우리 - 어반자카파-->
         <scene sceneID="U5V-4a-KLa">
@@ -1751,6 +1902,10 @@
                                                     <state key="normal" title="댓글">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
+                                                    <connections>
+                                                        <action selector="commentButton:" destination="qpz-jp-9kc" eventType="touchUpInside" id="ljM-Sg-nCY"/>
+                                                        <segue destination="rA8-Ld-fxl" kind="push" id="oNP-jK-1qX"/>
+                                                    </connections>
                                                 </button>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="그날에 우리" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PwR-nO-Rk1">
                                                     <rect key="frame" x="57" y="8" width="79" height="21"/>
@@ -1780,7 +1935,7 @@
                                     <outlet property="delegate" destination="oQ4-K1-Gy3" id="oyo-6x-FFT"/>
                                 </connections>
                             </tableView>
-                            <containerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9ku-PY-btg">
+                            <containerView contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9ku-PY-btg">
                                 <rect key="frame" x="0.0" y="211" width="320" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -1792,7 +1947,7 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lvx-Qn-1tl">
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lvx-Qn-1tl">
                                 <rect key="frame" x="276" y="211" width="30" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="재생">
@@ -1800,7 +1955,6 @@
                                 </state>
                                 <connections>
                                     <action selector="selectMusicPlay:" destination="oQ4-K1-Gy3" eventType="touchUpInside" id="8Ko-Ou-A4c"/>
-                                    <segue destination="Iq7-MW-NNL" kind="push" id="7e7-XR-Hnv"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aCz-FA-DPD">
@@ -1836,14 +1990,41 @@
                                     <action selector="likeButton:" destination="oQ4-K1-Gy3" eventType="touchUpInside" id="ur8-md-AMv"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GGg-hZ-bjf">
+                                <rect key="frame" x="105" y="75" width="96" height="91"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="Kj3-P7-nvz" kind="push" identifier="joingUser" id="CXl-uh-1lJ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="9ku-PY-btg" firstAttribute="bottom" secondItem="Lvx-Qn-1tl" secondAttribute="bottom" id="c9e-zu-VII"/>
+                        </constraints>
                     </view>
-                    <toolbarItems/>
+                    <toolbarItems>
+                        <barButtonItem title="목록" id="Kj9-ce-BYb">
+                            <color key="tintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <segue destination="Iq7-MW-NNL" kind="push" id="V64-dU-nwp"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem systemItem="play" id="9r5-CR-5U6">
+                            <color key="tintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <action selector="toggleButton:" destination="oQ4-K1-Gy3" id="lnJ-EG-NLv"/>
+                            </connections>
+                        </barButtonItem>
+                    </toolbarItems>
                     <navigationItem key="navigationItem" title="그날에 우리 - 어반자카파" id="evN-n4-rUH"/>
                     <connections>
                         <outlet property="albumImg" destination="kxA-Jl-sg2" id="5zR-L7-0e3"/>
                         <outlet property="albumName" destination="Niu-07-cl2" id="dZ7-Vv-apa"/>
+                        <outlet property="allSelectButton" destination="aCz-FA-DPD" id="0Dw-7I-01K"/>
                         <outlet property="artistName" destination="fj9-3m-HvB" id="3oQ-bZ-OXJ"/>
                         <outlet property="likeButton" destination="5mg-Ih-5CG" id="CZi-Kf-m40"/>
                         <outlet property="listCount" destination="lDu-Ie-jrq" id="PPN-zx-utA"/>
@@ -1852,7 +2033,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yff-C3-8ZL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="900" y="-2657"/>
+            <point key="canvasLocation" x="630" y="-3329"/>
         </scene>
         <!--Navigation Controller - My-->
         <scene sceneID="gfe-p3-bYd">
@@ -1868,7 +2049,8 @@
                     <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" id="vBI-4B-mQw">
                         <rect key="frame" x="0.0" y="436" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="tintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </toolbar>
                     <connections>
@@ -1877,7 +2059,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ioV-SZ-A3X" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-77" y="-137"/>
+            <point key="canvasLocation" x="-701" y="-629"/>
         </scene>
         <!--Navigation Controller - list-->
         <scene sceneID="fcc-fo-z92">
@@ -1893,7 +2075,9 @@
                     <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" id="EXU-oz-esB">
                         <rect key="frame" x="0.0" y="436" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="tintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </toolbar>
                     <connections>
                         <segue destination="XfV-tD-z6b" kind="relationship" relationship="rootViewController" id="6Bz-qC-Ex4"/>
@@ -1901,7 +2085,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mSo-W8-3rz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="497" y="-1528"/>
+            <point key="canvasLocation" x="-181" y="-2160"/>
         </scene>
         <!--Navigation Controller - NEWS-->
         <scene sceneID="fqH-Pf-c3v">
@@ -1918,7 +2102,8 @@
                         <rect key="frame" x="0.0" y="436" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="barTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="tintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </toolbar>
                     <connections>
                         <segue destination="h9c-dq-0uZ" kind="relationship" relationship="rootViewController" id="jYi-pU-va3"/>
@@ -1926,7 +2111,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0nT-LV-xKE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-87" y="-828"/>
+            <point key="canvasLocation" x="-655" y="-1524"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="s0q-0D-Q1j">
@@ -1947,7 +2132,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="axo-Dx-YxP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-766" y="-1271"/>
+            <point key="canvasLocation" x="-614" y="-2407"/>
         </scene>
         <!--Navigation Controller - Home-->
         <scene sceneID="Jtm-3i-RCC">
@@ -1964,6 +2149,8 @@
                     <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="IYX-QT-6uS">
                         <rect key="frame" x="0.0" y="436" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="tintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     </toolbar>
                     <connections>
                         <segue destination="vXZ-lx-hvc" kind="relationship" relationship="rootViewController" id="sF1-e4-6wx"/>
@@ -1971,31 +2158,74 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ntr-xV-WDP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-240" y="-1843"/>
+            <point key="canvasLocation" x="-720" y="-3079"/>
         </scene>
     </scenes>
     <resources>
         <image name="MID.png" width="643" height="206"/>
+        <image name="MID.png" width="643" height="206"/>
+        <image name="background.png" width="720" height="1132"/>
+        <image name="background.png" width="720" height="1132"/>
+        <image name="background.png" width="720" height="1132"/>
+        <image name="background.png" width="720" height="1132"/>
+        <image name="background.png" width="720" height="1132"/>
+        <image name="background.png" width="720" height="1132"/>
+        <image name="background.png" width="720" height="1132"/>
+        <image name="background.png" width="720" height="1132"/>
+        <image name="background.png" width="720" height="1132"/>
+        <image name="background.png" width="720" height="1132"/>
+        <image name="background.png" width="720" height="1132"/>
+        <image name="background.png" width="720" height="1132"/>
+        <image name="background.png" width="720" height="1132"/>
         <image name="background.png" width="720" height="1132"/>
         <image name="background_2.png" width="720" height="110"/>
+        <image name="background_2.png" width="720" height="110"/>
+        <image name="bg.png" width="720" height="1280"/>
         <image name="f0073492_4de45928698b7.png" width="400" height="355"/>
+        <image name="gold.png" width="627" height="1073"/>
         <image name="home_icon.png" width="32" height="29"/>
         <image name="image111.png" width="644" height="164"/>
         <image name="images.jpeg" width="225" height="225"/>
+        <image name="m_ad.png" width="720" height="131"/>
+        <image name="m_line_2.png" width="3" height="892"/>
+        <image name="music_icon.png" width="30" height="29"/>
+        <image name="music_icon.png" width="30" height="29"/>
+        <image name="music_icon.png" width="30" height="29"/>
         <image name="music_icon.png" width="30" height="29"/>
         <image name="my_icon.png" width="36" height="41"/>
         <image name="news_icon.png" width="34" height="29"/>
+        <image name="next.png" width="179" height="73"/>
         <image name="plus.png" width="209" height="210"/>
         <image name="top_bAR_2.png" width="720" height="5"/>
+        <image name="top_bAR_2.png" width="720" height="5"/>
+        <image name="top_bAR_2.png" width="720" height="5"/>
+        <image name="top_bAR_2.png" width="720" height="5"/>
+        <image name="top_bAR_2.png" width="720" height="5"/>
+        <image name="top_bAR_2.png" width="720" height="5"/>
+        <image name="top_bAR_2.png" width="720" height="5"/>
+        <image name="top_bAR_2.png" width="720" height="5"/>
+        <image name="top_bAR_2.png" width="720" height="5"/>
+        <image name="top_bAR_2.png" width="720" height="5"/>
+        <image name="top_bAR_2.png" width="720" height="5"/>
+        <image name="top_bAR_2.png" width="720" height="5"/>
+        <image name="top_bAR_2.png" width="720" height="5"/>
+        <image name="top_bAR_2.png" width="720" height="5"/>
+        <image name="top_bAR_2.png" width="720" height="5"/>
+        <image name="top_bAR_2.png" width="720" height="5"/>
+        <image name="top_bAR_2.png" width="720" height="5"/>
+        <image name="top_bAR_2.png" width="720" height="5"/>
+        <image name="top_bAR_2.png" width="720" height="5"/>
     </resources>
+    <color key="tintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="TlG-Li-Sfb"/>
+        <segue reference="4bP-3O-Rb2"/>
+        <segue reference="oNP-jK-1qX"/>
         <segue reference="qqP-eH-aUJ"/>
-        <segue reference="JcW-YV-zES"/>
-        <segue reference="jeB-XV-6JY"/>
     </inferredMetricsTieBreakers>
 </document>

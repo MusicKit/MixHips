@@ -7,18 +7,27 @@
 //
 
 #import "AlbumCell.h"
+#import "SoundIDCatagory.h"
 @interface AlbumCell()
 @property (weak, nonatomic) IBOutlet UILabel *musicName;
 @property (weak, nonatomic) IBOutlet UILabel *soundNum;
 
 @end
 
-@implementation AlbumCell
+@implementation AlbumCell{
+    SoundIDCatagory *soundCatagory;
+}
+
+-(IBAction)commentButton:(id)sender{
+    soundCatagory = [SoundIDCatagory defaultCatalog];
+    [[SoundIDCatagory defaultCatalog] setSoundid:self.soundid];
+}
 
 - (void) setProductInfo:(AlbumList *)list indexPath:(NSInteger)index
 {
     self.musicName.text = list.sound_name;
     self.soundNum.text = [NSString stringWithFormat:@"%d",index+1];
+    self.soundid = list.sound_id;
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier

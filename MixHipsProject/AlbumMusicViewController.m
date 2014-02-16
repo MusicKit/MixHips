@@ -16,8 +16,12 @@
 #import "AFHTTPRequestOperationManager.h"
 #import "PlaylistCatagory.h"
 #import "UIImageView+AFNetworking.h"
+#import "Player.h"
+#import "PlayCatalog.h"
+#import "AlbumProfileViewController.h"
 
 @interface AlbumMusicViewController ()<UITableViewDelegate, UITableViewDataSource>
+@property (weak, nonatomic) IBOutlet UIButton *allSelectButton;
 @property (weak, nonatomic) IBOutlet UILabel *albumName;
 @property (weak, nonatomic) IBOutlet UIImageView *albumImg;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -42,33 +46,78 @@
     NSMutableArray *soundIDArr;
     NSMutableArray *soundNameArr;
     NSMutableArray *soundURLArr;
+        PlaylistCatagory *playCatagory;
+    NSArray *listTrack;
+}
+-(IBAction)toggleButton:(id)sender{
+    if(playCatagory.player.rate == 1.0){
+        [playCatagory pause];
+    }
+    else{
+        [playCatagory.player play];
+    }
 }
 
+
 -(IBAction)likeButton:(id)sender{
-    NSLog(@"dfdf : %@",self.album_ID);
-    NSLog(@"like ddd : %@",my_like);
     [self AFNetworkingADLike];
 }
 
 -(IBAction)allSelect:(id)sender{
-    for (NSInteger r = 0; r < [self.tableView numberOfRowsInSection:0]; r++) {
-        [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:r inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
+    if(self.allSelectButton.tag == 0){
+        for (NSInteger r = 0; r < [self.tableView numberOfRowsInSection:0]; r++) {
+            [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:r inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
+            self.allSelectButton.tag = 1;
+        }
+    }
+    else if(self.allSelectButton.tag == 1){
+        for (NSInteger r = 0; r < [self.tableView numberOfRowsInSection:0]; r++) {
+            [self.tableView deselectRowAtIndexPath:[NSIndexPath indexPathForRow:r inSection:0] animated:NO];
+            self.allSelectButton.tag =0;
+        }
     }
 }
 
 -(IBAction)selectMusicPlay:(id)sender{
     PlayListViewController *dest = [[PlayListViewController alloc]init];
+    Player *playerlist =[Player defaultCatalog];
     NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
     NSArray *indexPathArr = [self.tableView indexPathsForSelectedRows];
+    if(indexPathArr.count >0){
     for(indexPath in indexPathArr){
         AlbumList *albumlist = [[Catalog defaultCatalog] musicAt:indexPath.row];
         playlist = [PlayListDB sharedPlaylist];
         [playlist addMovieWithName:soundNameArr[indexPath.row] nickName:self.user_Name song_id:soundIDArr[indexPath.row]];
-        NSLog(@"%@ name",self.user_Name);
         [playlist fetchMovies];
         dest.albumList = albumlist;
+        playerlist.indexPathRow = playlist.data.count;
     }
+
+    listTrack =  [playlist data];
+
+    playerlist.indexPathRow =  playerlist.indexPathRow - indexPathArr.count;
+    soundID = [NSString stringWithFormat:@"%@",listTrack[playerlist.indexPathRow]];
+
+    [playCatagory playStart:soundID];
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    //고치자    [self.navigationController pushViewController:dest animated:NO];
+    }
+    else{
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"MixHips" message:@"한곡이상 선택해주세요" delegate:self cancelButtonTitle:nil otherButtonTitles:@"확인", nil];
+        alert.alertViewStyle = UIAlertViewStyleDefault;
+        [alert show];
+    }
+}
+
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    if([segue.identifier isEqualToString:[NSString stringWithFormat:@"joingUser"]]){
+        AlbumProfileViewController *dest = (AlbumProfileViewController *)segue.destinationViewController;
+        dest.user_ID = user_Id;
+    }
+    else if([segue.identifier isEqualToString:[NSString stringWithFormat:@"playMusic"]]){
+        
+    }
 }
 
 //network like{
@@ -79,6 +128,7 @@
     NSDictionary *parameters = @{@"user_id":i , @"album_id":d};
     [manager POST: @"http://mixhips.nowanser.cloulu.com/action_like" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"JSON: %@", responseObject);
+        [self AFNetworkingAD];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
     }];
@@ -90,6 +140,7 @@
 - (void)test:(NSDictionary *)dic {
     NSDictionary *dd = [NSDictionary dictionaryWithDictionary:dic];
     NSLog(@"%@",dd);
+    user_Id = [NSString stringWithFormat:@"%@",[dd objectForKey:@"user_id"]];
     albumName = [NSString stringWithFormat:@"%@",[dd objectForKey:@"album_name"]];
     albumImgURL = [NSString stringWithFormat:@"%@",[dd objectForKey:@"album_img_url"]];
     list_count = [NSString stringWithFormat:@"%@",[dd objectForKey:@"like_count"]];
@@ -115,7 +166,6 @@
 }
 -(void)AFNetworkingAD{
     NSString *d = [NSString stringWithFormat:@"%@",self.album_ID];
-    NSLog(@"albumID : %@",self.album_ID);
     NSString *i = [NSString stringWithFormat:@"7"]; ///   본인 아이디
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{@"foo":@"bar", @"my_id(user_id(본인))":i , @"album_id":d};
@@ -169,8 +219,6 @@
 }
 */
 -(void)setProfile{
-    NSLog(@"albumName  :  %@",albumName);
-    NSLog(@"like count : %@",list_count);
     self.artistName.text = self.user_Name;
     self.albumName.text = [NSString stringWithFormat:@"%@",albumName];
     self.listCount.text = [NSString stringWithFormat:@"%@",list_count];
@@ -182,21 +230,18 @@
 
 -(void)viewWillAppear:(BOOL)animated{
         [self AFNetworkingAD];
-    
+    self.navigationController.toolbar.hidden = NO;
     [self.navigationController setNavigationBarHidden:NO];
+    self.allSelectButton.tag =0;
+//    playDB = [PlayListDB sharedPlaylist];
+//    listTrack =  [playDB data];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-   
-   
+    playCatagory = [PlaylistCatagory defaultCatalog];
     
-
-    
-
-    NSLog(@"22222");
     	// Do any additional setup after loading the view.
     [self.tableView setSeparatorInset:UIEdgeInsetsZero];
 

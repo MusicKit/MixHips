@@ -16,6 +16,10 @@
     UIScrollView *_scrollView;
     int loadedPageCount;
 }
+@property (weak, nonatomic) IBOutlet UIView *agreementView;
+@property (weak, nonatomic) IBOutlet UIView *faceBookView;
+
+@property (weak, nonatomic) IBOutlet UIImageView *backgroundImg;
 @property (weak, nonatomic) IBOutlet UIPageControl *pageControl;
 @end
 
@@ -66,6 +70,14 @@
     loadedPageCount++;
 }
 
+/*
+-(void)loadView:(int)pageNo{
+    if(pageNo == 0){
+        self.backgroundImg.image = [UIImage imageNamed:@""]
+    }
+    
+}
+ */
 -(void)click:(id)sender{
     [self performSegueWithIdentifier:@"log" sender:sender];
     /*

@@ -13,6 +13,7 @@
 #import "NewsCatalog.h"
 #import "Newslist.h"
 #import "NewsDetailViewController.h"
+#import "PlaylistCatagory.h"
 
 @interface NewsViewController ()<UIAlertViewDelegate , UITableViewDataSource, UITableViewDelegate>
 
@@ -24,14 +25,31 @@
 @implementation NewsViewController{
     Newslist *newlist;
     NetWorkingCenter *net;
+    PlaylistCatagory *playCatagory;
 }
 
+-(IBAction)toggleButton:(id)sender{
+    if(playCatagory.player.rate == 1.0){
+        [playCatagory pause];
+    }
+    else{
+        [playCatagory.player play];
+    }
+}
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
-    NewsDetailViewController *dest = (NewsDetailViewController *)segue.destinationViewController;
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
-       Newslist *list = [[NewsCatalog defaultCatalog] newsAt:indexPath.row];
-    dest.newsList = list;
+    
+    if ([segue.identifier isEqualToString:[NSString stringWithFormat:@"newlist"]]) {
+        NewsDetailViewController *dest = (NewsDetailViewController *)segue.destinationViewController;
+        NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
+        Newslist *list = [[NewsCatalog defaultCatalog] newsAt:indexPath.row];
+        dest.newsList = list;
+        NSLog(@"djskfjldf : %@",dest.newsList);
+    }
+    if([segue.identifier isEqualToString:[NSString stringWithFormat:@"musiclist"]]){
+        
+    }
+    
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -61,6 +79,7 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self.tableView reloadData];
+    playCatagory = [PlaylistCatagory defaultCatalog];
     
 }
 

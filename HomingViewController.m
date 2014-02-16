@@ -19,7 +19,7 @@
 
 #define IMAGE_NUM 3
 
-@interface HomingViewController ()<UIScrollViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
+@interface HomingViewController ()<UIScrollViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, AVAudioPlayerDelegate, UIPageViewControllerDelegate>
 {
     int loadedPageCount;
     UIScrollView *_scrollView;
@@ -35,6 +35,7 @@
     
     CGRect currentCollectionFrame;
 }
+@property (weak, nonatomic) IBOutlet UIPageControl *pageControl;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *toggleButton;
 @property (weak, nonatomic) IBOutlet UICollectionView *hotAlbumCollectionView;
@@ -48,42 +49,30 @@
 @implementation HomingViewController{
     PlayListViewController *playerVC;
     PlaylistCatagory *playCatagory;
+    NSString *soundID;
+    NSArray *listTrack;
+}
+
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+    CGFloat pageWidth = self.collectionView.frame.size.width;
+    self.pageControl.currentPage = self.hotAlbumCollectionView.contentOffset.x / pageWidth;
+    NSLog(@"넘겨져라");
 }
 
 
-
-/*
 -(IBAction)toggleButton:(id)sender{
- 
-    
-    
-    if(playCatagory.player.playing == YES){
-        [timer invalidate];
-        timer = nil;
-        NSMutableArray *items = [self.toolbarItems mutableCopy];
-        [items removeObjectAtIndex:1];
-        [items insertObject:self.toggleButton atIndex:1];
-        [self.navigationController.toolbar setItems:items animated:NO];
-        [playCatagory stop];
-        NSLog(@"555");
+    if(playCatagory.player.rate == 1.0){
+        [playCatagory pause];
     }
-    else if(playCatagory.player.playing==NO){
-        timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateProgress:) userInfo:nil repeats:YES];
-
-        NSMutableArray *items = [self.toolbarItems mutableCopy];
-        UIBarButtonItem *pauseButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"cart.jpeg"] style:UIBarButtonItemStyleDone target:self action:@selector(toggleButton:)];
-        [items removeObjectAtIndex:1];
-        [items insertObject:pauseButton atIndex:1];
-        [self.navigationController.toolbar setItems:items animated:NO];
-        [playCatagory playStart];
-       //json
-        
+    else{
+        [playCatagory.player play];
     }
 }
- */
+
 
 -(void)updateProgress:(NSTimer *)timer{
-    self.progressBar.progress = playCatagory.player.currentTime / playCatagory.player.duration;
+    //self.progressBar.progress = playCatagory.player.currentTime;
+//    self.progressBar.progress = playCatagory.player.currentTime / playCatagory.player.duration;
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
@@ -101,21 +90,11 @@
     if([segue.identifier isEqual:[NSString stringWithFormat:@"artist"]]){
         AlbumProfileViewController *dest = (AlbumProfileViewController *)segue.destinationViewController;
         NSIndexPath *indexPath = [self.collectionView indexPathForCell:sender];
-        
-        
         dest.user_ID = [userID objectAtIndex:indexPath.row];
-
     }
-
-    //[self performSegueWithIdentifier:@"album" sender:sender];
-    //[self performSegueWithIdentifier:@"artist" sender:sender];
-    //AlbumMusicViewController *dest1 = (AlbumMusicViewController *)segue.destinationViewController;
-    //AlbumProfileViewController *dest = (AlbumProfileViewController *)segue.destinationViewController;
-
-    
-    
-
-   // dest1.user_ID = [userID objectAtIndex:indexPath1.row];
+    if ([segue.identifier isEqual:[NSString stringWithFormat:@"soundlist"]]) {
+        
+    }
 }
 
 
@@ -225,9 +204,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    self.navigationController.toolbar.hidden = NO;
 	// Do any additional setup after loading the view, typically from a nib.
 
-       playCatagory = [[PlaylistCatagory defaultCatalog]init];
+       playCatagory = [PlaylistCatagory defaultCatalog];
     self.progressBar = [[UIProgressView alloc] initWithFrame:CGRectMake(93, 25, 200, 2)];
     [self.navigationController.toolbar addSubview:self.progressBar];
 
@@ -240,24 +221,6 @@
     [self AFNetworkingAD];
     [self AFNetworkingAlbum];
     [self.navigationController setNavigationBarHidden:YES];
-    //[self.navigationController setToolbarHidden:NO];
-//    playCatagory = [[PlaylistCatagory defaultCatalog]init];
-    if(playCatagory.player.playing==NO){
-        NSMutableArray *items = [self.toolbarItems mutableCopy];
-
-        [items removeObjectAtIndex:1];
-        [items insertObject:self.toggleButton atIndex:1];
-        [self.navigationController.toolbar setItems:items animated:NO];
-        NSLog(@"aa");
-    }
-    else if(playCatagory.player.playing==YES){
-        NSMutableArray *items = [self.toolbarItems mutableCopy];
-        [items removeObjectAtIndex:1];
-        UIBarButtonItem *pauseButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"cart.jpeg"] style:UIBarButtonItemStyleDone target:self action:@selector(toggleButton:)];
-        [items insertObject:pauseButton atIndex:1];
-        [self.navigationController.toolbar setItems:items animated:NO];
-        NSLog(@"bb");
-    }
     
 }
 

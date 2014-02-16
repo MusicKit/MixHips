@@ -9,6 +9,7 @@
 #import "NewsDetailViewController.h"
 #import "AFHTTPRequestOperationManager.h"
 #import "UIImageView+AFNetworking.h"
+#import "PlaylistCatagory.h"
 @interface NewsDetailViewController ()
 @property (weak, nonatomic) IBOutlet UITextView *contentsTextView;
 @property (weak, nonatomic) IBOutlet UIImageView *urlImg;
@@ -16,6 +17,7 @@
 @end
 
 @implementation NewsDetailViewController{
+    PlaylistCatagory *playCatagory;
     NSMutableArray *abc;
     NSString *adMenu;
     NSString *adTitle;
@@ -24,11 +26,21 @@
     
 }
 
+-(IBAction)toggleButton:(id)sender{
+    if(playCatagory.player.rate == 1.0){
+        [playCatagory pause];
+    }
+    else{
+        [playCatagory.player play];
+    }
+}
+
 - (void)test:(NSDictionary *)dic {
     NSDictionary *dd = [NSDictionary dictionaryWithDictionary:dic];
+    NSLog(@"dfdf %@",dd);
     abc = [[NSMutableArray alloc]init];
     [abc  addObject:[dd objectForKey:@"ad_detail"]];
-    NSLog(@"fffffff%@",abc[0]);
+    NSLog(@"fffffff%@",abc);
     
     adMenu = [NSString stringWithFormat:@"%@",[abc[0] objectForKey:@"ad_menu"]];
     NSLog(@"%@",adMenu);
@@ -45,7 +57,7 @@
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{@"foo":@"bar", @"ad_id":i};
     [manager POST: @"http://mixhips.nowanser.cloulu.com/request_ad_detail" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        //        NSLog(@"JSON: %@", responseObject);
+                NSLog(@"JSON: %@", responseObject);
         [self test:responseObject];
         [self setDetail];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -74,6 +86,7 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [self AFNetworkingAD];
+    playCatagory = [PlaylistCatagory defaultCatalog];
 }
 
 - (void)viewDidLoad
