@@ -15,5 +15,4 @@
 //@property AVAudioPlayer *player;
 @property (weak) id<IndexPath> delegate;
 @property (strong, nonatomic) AlbumList *albumList;
--(NSString *)returnIndexRow:(NSInteger)indexRow;
 @end

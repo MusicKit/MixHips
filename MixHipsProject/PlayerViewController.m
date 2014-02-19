@@ -13,14 +13,22 @@
 #import "PlaylistCatagory.h"
 #import "RequestCenter.h"
 #import "PlayListDB.h"
+#import "UIImageView+AFNetworking.h"
+#import "CommentViewController.h"
+#import "SoundIDCatagory.h"
+#import "AFHTTPRequestOperationManager.h"
+#import "playerDelegate.h"
 
-@interface PlayerViewController ()<AVAudioPlayerDelegate, AVAudioRecorderDelegate>
+@interface PlayerViewController ()<AVAudioPlayerDelegate, AVAudioRecorderDelegate , playerDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *play;
 @property (weak, nonatomic) IBOutlet UIButton *fastButton;
 @property (weak, nonatomic) IBOutlet UISlider *volumeSlider;
 @property (weak, nonatomic) IBOutlet UISlider *progressSlider;
 @property (weak, nonatomic) IBOutlet UIButton *volumnButton;
 @property (weak, nonatomic) IBOutlet UILabel *progressLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *albumView;
+@property (weak, nonatomic) IBOutlet UIProgressView *progresss;
+
 
 
 
@@ -28,6 +36,7 @@
 @end
 
 @implementation PlayerViewController{
+    SoundIDCatagory *soundCata;
     PlayListDB *playDB;
     Player *playerCata;
     PlaylistCatagory *playCatagory;
@@ -36,6 +45,8 @@
    // NSInteger indexPathRow;
     NSTimer *timer;
     NSArray *listTrack;
+    NSArray *albumlistTrack;
+    NSString *albumImgURL;
 }
 @synthesize player;
 
@@ -50,6 +61,14 @@
 //    playCatagory.player.numberOfLoops = -1;
 //}
 
+-(IBAction)dismissView:(id)sender{
+    [self dismissViewControllerAnimated:NO completion:nil];
+}
+-(IBAction)joinCommnet:(id)sender{
+    [[SoundIDCatagory defaultCatalog] setSoundid:self.soundID];
+    NSLog(@"------ %@",self.soundID);
+}
+
 -(IBAction)showVolume:(id)sender{
     if(self.volumnButton.tag == 1){
         self.volumeSlider.hidden = NO;
@@ -62,37 +81,44 @@
 }
 
 
-
--(IBAction)sliderChange:(id)sender{
-    [playCatagory pause];
-    CMTime t = CMTimeMake(self.progressSlider.value,1);
-    [player seekToTime:t];
-    [playCatagory playStart:self.soundID];
+-(void)updateProgressViewWithPlayer:(NSString *)string time:(float)time{
+    self.progresss.progress = time;
+    self.progressLabel.text = string;
 }
 
-//-(IBAction) valueChangeSliderTimer:(id)sender{
-//    [playCatagory pause];
-//    isPlaying = FALSE;
-//    [btnPauseAndPlay setTitle:@"Play" forState:UIControlStateNormal];
-//    
-//    float timeInSecond = self.progressSlider.value;
-//    
-//    timeInSecond *= 1000;
-//    CMTime cmTime = CMTimeMake(timeInSecond, 1000);
-//    
-//    [avplayer seekToTime:cmTime toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
+//- (IBAction)currentTimeSliderTouchUpInside:(id)sender
+//{
+//    [playCatagory stop];
+//    self.player.currentTime = self.currentTimeSlider.value;
+//
+//    [self play:self];
 //}
 
--(IBAction)stop:(id)sender{
-    [playCatagory pause];
-    
+
+-(IBAction) handleSliderValueChanged {
+	CMTime seekTime = playCatagory.player.currentItem.asset.duration;
+	seekTime.value = seekTime.value * self.progressSlider.value;
+	seekTime = CMTimeConvertScale (seekTime, player.currentTime.timescale,
+                                   kCMTimeRoundingMethod_RoundHalfAwayFromZero);
+	[playCatagory.player seekToTime:seekTime];
 }
 
+
 -(IBAction)toggleButton:(id)sender{
+    if(self.play.tag == 0){
     playerCata = [Player defaultCatalog];
     NSLog(@"list : %@", listTrack[indexPath]);
     self.soundID = [NSString stringWithFormat:@"%@",listTrack[indexPath]];
     [playCatagory playStart:self.soundID];
+   // [self updateProgress];
+        self.play.titleLabel.text = @"puase";
+        self.play.tag = 1;
+    }
+    else if(self.play.tag == 1){
+        [playCatagory pause];
+        self.play.titleLabel.text = @"play";
+        self.play.tag = 0;
+    }
 }
 
 -(IBAction)fastButton:(id)sender{
@@ -101,10 +127,12 @@
     if(playerCata.indexPathRow > listTrack.count-1){
         playerCata.indexPathRow = 0;
         self.soundID= [NSString stringWithFormat:@"%@",listTrack[playerCata.indexPathRow]];
+        [self setImg:playerCata.indexPathRow];
         [playCatagory playStart:self.soundID];
     }
     else{
     self.soundID = [NSString stringWithFormat:@"%@",listTrack[playerCata.indexPathRow]];
+        [self setImg:playerCata.indexPathRow];
     [playCatagory playStart:self.soundID];
     }
 }
@@ -112,40 +140,34 @@
 -(IBAction)rewindButton:(id)sender{
     playerCata = [Player defaultCatalog];
     playerCata.indexPathRow--;
+    [self setImg:playerCata.indexPathRow];
+//    [self setProfile];
 
     self.soundID = [NSString stringWithFormat:@"%@",listTrack[playerCata.indexPathRow]];
     [playCatagory playStart:self.soundID];
 }
--(void)timeFired:(NSTimer *)t{
-//     if(playCatagory.player.playing == YES){
-//    double time = [playCatagory returnTime];
-////    self.progressSlider.minimumValue = 0;
-////    self.progressSlider.maximumValue = time;
-//    [self.progressSlider setValue:time animated:NO];
-//    
-//    self.progressLabel.text = [NSString stringWithFormat:@"%i:%.02i",(int)time/60, (int)time %60];
-//
-//      }
-//        else{
-//            [self.progressSlider setValue:0 animated:YES];
-//        }
+
+-(void)setImg:(NSInteger)indexPathff{
+    playDB = [PlayListDB sharedPlaylist];
+    //albumlistTrack[indexPathff];
+    NSLog(@"%@",albumlistTrack[indexPathff]);
+    NSString *url = @"http://mixhips.nowanser.cloulu.com";
+    self.albumImg = albumlistTrack[indexPathff];
+    NSLog(@"dfdf %@",self.albumImg);
+    url = [url stringByAppendingString:self.albumImg];
+    NSURL *imgURL = [NSURL URLWithString:url];
+    [self.albumView setImageWithURL:imgURL];
 }
 
-
-//볼륨슬라이더
--(int)returnVolumSliderValue{
-    return self.volumeSlider.value;
+-(void)setProfile{
+    playerCata = [Player defaultCatalog];
+    NSString *url = @"http://mixhips.nowanser.cloulu.com";
+    self.albumImg = [playerCata getAlbumImg];
+    NSLog(@"dfdf %@",self.albumImg);
+    url = [url stringByAppendingString:self.albumImg];
+    NSURL *imgURL = [NSURL URLWithString:url];
+    [self.albumView setImageWithURL:imgURL];
 }
--(IBAction)updateVolume:(id)sender{
-    playCatagory.player.volume = self.volumeSlider.value;
-}
-
--(void)updateProgress:(NSTimer *)timer{
-    
-}
-
-
-
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -160,41 +182,40 @@
 -(void)viewWillAppear:(BOOL)animated{
     playDB = [PlayListDB sharedPlaylist];
     listTrack =  [playDB data];
-    NSLog(@"data : %@",listTrack);
+    albumlistTrack = [playDB albumimg];
+   
+
+    
+    
+    if(playCatagory.player.rate ==1){
+        self.play.titleLabel.text = @"pause";
+    }
+    else{
+        self.play.titleLabel.text = @"play";
+    }
+}
+
+
+-(void)viewWillDisappear:(BOOL)animated{
+   [self.navigationController setToolbarHidden:NO];
+    self.tabBarController.tabBar.hidden=NO;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    playerCata = [Player defaultCatalog];
+    
     self.volumeSlider.hidden = YES;
 	// Do any additional setup after loading the view.
-    [self.navigationController setToolbarHidden:YES];
-    playCatagory = [[PlaylistCatagory defaultCatalog]init];
+    self.tabBarController.tabBar.hidden=YES;
+    playCatagory = [PlaylistCatagory defaultCatalog];
+    playCatagory.delegate = self;
     player = nil;
     
     
-
-    
-//    [[AVAudioSession sharedInstance]setCategory:AVAudioSessionCategoryAmbient error:nil];
-//    
-//    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
-//    [[AVAudioSession sharedInstance] setActive: YES error: nil];
-//    [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
      [self.navigationController setToolbarHidden:YES];
 }
 
--(void)viewDidAppear:(BOOL)animated{
-//    if(playCatagory.player.playing == YES){
-//        [self.play setTitle:@"pause" forState:UIControlStateNormal];
-//        NSLog(@"555");
-//    }
-//    else if(playCatagory.player.playing==NO){
-//        [self.play setTitle:@"play" forState:UIControlStateNormal];
-//        NSLog(@"666");
-//    }
-//    player.volume = self.volumeSlider.value;
-}
 
 
 - (void)didReceiveMemoryWarning

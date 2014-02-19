@@ -10,6 +10,15 @@
 
 @implementation EditCatagory {
     NSMutableArray *_arrTest;
+    NSData *fileData;
+    NSMutableArray *mpArr;
+    NSMutableData *data11;
+    NSMutableArray *datapath;
+    NSInteger numCell;
+    NSMutableArray *listData;
+    NSString *soundName;
+    NSInteger indexPathRow1;
+    NSString *fileName;
 }
 
 static EditCatagory *_instance = nil;
@@ -26,21 +35,90 @@ static EditCatagory *_instance = nil;
     self = [super init];
     if (self) {
         _arrTest = [[NSMutableArray alloc]init];
+        mpArr = [[NSMutableArray alloc]init];
+        listData = [[NSMutableArray alloc]init];
+        
 //       self.soundNameArr = [[NSMutableArray alloc]init];
 //        [self.soundNameArr addObject:self.soundName];
     }
     return self;
 }
+
+-(void)dd:(NSString *)alubmName data:(NSData *)data{
+    soundName = alubmName;
+    [listData addObject:[AlbumList uploadAlbum:data albumName:alubmName]];
+    NSLog(@"ddd %d",listData.count);
+}
+
+-(void)albumName:(NSString *)albumName{
+    soundName =albumName;
+}
+
+-(NSString *)albumName{
+    return soundName;
+}
+-(NSMutableArray *)returnListData{
+    return listData;
+}
+-(void)initialize{
+    mpArr = [[NSMutableArray alloc]init];
+    _arrTest = [[NSMutableArray alloc]init];
+ //   listData = [[NSMutableArray alloc]init];
+}
+-(void)setData11:(NSData *)data1
+{
+    fileData = data1;
+}
+-(NSData *)getData11{
+    return fileData;
+}
+
+-(void)setNumCell:(NSInteger)num
+{
+    numCell = num;
+}
+
+-(NSInteger)getNumCell{
+    return numCell;
+}
+-(NSInteger)deleteCell
+{
+   return numCell--;
+}
+
+
+-(void)setData:(NSData *)data{
+    [mpArr addObject:data];
+}
+
+-(NSMutableArray *)getMpArr{
+    return mpArr;
+}
+
 - (void)setArrTest:(NSString *)sR {
     [_arrTest addObject:sR];
 }
 
--(NSArray *)getArrTest{
+-(NSMutableArray *)getArrTest{
     return _arrTest;
 }
 
 -(NSString *)returnSoundName{
-    return self.soundName;
+    return self.soundNameff;
+}
+
+-(void)setIndex:(NSInteger)indexPathRow{
+    indexPathRow1 = indexPathRow;
+}
+-(NSInteger)getIndex{
+    return indexPathRow1;
+}
+
+-(void)setFileName:(NSString *)filename{
+    fileName = filename;
+}
+-(NSString *)getFileName{
+    return fileName;
 }
 
 @end

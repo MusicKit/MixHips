@@ -54,4 +54,7 @@
 //코멘트
 +(id)comment:(NSString *)user_id user_name:(NSString *)user_name user_img:(NSString *)user_img commentID:(NSString *)commentID commentTime:(NSString *)commentTime contents:(NSString *)contents;
 
+@property (strong , nonatomic) NSData *albumdata;
+//업로드앨범
++(id)uploadAlbum:(NSData *)albumData albumName:(NSString *)albumName;
 @end

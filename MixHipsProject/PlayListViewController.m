@@ -18,19 +18,20 @@
 
 @interface PlayListViewController () <UITableViewDataSource, UITableViewDelegate, AVAudioPlayerDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) UIProgressView *progressBar;
 @end
 
 
 
 @implementation PlayListViewController{
+    PlaylistCell *cell;
     PlayerViewController *player;
     PlayListDB *_playlist;
     PlaylistCatagory *play;
+    Player *playerCata;
+    NSInteger indexRow;
 }
 
--(void)returnIndexPath{
-    
-}
 
 //
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
@@ -44,11 +45,35 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    Player *playerCata = [Player defaultCatalog];
-    playerCata.indexPathRow = indexPath.row;
-    NSString *soundID = [_playlist getSoundIdAtIndex:indexPath.row];
-    NSLog(@"play soundID : %@",soundID);
-    [play playStart:soundID];
+    
+    if(play.player.rate ==1 ){
+        if(indexPath.row == playerCata.indexPathRow){
+            PlayerViewController *nextVC = [self.storyboard instantiateViewControllerWithIdentifier:@"playerPart"];
+            [self.navigationController pushViewController:nextVC animated:YES];
+        }
+        else{
+            
+            [playerCata setAlbumImg:[_playlist getalbumImgAtIndex:indexPath.row]];
+            playerCata.indexPathRow = indexPath.row;
+            indexRow = indexPath.row;
+            NSString *soundID = [_playlist getSoundIdAtIndex:indexPath.row];
+            NSLog(@"play soundID : %@",soundID);
+            PlayerViewController *nextVC = [self.storyboard instantiateViewControllerWithIdentifier:@"playerPart"];
+
+            [self.navigationController pushViewController:nextVC animated:YES];
+            [play playStart:soundID];
+        }
+    }
+    else{
+        [playerCata setAlbumImg:[_playlist getalbumImgAtIndex:indexPath.row]];
+        playerCata.indexPathRow = indexPath.row;
+        indexRow = indexPath.row;
+        NSString *soundID = [_playlist getSoundIdAtIndex:indexPath.row];
+        NSLog(@"play soundID : %@",soundID);
+        PlayerViewController *nextVC = [self.storyboard instantiateViewControllerWithIdentifier:@"playerPart"];
+        [self.navigationController pushViewController:nextVC animated:YES];
+        [play playStart:soundID];
+    }
 }
 
 
@@ -67,12 +92,13 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    PlaylistCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PLAYLIST_CELL" forIndexPath:indexPath];
+    cell = [tableView dequeueReusableCellWithIdentifier:@"PLAYLIST_CELL" forIndexPath:indexPath];
     NSString *ddd = [_playlist getSoundIdAtIndex:indexPath.row];
     NSLog(@"soundidekekek : %@",ddd);
     NSString *name = [_playlist getNameOfMovieAtIndex:indexPath.row];
     NSString *nickName = [_playlist getNickNameOfMusicAtIndex:indexPath.row];
     [cell setPlaylistInfo:name nickName:nickName];
+    
     return cell;
 }
 
@@ -85,10 +111,24 @@
     return self;
 }
 
+-(void)viewDidDisappear:(BOOL)animated{
+
+}
+
 -(void)viewWillAppear:(BOOL)animated
 {
 //    self.navigationController.toolbarHidden = YES;
     [_playlist fetchMovies];
+    playerCata = [Player defaultCatalog];
+    play = [PlaylistCatagory defaultCatalog];
+    self.tabBarController.tabBar.hidden=NO;
+    self.navigationController.toolbar.hidden = NO;
+    [self.navigationController setNavigationBarHidden:NO];
+    if(play.player.rate ==1){
+        if(indexRow == playerCata.indexPathRow){
+            //??? 멀까...
+        }
+    }
 }
 
 - (void)viewDidLoad
@@ -96,10 +136,14 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
 
-    play = [[PlaylistCatagory defaultCatalog]init];
+    
+    //self.progressBar = [[UIProgressView alloc] initWithFrame:CGRectMake(93, 25, 200, 2)];
+    //[self.navigationController.toolbar addSubview:self.progressBar];
+    play = [PlaylistCatagory defaultCatalog];
+    
     _playlist = [PlayListDB sharedPlaylist];
     [_playlist fetchMovies];
-    [self.navigationController setNavigationBarHidden:NO];
+
     
     [self.tableView setSeparatorInset:UIEdgeInsetsZero];
     [self.tableView reloadData];

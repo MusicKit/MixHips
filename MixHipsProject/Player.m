@@ -14,6 +14,9 @@
 
 @implementation Player{
     NSInteger *indexPath;
+    NSString *_albumIMG;
+    NSString *_soundID;
+    NSString *_albumID;
 }
 
 static Player *_instance = nil;
@@ -32,6 +35,26 @@ static Player *_instance = nil;
     if (self) {
     }
     return self;
+}
+-(void)setAlbumId:(NSString *)albumid{
+    _albumID = albumid;
+}
+-(NSString *)getAlbumId{
+    return _albumID;
+}
+
+-(void)setSoundId:(NSString *)soundid{
+    _soundID = soundid;
+}
+-(NSString *)getSoundId{
+    return _soundID;
+}
+-(void)setAlbumImg:(NSString *)albumimg{
+    _albumIMG = albumimg;
+}
+
+-(NSString *)getAlbumImg{
+    return _albumIMG;
 }
 
 - (NSUInteger)returnIndexPath

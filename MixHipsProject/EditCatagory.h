@@ -7,12 +7,33 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "AlbumList.h"
 
 @interface EditCatagory : NSObject
-@property (strong, nonatomic) NSString *soundName;
+@property (strong, nonatomic) NSString *soundNameff;
 @property (strong, nonatomic) NSMutableArray *soundNameArr;
 + (id)defaultCatalog;
+-(NSInteger)getIndex;
 -(NSString *)returnSoundName;
 - (void)setArrTest:(NSString *)sR;
--(NSArray *)getArrTest;
+-(NSMutableArray *)getArrTest;
+-(void)setData:(NSData *)data;
+-(NSMutableArray *)getMpArr;
+-(void)initialize;
+
+
+-(void)setData11:(NSData *)data1;
+-(NSData *)getData11;
+
+-(void)dd:(NSString *)alubmName data:(NSData *)data;
+
+-(NSMutableArray *)returnListData;
+-(NSString *)albumName;
+-(void)albumName:(NSString *)albumName;
+
+-(void)setIndex:(NSInteger)indexPathRow;
+-(NSInteger)getIndex;
+
+-(void)setFileName:(NSString *)filename;
+-(NSString *)getFileName;
 @end

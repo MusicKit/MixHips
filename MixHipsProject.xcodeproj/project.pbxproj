@@ -103,6 +103,9 @@
 		00FFB22E18B08876000B482E /* gold.png in Resources */ = {isa = PBXBuildFile; fileRef = 00FFB22C18B08876000B482E /* gold.png */; };
 		00FFB22F18B08876000B482E /* next.png in Resources */ = {isa = PBXBuildFile; fileRef = 00FFB22D18B08876000B482E /* next.png */; };
 		00FFB23118B0897E000B482E /* bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 00FFB23018B0897E000B482E /* bg.png */; };
+		00FFB27E18B1DA66000B482E /* MusicFileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 00FFB27D18B1DA66000B482E /* MusicFileViewController.m */; };
+		00FFB28418B1DC50000B482E /* MusicFileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 00FFB28318B1DC50000B482E /* MusicFileCell.m */; };
+		00FFB28718B2F342000B482E /* MypageCatagory.m in Sources */ = {isa = PBXBuildFile; fileRef = 00FFB28618B2F342000B482E /* MypageCatagory.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -277,6 +280,18 @@
 		00FFB22D18B08876000B482E /* next.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = next.png; sourceTree = "<group>"; };
 		00FFB23018B0897E000B482E /* bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg.png; sourceTree = "<group>"; };
 		00FFB23218B0B33F000B482E /* FollowDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FollowDelegate.h; sourceTree = "<group>"; };
+		00FFB27C18B1DA66000B482E /* MusicFileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicFileViewController.h; sourceTree = "<group>"; };
+		00FFB27D18B1DA66000B482E /* MusicFileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MusicFileViewController.m; sourceTree = "<group>"; };
+		00FFB28218B1DC50000B482E /* MusicFileCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicFileCell.h; sourceTree = "<group>"; };
+		00FFB28318B1DC50000B482E /* MusicFileCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MusicFileCell.m; sourceTree = "<group>"; };
+		00FFB28518B2F342000B482E /* MypageCatagory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MypageCatagory.h; sourceTree = "<group>"; };
+		00FFB28618B2F342000B482E /* MypageCatagory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MypageCatagory.m; sourceTree = "<group>"; };
+		00FFB28A18B35490000B482E /* playerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = playerDelegate.h; sourceTree = "<group>"; };
+		00FFB28B18B4B6FC000B482E /* playDelegate1.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = playDelegate1.h; sourceTree = "<group>"; };
+		00FFB28C18B4BC90000B482E /* playDelegate2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = playDelegate2.h; sourceTree = "<group>"; };
+		00FFB28D18B4C1FB000B482E /* playDelegate3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = playDelegate3.h; sourceTree = "<group>"; };
+		00FFB28E18B4C21B000B482E /* playDelegate4.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = playDelegate4.h; sourceTree = "<group>"; };
+		00FFB29018B5130C000B482E /* EditDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EditDelegate.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -478,8 +493,13 @@
 				002990B718A1F2A200262CF1 /* AlbumEditViewController.m */,
 				002990B918A2003F00262CF1 /* EdicCell.h */,
 				002990BA18A2003F00262CF1 /* EdicCell.m */,
+				00FFB29018B5130C000B482E /* EditDelegate.h */,
 				00FFB22418ADE63E000B482E /* EditCatagory.h */,
 				00FFB22518ADE63E000B482E /* EditCatagory.m */,
+				00FFB27C18B1DA66000B482E /* MusicFileViewController.h */,
+				00FFB27D18B1DA66000B482E /* MusicFileViewController.m */,
+				00FFB28218B1DC50000B482E /* MusicFileCell.h */,
+				00FFB28318B1DC50000B482E /* MusicFileCell.m */,
 			);
 			name = Sub;
 			sourceTree = "<group>";
@@ -491,6 +511,8 @@
 				00F7489A18A1D0F1004A38CE /* MyPageCollectionViewCell.m */,
 				0057F83F1887B46000C2F1C8 /* MyPageViewController.h */,
 				0057F8401887B46000C2F1C8 /* MyPageViewController.m */,
+				00FFB28518B2F342000B482E /* MypageCatagory.h */,
+				00FFB28618B2F342000B482E /* MypageCatagory.m */,
 			);
 			name = MyPage;
 			sourceTree = "<group>";
@@ -557,6 +579,11 @@
 				002990C818A3144200262CF1 /* PlaylistCatagory.h */,
 				002990C918A3144200262CF1 /* PlaylistCatagory.m */,
 				00FFB21B18AC7273000B482E /* IndexPath.h */,
+				00FFB28A18B35490000B482E /* playerDelegate.h */,
+				00FFB28B18B4B6FC000B482E /* playDelegate1.h */,
+				00FFB28C18B4BC90000B482E /* playDelegate2.h */,
+				00FFB28D18B4C1FB000B482E /* playDelegate3.h */,
+				00FFB28E18B4C21B000B482E /* playDelegate4.h */,
 			);
 			name = Playlist;
 			sourceTree = "<group>";
@@ -770,6 +797,7 @@
 			files = (
 				0009A2A518A9F3770036DFF3 /* UIAlertView+AFNetworking.m in Sources */,
 				00F7489318A0CE8D004A38CE /* AFURLRequestSerialization.m in Sources */,
+				00FFB28718B2F342000B482E /* MypageCatagory.m in Sources */,
 				00F7489218A0CE8D004A38CE /* AFURLConnectionOperation.m in Sources */,
 				0005EF0F18A499BC00A207C0 /* NewsCell.m in Sources */,
 				002DB76318890DC10030BB60 /* AlbumProfileViewController.m in Sources */,
@@ -788,6 +816,7 @@
 				00FFB22B18AE2D6B000B482E /* SoundIDCatagory.m in Sources */,
 				0009A2A318A9F3770036DFF3 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				002990B818A1F2A200262CF1 /* AlbumEditViewController.m in Sources */,
+				00FFB28418B1DC50000B482E /* MusicFileCell.m in Sources */,
 				00F7489118A0CE8D004A38CE /* AFSecurityPolicy.m in Sources */,
 				002990BE18A2168100262CF1 /* Player.m in Sources */,
 				00F7488D18A0CE8D004A38CE /* AFHTTPRequestOperation.m in Sources */,
@@ -804,6 +833,7 @@
 				0057F84F1887C98D00C2F1C8 /* ListViewController.m in Sources */,
 				0005EF1618A4A06600A207C0 /* Newslist.m in Sources */,
 				00FFB20B18AB250A000B482E /* MyFlowLayout.m in Sources */,
+				00FFB27E18B1DA66000B482E /* MusicFileViewController.m in Sources */,
 				0070FAE418A0AF4B00999267 /* AlbumCell.m in Sources */,
 				00F7488F18A0CE8D004A38CE /* AFHTTPSessionManager.m in Sources */,
 				002990CA18A3144200262CF1 /* PlaylistCatagory.m in Sources */,

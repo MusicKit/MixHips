@@ -13,30 +13,28 @@
     NSMutableArray *Arr;
     NSArray *dfsdf;
     EditCatagory *editCatagory;
+    NSArray *mpArr;
+    NSArray *soundName;
+    NSInteger index;
 
 }
 
--(void)setInfo:(NSInteger)indexPathRow{
+-(void)setInfo:(NSString *)soundname indexPath:(NSInteger)indexPathRow fileName:(NSString *)filename{
     self.soundNum.text = [NSString stringWithFormat:@"%d",indexPathRow+1];
+    self.soundname.text = [NSString stringWithFormat:@"%@ (%@)",soundname, filename];
+    index = indexPathRow;
+    //NSLog(@"%@",[[EditCatagory defaultCatalog]returnSoundName]);
 }
 
 
--(BOOL)textFieldShouldReturn:(UITextField *)textField{
-    editCatagory = [EditCatagory defaultCatalog];
-    editCatagory.soundName = [NSString stringWithFormat:@"%@",self.soundName.text];
-    [[EditCatagory defaultCatalog] setArrTest:self.soundName.text];
-    NSLog(@"%d",Arr.count);
- 
-    NSLog(@"jsdlfjlsf %@",editCatagory.soundName);
-    
-    
-    
-    [self.soundName resignFirstResponder];
-    return YES;
-}
 
 -(IBAction)deleteButton:(id)sender{
-    //음악파일 잇는곳으로 이동...
+        NSLog(@"5555 %d",index);
+    [self.delegate deleteMusic:index];
+
+//    [[EditCatagory defaultCatalog] deleteCell];
+//    NSLog(@"-%d",[[EditCatagory defaultCatalog] getNumCell]);
+//    [self.delegate reloadTable];
 }
 
 

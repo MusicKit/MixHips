@@ -16,14 +16,14 @@
 #import "AlbumProfileViewController.h"
 #import "AlbumMusicViewController.h"
 #import "MyCell.h"
+#import "playerDelegate.h"
 
 #define IMAGE_NUM 3
 
-@interface HomingViewController ()<UIScrollViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, AVAudioPlayerDelegate, UIPageViewControllerDelegate>
+@interface HomingViewController ()<UIScrollViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, AVAudioPlayerDelegate, UIPageViewControllerDelegate, playDelegate1>
 {
     int loadedPageCount;
     UIScrollView *_scrollView;
-    UIPageControl *pageControl;
     NSTimer *timer;
     NSMutableArray *HotArtist;
     NSMutableArray *HotAlbum;
@@ -40,6 +40,7 @@
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *toggleButton;
 @property (weak, nonatomic) IBOutlet UICollectionView *hotAlbumCollectionView;
 @property (strong, nonatomic) UIProgressView *progressBar;
+@property (strong , nonatomic)UILabel *titleLabel;
 @property (nonatomic,strong) NSMutableArray *collectionData;
 @property (nonatomic,strong) NSMutableArray *allCells;
 
@@ -51,6 +52,8 @@
     PlaylistCatagory *playCatagory;
     NSString *soundID;
     NSArray *listTrack;
+    NSString *soundName1;
+    NSString *userName1;
 }
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
@@ -69,11 +72,6 @@
     }
 }
 
-
--(void)updateProgress:(NSTimer *)timer{
-    //self.progressBar.progress = playCatagory.player.currentTime;
-//    self.progressBar.progress = playCatagory.player.currentTime / playCatagory.player.duration;
-}
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     if(collectionView == self.hotAlbumCollectionView)
@@ -111,13 +109,23 @@
     NSMutableArray *image = [[NSMutableArray alloc]init];
     NSMutableArray *userName = [[NSMutableArray alloc]init];
         HotArtist = [[NSMutableArray alloc]init];
+    NSString *string = [NSString stringWithFormat:@"1"];
     for(int i=0;i<3;i++)
     {
+        if([string isEqualToString:@"<null>"])
+        {
+            break;
+                    }
+        else{
         [userID addObject:[abc[i] objectForKey:@"user_id"]];
         [image addObject:[abc[i] objectForKey:@"user_img_url"]];
         
         [userName addObject:[abc[i] objectForKey:@"user_name"]];
         [HotArtist addObject:[AlbumList hotArtistList:userID[i] userName:userName[i] userImg:image[i]]];
+            string = [NSString stringWithFormat:@"%@",abc[i]];
+            NSLog(@"%@",string);
+        }
+        NSLog(@"%@",string);
     }
     [self.collectionView reloadData];
     NSLog(@"%@",HotArtist);
@@ -144,8 +152,18 @@
     userName_Album = [[NSMutableArray alloc]init];
     NSMutableArray *likeCount = [[NSMutableArray alloc]init];
     HotAlbum = [[NSMutableArray alloc]init];
+    NSString *string = [NSString stringWithFormat:@"%@",abc[0]];
+    if([string isEqualToString:@"<null>"]){
+    }
+    else{
     for(int i=0;i<9;i++)
     {
+        if([string isEqualToString:@"<null>"])
+        {
+            break;
+        }
+        else{
+
         [albumID_Album addObject:[abc[i] objectForKey:@"album_id"]];
         [albumImage addObject:[abc[i] objectForKey:@"album_img_url"]];
         
@@ -153,6 +171,10 @@
         [userName_Album addObject:[abc[i] objectForKey:@"user_name"]];
         [likeCount addObject:[abc[i] objectForKey:@"like_count"]];
         [HotAlbum addObject:[AlbumList hotAlbumList:albumID_Album[i] album_name:albumName[i] album_img:albumImage[i] user_name:userName_Album[i] like_count:likeCount[i]]];
+            string = [NSString stringWithFormat:@"%@",abc[i]];
+        }
+        NSLog(@"%@",string);
+    }
     }
     [self.hotAlbumCollectionView reloadData];
 }
@@ -200,6 +222,26 @@
     return cell;
 }
 
+-(void)updateProgressViewWithPlayer:(NSString *)string time:(float)time{
+   self.progressBar.progress = time;
+}
+
+-(void)setUser:(NSString *)userNamef setSound:(NSString *)soundNamef{
+    soundName1 = soundNamef;
+    userName1 = userNamef;
+}
+
+////////////////////
+
+//-(void)viewDidLayoutSubviews{
+//    
+//    
+//    [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"top_bAR.png"] forBarMetrics:UIBarMetricsDefault];
+//    //[[UIToolbar appearance]setBackgroundImage:[UIImage imageNamed:@"background_2.png"] forToolbarPosition:UIBarPositionBottom barMetrics:UIBarMetricsDefault];
+//    [[UITabBar appearance]setBackgroundImage:[UIImage imageNamed:@"top_bAR.png"]];
+//}
+
+
 
 - (void)viewDidLoad
 {
@@ -207,10 +249,13 @@
 
     self.navigationController.toolbar.hidden = NO;
 	// Do any additional setup after loading the view, typically from a nib.
-
-       playCatagory = [PlaylistCatagory defaultCatalog];
-    self.progressBar = [[UIProgressView alloc] initWithFrame:CGRectMake(93, 25, 200, 2)];
+    self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(92 , 5, 200, 20)];
+    
+    self.progressBar = [[UIProgressView alloc] initWithFrame:CGRectMake(93, 28, 200, 4)];
     [self.navigationController.toolbar addSubview:self.progressBar];
+    playCatagory = [PlaylistCatagory defaultCatalog];
+    playCatagory.delegate1 = self;
+    
 
     scrolltime = 0;
     setSmallSize = -1;
@@ -220,7 +265,38 @@
 -(void)viewWillAppear:(BOOL)animated{
     [self AFNetworkingAD];
     [self AFNetworkingAlbum];
+    
+    
+    if(soundName1 == NULL){
+        
+    }
+    else{
+                    [self.titleLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:14]];
+        [self.titleLabel setBackgroundColor:[UIColor clearColor]];
+        [self.titleLabel setTextColor:[UIColor blackColor]];
+        [self.titleLabel setText:[NSString stringWithFormat:@"%@ - %@",soundName1, userName1]];
+        [self.titleLabel setTextAlignment:NSTextAlignmentCenter];
+        // [titleV addSubview:self.titleLabel];
+        [self.navigationController.toolbar addSubview:self.titleLabel];
+    }
+    
+   // UIView *titleV = [[[UIView alloc]init]initWithFrame:CGRectMake(92, 10, 200, 13)];
+    
+    
+    
+   // [self progressBar];
+//    NSLog(@"%d",[[PlaylistCatagory defaultCatalog] getCurTime]);
+//    NSLog(@"%d",[[PlaylistCatagory defaultCatalog] getDuration]);
+//
     [self.navigationController setNavigationBarHidden:YES];
+//    if(playCatagory.player.rate == 1.0){
+//        NSLog(@"%f", [playCatagory getTimer]);
+//        self.progressBar.progress = [playCatagory getTimer];
+//    }
+//    else{
+//        
+//    }
+
     
 }
 

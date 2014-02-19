@@ -14,8 +14,10 @@
 #import "AFHTTPRequestOperationManager.h"
 #import "EdicCell.h"
 #import "EditCatagory.h"
+#import "MyPageViewController.h"
+#import "EditDelegate.h"
 
-@interface AlbumEditViewController ()<UITableViewDataSource, UITableViewDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate,UINavigationControllerDelegate>
+@interface AlbumEditViewController ()<UITableViewDataSource, UITableViewDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate,UINavigationControllerDelegate, EditDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *imageButton;
 @property (weak, nonatomic) IBOutlet UIButton *albumNameButton;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -23,20 +25,25 @@
 @property (weak, nonatomic) IBOutlet UIImageView *albumImg;
 @property (weak, nonatomic) IBOutlet UIControl *hideView;
 @property (weak, nonatomic) IBOutlet UIButton *albumNameEdit;
-@property (weak, nonatomic) IBOutlet UILabel *albumName;
+@property (weak, nonatomic) IBOutlet UILabel *albumNameLable;
+@property (strong, nonatomic)UIProgressView *progressBar;
 
 @end
 
 @implementation AlbumEditViewController{
+    NSMutableArray *listdata;
     EdicCell *editCell;
     NSInteger numCell;
     EditCatagory *editCatagory;
-    NSArray *soundNameArr;
+    NSMutableArray *soundNameArr;
     NSString *soundName;
+    NSString *fileName;
     UITextField *searchField;
     NSString *albumName;
     UIAlertView *alert;
     UIAlertView *alert1;
+    NSMutableArray *mpArr;
+    NSData *data11;
 }
 
 -(IBAction)albumNameEdit:(id)sender{
@@ -52,7 +59,7 @@
         }
         else if(alert.firstOtherButtonIndex == buttonIndex){
             searchField = [alertView textFieldAtIndex:0];
-            self.albumName.text = searchField.text;
+            self.albumNameLable.text = searchField.text;
             albumName = [NSString stringWithFormat:@"%@",searchField.text];
             NSLog(@"sff%@",albumName);
         }
@@ -71,10 +78,22 @@
 
 -(IBAction)albumUploadButton:(id)sender{
 //    if(numCell >1 && numCell <11){
-    soundName = [[EditCatagory defaultCatalog] returnSoundName];
-    soundNameArr = [[NSMutableArray alloc]init];
-    soundNameArr = [[EditCatagory defaultCatalog]getArrTest];
     
+//    NSArray *viewControllers = self.navigationController.viewControllers;
+//    UIViewController *rootViewController = [viewControllers objectAtIndex:viewControllers.count - 2];
+//    MyPageViewController *nextVC = (UIViewController *)rootViewController;
+    
+    AlbumList *list = [[AlbumList alloc]init];
+    list = listdata[0];
+    
+    
+    soundName = [[EditCatagory defaultCatalog] returnSoundName];
+    //soundNameArr = [[NSMutableArray alloc]init];
+    
+    soundNameArr = [[EditCatagory defaultCatalog]getArrTest];
+    //
+    mpArr = [[EditCatagory defaultCatalog] getMpArr];
+    NSLog(@"fff%d",mpArr.count);
     
     NSLog(@"ffff %d",soundNameArr.count);
     
@@ -94,11 +113,10 @@
     [sheet showInView:self.view];
 }
 
--(IBAction)getProfileImagedd:(id)sender{
-    UIActionSheet *sheet = [[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"취소" destructiveButtonTitle:nil otherButtonTitles:@"사진촬영",@"앨범에서 사진 선택",@"삭제", nil];
-    [sheet showInView:self.view];
-}
 
+-(void)getMusicFile{
+    
+}
 
 //액션버튼에서 사용자가 특정 버튼을 눌렀을 때 처리
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
@@ -110,8 +128,8 @@
     if(buttonIndex == 0){
         if(![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
             //에러 처리
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"오류" message:@"카메라가 지원되지 않는 기종입니다." delegate:nil cancelButtonTitle:@"확인" otherButtonTitles: nil];
-            [alert show];
+            UIAlertView *alert2 = [[UIAlertView alloc]initWithTitle:@"오류" message:@"카메라가 지원되지 않는 기종입니다." delegate:nil cancelButtonTitle:@"확인" otherButtonTitles: nil];
+            [alert2 show];
             return;
         }
         imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
@@ -130,7 +148,7 @@
     }
     else if(buttonIndex == actionSheet.cancelButtonIndex)
     {
-        //[actionSheet showInView:self.view];
+        self.albumImg.image = nil;
     }
 }
 
@@ -149,30 +167,46 @@
     //[picker dismissModalViewControllerAnimated:YES];
 }
 
-
+-(void)deleteMusic:(NSInteger)indexPathRow{
+    [soundNameArr removeObjectAtIndex:indexPathRow];
+    NSLog(@"%d",soundNameArr.count);
+     [mpArr removeObjectAtIndex:indexPathRow];
+    NSLog(@"%d",mpArr.count);
+    [self.tableView reloadData];
+}
 
 
 //uploadAlbum
 -(void)AFNetworkingUploadAlbum{
     
     NSString *d = [NSString stringWithFormat:@"%@",albumName];
-    NSString *i = [NSString stringWithFormat:@"7"]; ///   본인 아이디
+    NSLog(@"dfdfdf name : %@",d);
+    NSString *i = [NSString stringWithFormat:@"6"]; ///   본인 아이디
     NSString *x = [NSString stringWithFormat:@"%d",soundNameArr.count];
     
     
     NSData *imageData = UIImageJPEGRepresentation(self.albumImg.image, 0.5);
     
     
+    
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
-
-
-    NSDictionary *parameters = @{@"foo":@"bar", @"user_id":i, @"album_name":d, @"sounds_name":soundNameArr, @"sound_count":x};
-    [manager POST: @"http://mixhips.nowanser.cloulu.com/upload_album" parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData){
-        [formData appendPartWithFileData:imageData name:@"album_img" fileName:@"Mixhips" mimeType:@"image/jpeg"];
-        [formData appendPartWithFileData:imageData name:@"sounds_file" fileName:@"Mixhips" mimeType:@"image/jpeg"];
-    }success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    
+   
+    
+    NSDictionary *parameters = @{@"foo":@"bar", @"user_id":i, @"album_name":d, @"sounds_name":soundNameArr, @"sound_count":x };
+   [manager POST: @"http://mixhips.nowanser.cloulu.com/upload_album" parameters:parameters
+constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+    [formData appendPartWithFileData:imageData name:@"album_img" fileName:@"Mixhips" mimeType:@"image/jpeg"];
+    for (int i=0; i<[mpArr count]; i++) {
+        [formData appendPartWithFileData:mpArr[i] name:[NSString stringWithFormat:@"sounds_file[%d]",i] fileName:[NSString stringWithFormat:@"mixhips_%d.mp3",arc4random()] mimeType:@"audio/mp3"];
+    }
+    
+}
+success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"JSON: %@", responseObject);
+     [[EditCatagory defaultCatalog]initialize];
+    [self.navigationController popViewControllerAnimated:YES];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
     }];
@@ -191,43 +225,44 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if(indexPath.row == numCell){
-        if(numCell ==10){
-            
-        }
-        else{
-        numCell++;
-        NSLog(@"click    %d",numCell);
-        [self.tableView reloadData];
-        }
+    if(indexPath.row == soundNameArr.count){
+        
     }
     else{
-        editCell.indexPathRow = indexPath.row;
-        
-    }
-}
-//
--(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
-    if(UITableViewCellEditingStyleDelete == editingStyle){
-        
+//        [[EditCatagory defaultCatalog] setIndex:indexPath.row];
+//        NSLog(@"fffff %d",indexPath.row);
     }
 }
 
+
+
+
+-(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
+    if(UITableViewCellEditingStyleDelete == editingStyle){
+        [soundNameArr removeObjectAtIndex:indexPath.row];
+        [mpArr removeObjectAtIndex:indexPath.row];
+    }
+
+    [self.tableView reloadData];
+}
+
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return numCell+1;
+    return soundNameArr.count+1;
+    //return numCell+1;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     EdicCell *cell;
     
-    if(indexPath.row == (numCell)){
+    if(indexPath.row == soundNameArr.count){
         cell = [tableView dequeueReusableCellWithIdentifier:@"add_cell" forIndexPath:indexPath];
-        
     }
     else{
         
         cell = [tableView dequeueReusableCellWithIdentifier:@"list_cell" forIndexPath:indexPath];
-        [cell setInfo:indexPath.row];
+        cell.delegate = self;
+        [cell setInfo:soundNameArr[indexPath.row] indexPath:indexPath.row fileName:fileName];
+
     }
     return cell;
 }
@@ -242,9 +277,9 @@
 }
 
 -(void)viewDidAppear:(BOOL)animated{
-    editCell = [[EdicCell alloc]init];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:Nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -254,14 +289,21 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-    numCell = 0;
+    mpArr = [[EditCatagory defaultCatalog] getMpArr];
+    soundNameArr = [[EditCatagory defaultCatalog] getArrTest];
+    fileName = [[EditCatagory defaultCatalog] getFileName];
+    NSLog(@"listdata: %d",listdata.count);
+    [self.tableView reloadData];
      self.hideView.hidden = YES;
+    
     self.soundArr = [[NSMutableArray alloc]init];
     
 }
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    numCell = 0;
     
 	// Do any additional setup after loading the view.
 }

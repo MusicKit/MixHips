@@ -10,8 +10,8 @@
 #import "AlbumList.h"
 
 @interface MyAlbumViewController : UIViewController
-@property (strong, nonatomic) NSString *album_ID;
-@property (strong,nonatomic) NSString *user_ID;
+@property (weak , nonatomic) NSString *album_ID;
+@property (weak,nonatomic) NSString *user_ID;
 
 
 @end

@@ -13,6 +13,7 @@
 @interface NewsDetailViewController ()
 @property (weak, nonatomic) IBOutlet UITextView *contentsTextView;
 @property (weak, nonatomic) IBOutlet UIImageView *urlImg;
+@property (strong,nonatomic) UIProgressView *progressBar;
 
 @end
 

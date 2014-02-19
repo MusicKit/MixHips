@@ -19,10 +19,11 @@
 #import "Player.h"
 #import "PlayCatalog.h"
 #import "AlbumProfileViewController.h"
+#import "PlayerViewController.h"
 
 @interface AlbumMusicViewController ()<UITableViewDelegate, UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UIButton *allSelectButton;
-@property (weak, nonatomic) IBOutlet UILabel *albumName;
+@property (weak, nonatomic) IBOutlet UILabel *albumNameLable;
 @property (weak, nonatomic) IBOutlet UIImageView *albumImg;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UILabel *artistName;
@@ -47,6 +48,7 @@
     NSMutableArray *soundNameArr;
     NSMutableArray *soundURLArr;
         PlaylistCatagory *playCatagory;
+    PlayerViewController *playerVC;
     NSArray *listTrack;
 }
 -(IBAction)toggleButton:(id)sender{
@@ -87,11 +89,17 @@
     for(indexPath in indexPathArr){
         AlbumList *albumlist = [[Catalog defaultCatalog] musicAt:indexPath.row];
         playlist = [PlayListDB sharedPlaylist];
-        [playlist addMovieWithName:soundNameArr[indexPath.row] nickName:self.user_Name song_id:soundIDArr[indexPath.row]];
+        [playlist addMovieWithName:soundNameArr[indexPath.row] nickName:self.user_Name song_id:soundIDArr[indexPath.row] album_img:albumImgURL];
         [playlist fetchMovies];
+        [playerlist setAlbumImg:albumImgURL];
+        [playerlist setSoundId:soundIDArr[indexPath.row]];
+        NSLog(@"-%@",soundIDArr[indexPath.row]);
+
         dest.albumList = albumlist;
         playerlist.indexPathRow = playlist.data.count;
     }
+        PlayerViewController *nextVC = [self.storyboard instantiateViewControllerWithIdentifier:@"playerPart"];
+        [self.navigationController pushViewController:nextVC animated:YES];
 
     listTrack =  [playlist data];
 
@@ -107,6 +115,7 @@
         alert.alertViewStyle = UIAlertViewStyleDefault;
         [alert show];
     }
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 
@@ -189,7 +198,9 @@
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     AlbumCell *cell = [tableView dequeueReusableCellWithIdentifier:@"music_CELL" forIndexPath:indexPath];
     self.albumList = [soundlist objectAtIndex:indexPath.row];
+    
     [cell setProductInfo:self.albumList indexPath:indexPath.row];
+    
     return cell;
 }
 
@@ -220,7 +231,7 @@
 */
 -(void)setProfile{
     self.artistName.text = self.user_Name;
-    self.albumName.text = [NSString stringWithFormat:@"%@",albumName];
+    self.albumNameLable.text = [NSString stringWithFormat:@"%@",albumName];
     self.listCount.text = [NSString stringWithFormat:@"%@",list_count];
     NSString *url = @"http://mixhips.nowanser.cloulu.com";
     url = [url stringByAppendingString:albumImgURL];
@@ -230,13 +241,17 @@
 
 -(void)viewWillAppear:(BOOL)animated{
         [self AFNetworkingAD];
-    self.navigationController.toolbar.hidden = NO;
+ 
+    [self.navigationController setToolbarHidden:NO animated:NO];
     [self.navigationController setNavigationBarHidden:NO];
     self.allSelectButton.tag =0;
 //    playDB = [PlayListDB sharedPlaylist];
 //    listTrack =  [playDB data];
 }
 
+-(void)viewDidAppear:(BOOL)animated{
+    
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];

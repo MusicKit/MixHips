@@ -16,4 +16,13 @@
 
 + (id)defaultCatalog;
 - (NSUInteger)returnIndexPath;
+
+-(void)setAlbumImg:(NSString *)albumimg;
+-(NSString *)getAlbumImg;
+
+-(void)setSoundId:(NSString *)soundid;
+-(NSString *)getSoundId;
+
+-(void)setAlbumId:(NSString *)albumid;
+-(NSString *)getAlbumId;
 @end

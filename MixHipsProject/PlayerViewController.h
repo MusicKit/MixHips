@@ -14,9 +14,9 @@
 
 @property AVPlayer *player;
 
-@property (strong, nonatomic) AlbumList *list;
 @property (strong, nonatomic) NSString *soundID;
+@property (strong, nonatomic) NSString *albumImg;
 
--(void)returnIndexPath:(NSInteger)indexPath;
+-(void)setImg:(NSInteger)indexPathff;
 
 @end

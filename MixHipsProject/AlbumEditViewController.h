@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AlbumList.h"
 
 @interface AlbumEditViewController : UIViewController
-@property (strong,nonatomic) NSString *soundName;
+@property (strong,nonatomic) AlbumList *list;
 @property (strong, nonatomic)    NSMutableArray *soundArr;
 @end

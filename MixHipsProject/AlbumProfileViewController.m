@@ -25,7 +25,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *followingCount;
 @property (weak, nonatomic) IBOutlet UILabel *followerCount;
 @property (weak, nonatomic) IBOutlet UILabel *userSay;
-@property (weak, nonatomic) IBOutlet UIImageView *userImg;
+@property (weak, nonatomic) IBOutlet UIImageView *userImgg;
 
 
 @end
@@ -152,7 +152,7 @@
     NSString *url = @"http://mixhips.nowanser.cloulu.com";
     url = [url stringByAppendingString:userImg];
     NSURL *imgURL = [NSURL URLWithString:url];
-    [self.userImg setImageWithURL:imgURL];
+    [self.userImgg setImageWithURL:imgURL];
 
 }
 
@@ -228,17 +228,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.navigationController.toolbar.hidden = NO;;
     [self AFNetworkingAD];
-    self.tabBarController.tabBar.barTintColor = [UIColor orangeColor];
     abc=self.list.user_id;
     NSLog(@"zzrwt13r13r13r%@",abc);
     
     playCatagory = [[PlaylistCatagory defaultCatalog]init];
     
     
-    self.progressBar = [[UIProgressView alloc] initWithFrame:CGRectMake(93, 25, 200, 2)];
-    [self.navigationController.toolbar addSubview:self.progressBar];
+    //self.progressBar = [[UIProgressView alloc] initWithFrame:CGRectMake(93, 25, 200, 2)];
+    //[self.navigationController.toolbar addSubview:self.progressBar];
     
 
 	// Do any additional setup after loading the view.

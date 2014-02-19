@@ -18,6 +18,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *textField;
 @property (weak, nonatomic) IBOutlet UIControl *hideView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) UIProgressView *progressBar;
 
 
 @end
@@ -87,7 +88,7 @@
 - (void)search:(NSDictionary *)dic {
     NSDictionary *dd = [NSDictionary dictionaryWithDictionary:dic];
     NSArray *commentlistFF = [dd objectForKey:@"comment_list"];
-    NSString *comment_count = [NSString stringWithFormat:@"%@",[dd objectForKey:@"comment_count"]];
+//    NSString *comment_count = [NSString stringWithFormat:@"%@",[dd objectForKey:@"comment_count"]];
     
     
     ////////////////////
@@ -190,6 +191,7 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     sound_ID = [[SoundIDCatagory defaultCatalog] getSoundid] ;
+    NSLog(@"-- %@",sound_ID);
     playCatagory = [PlaylistCatagory defaultCatalog];
     [self AFNetworkingSearchList];
 }
@@ -207,7 +209,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    self.progressBar = [[UIProgressView alloc] initWithFrame:CGRectMake(93, 25, 200, 2)];
+    [self.navigationController.toolbar addSubview:self.progressBar];
 	// Do any additional setup after loading the view.
     self.hideView.hidden = YES;
     [self.tableView setSeparatorInset:UIEdgeInsetsZero];

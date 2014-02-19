@@ -15,18 +15,23 @@
 #import "MyAlbumViewController.h"
 #import "FollowViewController.h"
 #import "PlaylistCatagory.h"
+#import "MypageCatagory.h"
 
-@interface MyPageViewController ()<UIImagePickerControllerDelegate, UIActionSheetDelegate ,UINavigationControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
+
+@interface MyPageViewController ()<UIImagePickerControllerDelegate, UIActionSheetDelegate ,UINavigationControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, playDelegate4>
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *toggleButton;
 @property (weak, nonatomic) IBOutlet UIImageView *profileImage;
 @property (weak, nonatomic) IBOutlet UILabel *Message;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UILabel *FollowingCount;
 @property (weak, nonatomic) IBOutlet UILabel *FollowerCount;
+@property (strong, nonatomic) UILabel *titleLabel;
+@property (strong, nonatomic ) UIProgressView *progressBar;
 
 @end
 
 @implementation MyPageViewController{
+    MypageCatagory *myCatagory;
     PlaylistCatagory *playCatagory;
     NSMutableArray *albumlist;
     NSString *follwer;
@@ -35,11 +40,14 @@
     NSString *userSay1;
     NSString *userID;
     NSString *userName;
+    NSString *userName1;
+    NSString *soundName1;
     NSMutableArray *albumID;
     UITextField *searchField;
     UIAlertView *alert;
     UIAlertView *alert1;
     NSString *album_id;
+    MyAlbumViewController *dest;
     BOOL editChange;
 }
 
@@ -124,6 +132,7 @@
     }
     else if(buttonIndex == actionSheet.cancelButtonIndex)
     {
+        self.profileImage.image = nil;
         //[actionSheet showInView:self.view];
     }
 }
@@ -153,7 +162,7 @@
 //uploadImg
 -(void)AFNetworkingUploadImg:(UIImage *)img{
     // NSString *d = [NSString stringWithFormat:@"%@",searchField.text];
-    NSString *i = [NSString stringWithFormat:@"7"]; ///   본인 아이디
+    NSString *i = [NSString stringWithFormat:@"6"]; ///   본인 아이디
     NSData *imageData = UIImageJPEGRepresentation(img, 0.5);
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{@"foo":@"bar", @"user_id":i};
@@ -170,7 +179,7 @@
 //network deleteAlbum
 -(void)AFNetworkingDeleteAlbum:(NSString *)albumid{
     // NSString *d = [NSString stringWithFormat:@"%@",searchField.text];
-    NSString *i = [NSString stringWithFormat:@"7"]; ///   본인 아이디
+    NSString *i = [NSString stringWithFormat:@"6"]; ///   본인 아이디
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{@"foo":@"bar", @"user_id":i , @"album_id":albumid};
     [manager POST: @"http://mixhips.nowanser.cloulu.com/delete_album" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -184,7 +193,7 @@
 //network say
 -(void)AFNetworkingADSay{
    // NSString *d = [NSString stringWithFormat:@"%@",searchField.text];
-    NSString *i = [NSString stringWithFormat:@"7"]; ///   본인 아이디
+    NSString *i = [NSString stringWithFormat:@"6"]; ///   본인 아이디
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{@"foo":@"bar", @"user_id":i , @"user_say":searchField.text};
     [manager POST: @"http://mixhips.nowanser.cloulu.com/update_user_say" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -211,7 +220,9 @@
 //    NSLog(@"%d",album.count);
     if([string isEqualToString:@"<null>"])
     {
-        NSLog(@"NYL");
+        if(albumlist.count == 1){
+        [albumlist removeObjectAtIndex:0];
+        }
     }
     else{
     albumID = [[NSMutableArray alloc]init];
@@ -238,10 +249,10 @@
 }
 
 -(void)AFNetworkingAD{
-    NSString *d = [NSString stringWithFormat:@"7"];
-    NSString *i = [NSString stringWithFormat:@"7"]; ///   본인 아이디
+    NSString *d = [NSString stringWithFormat:@"6"];
+    NSString *i = [NSString stringWithFormat:@"6"]; ///   본인 아이디
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    NSDictionary *parameters = @{@"foo":@"bar", @"my_id(user_id(본인))":i , @"user_id":d};
+    NSDictionary *parameters = @{@"foo":@"bar", @"my_id(user_id)":i , @"user_id":d};
     [manager POST: @"http://mixhips.nowanser.cloulu.com/request_user" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 NSLog(@"JSON: %@", responseObject);
         [self test:responseObject];
@@ -273,8 +284,8 @@
 //        
 //    }
     if([segue.identifier isEqualToString:@"following"]){
-        FollowViewController *dest = (FollowViewController *)segue.destinationViewController;
-        dest.user_ID = userID;
+        FollowViewController *dest1 = (FollowViewController *)segue.destinationViewController;
+        dest1.user_ID = userID;
     }
     if([segue.identifier isEqualToString:@"follower"]){
         
@@ -300,11 +311,12 @@
     }
     else if(editChange == YES){
         if(indexPath.row < albumlist.count){
-            MyAlbumViewController *dest = [[MyAlbumViewController alloc]init];
-            dest.album_ID = albumID[indexPath.row];
-            dest.user_ID = userID;
             
-            [self.navigationController pushViewController:dest animated:NO];
+            [[MypageCatagory defaultCatalog] setAlbuId:albumID[indexPath.row]];
+            MyAlbumViewController *nextVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MyAlbum"];
+            [self.navigationController pushViewController:nextVC animated:YES];
+
+           // [self.navigationController pushViewController:dest animated:NO];
         }
         else{
             
@@ -327,13 +339,22 @@
     else {
         
         cell= [collectionView dequeueReusableCellWithReuseIdentifier:@"albumlist_cell" forIndexPath:indexPath];
-        NSLog(@"rr r %d",albumlist.count);
+       // NSLog(@"rr r %d",albumlist.count);
         self.list = [albumlist objectAtIndex:indexPath.row];
         NSLog(@"%@",self.list);
         
         [cell setAlbumInfo:self.list];
     }
 	return cell;
+}
+
+-(void)updateProgressViewWithPlayer:(NSString *)string time:(float)time{
+    self.progressBar.progress = time;
+}
+
+-(void)setUser:(NSString *)userNamef setSound:(NSString *)soundNamef{
+    soundName1 = soundNamef;
+    userName1 = userNamef;
 }
 
 
@@ -354,12 +375,43 @@
     editChange = YES;
     [self AFNetworkingAD];
     playCatagory = [PlaylistCatagory defaultCatalog];
+    
+    if(soundName1 == NULL){
+        
+    }
+    else{
+        self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(92 , 5, 200, 20)];
+        [self.titleLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:14]];
+        [self.titleLabel setBackgroundColor:[UIColor clearColor]];
+        [self.titleLabel setTextColor:[UIColor blackColor]];
+        [self.titleLabel setText:[NSString stringWithFormat:@"%@ - %@",soundName1, userName1]];
+        [self.titleLabel setTextAlignment:NSTextAlignmentCenter];
+        // [titleV addSubview:self.titleLabel];
+        [self.navigationController.toolbar addSubview:self.titleLabel];
+    }
+    
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.collectionView reloadData];
+    dest = [[MyAlbumViewController alloc]init];
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *dataPath = [documentsDirectory stringByAppendingPathComponent:@"/Music"];
+    playCatagory = [PlaylistCatagory defaultCatalog];
+    playCatagory.delegate4 = self;
+    if (![[NSFileManager defaultManager] fileExistsAtPath:dataPath])
+        [[NSFileManager defaultManager] createDirectoryAtPath:dataPath withIntermediateDirectories:NO attributes:nil error:nil];
+    
+    self.progressBar = [[UIProgressView alloc] initWithFrame:CGRectMake(93, 25, 200, 2)];
+    [self.navigationController.toolbar addSubview:self.progressBar];
+    
 	// Do any additional setup after loading the view.
+    
+    
 	
 	
 	//[self updateData];

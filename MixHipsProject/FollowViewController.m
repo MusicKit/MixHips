@@ -15,7 +15,7 @@
 #import "FollowDelegate.h"
 @interface FollowViewController () <UICollectionViewDelegate, UICollectionViewDataSource, FollowDelegate>
 
-
+@property (strong, nonatomic) UIProgressView *progressBar;
 
 
 @end
@@ -115,6 +115,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+ 
 	// Do any additional setup after loading the view.
     
 }

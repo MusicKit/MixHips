@@ -15,10 +15,12 @@
 #import "NewsDetailViewController.h"
 #import "PlaylistCatagory.h"
 
-@interface NewsViewController ()<UIAlertViewDelegate , UITableViewDataSource, UITableViewDelegate>
+
+@interface NewsViewController ()<UIAlertViewDelegate , UITableViewDataSource, UITableViewDelegate, playDelegate3>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-
+@property (strong, nonatomic) UIProgressView *progressBar;
+@property (strong, nonatomic) UILabel *titleLabel;
 
 @end
 
@@ -26,6 +28,8 @@
     Newslist *newlist;
     NetWorkingCenter *net;
     PlaylistCatagory *playCatagory;
+    NSString *userName1;
+    NSString *soundName1;
 }
 
 -(IBAction)toggleButton:(id)sender{
@@ -67,6 +71,16 @@
 -(void)reloadTable {
     [self.tableView reloadData];
 }
+
+-(void)updateProgressViewWithPlayer:(NSString *)string time:(float)time{
+    self.progressBar.progress = time;
+}
+
+-(void)setUser:(NSString *)userNamef setSound:(NSString *)soundNamef{
+    soundName1 = soundNamef;
+    userName1 = userNamef;
+}
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -81,6 +95,20 @@
     [self.tableView reloadData];
     playCatagory = [PlaylistCatagory defaultCatalog];
     
+    if(soundName1 == NULL){
+        
+    }
+    else{
+        self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(92 , 5, 200, 20)];
+        [self.titleLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:14]];
+        [self.titleLabel setBackgroundColor:[UIColor clearColor]];
+        [self.titleLabel setTextColor:[UIColor blackColor]];
+        [self.titleLabel setText:[NSString stringWithFormat:@"%@ - %@",soundName1, userName1]];
+        [self.titleLabel setTextAlignment:NSTextAlignmentCenter];
+        // [titleV addSubview:self.titleLabel];
+        [self.navigationController.toolbar addSubview:self.titleLabel];
+    }
+    
 }
 
 - (void)viewDidLoad
@@ -89,6 +117,12 @@
 	// Do any additional setup after loading the view.
     [[NewsCatalog defaultCatalog] selectDelegate:self];
     newlist = [NewsCatalog defaultCatalog];
+    
+    self.progressBar = [[UIProgressView alloc] initWithFrame:CGRectMake(93, 25, 200, 2)];
+    [self.navigationController.toolbar addSubview:self.progressBar];
+    
+    playCatagory = [PlaylistCatagory defaultCatalog];
+    playCatagory.delegate3 = self;
 
     [self.tableView setSeparatorInset:UIEdgeInsetsZero];
 //    [self.tableView reloadData];

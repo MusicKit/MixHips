@@ -98,7 +98,14 @@
     list.comment_time = commentTime;
     list.contents = contents;
     return list;
-    
+}
+
+
++(id)uploadAlbum:(NSData *)albumData albumName:(NSString *)albumName{
+    AlbumList *list = [[AlbumList alloc ]init];
+    list.albumdata = albumData;
+    list.albumName = albumName;
+    return list;
 }
 
 

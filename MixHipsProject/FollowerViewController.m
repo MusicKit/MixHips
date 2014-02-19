@@ -14,6 +14,7 @@
 
 @interface FollowerViewController ()<UICollectionViewDataSource, UICollectionViewDelegate>
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (strong, nonatomic) UIProgressView *progressBar;
 
 @end
 
@@ -107,6 +108,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+  
 	// Do any additional setup after loading the view.
 }
 
