@@ -8,6 +8,8 @@
 
 #import "Player.h"
 #import <AVFoundation/AVFoundation.h>
+#import "cacheList.h"
+#import "PlayListDB.h"
 
 @interface Player()<AVAudioPlayerDelegate, AVAudioRecorderDelegate>
 @end
@@ -17,6 +19,7 @@
     NSString *_albumIMG;
     NSString *_soundID;
     NSString *_albumID;
+    cacheList *data;
 }
 
 static Player *_instance = nil;
@@ -33,9 +36,20 @@ static Player *_instance = nil;
 {
     self = [super init];
     if (self) {
+        [self loadData];
     }
     return self;
 }
+
+- (void) loadData
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+   NSNumber *ff = [defaults objectForKey:@"indexpath"];
+    self.indexPathRow = ff.integerValue;
+    
+    NSLog(@"%d",self.indexPathRow);
+}
+
 -(void)setAlbumId:(NSString *)albumid{
     _albumID = albumid;
 }
@@ -57,7 +71,12 @@ static Player *_instance = nil;
     return _albumIMG;
 }
 
-- (NSUInteger)returnIndexPath
+
+-(void)setIndexPathrow:(NSInteger)indexPathff{
+    self.indexPathRow = indexPathff;
+}
+
+- (NSInteger)returnIndexPath
 {
     return self.indexPathRow;
 }

@@ -19,6 +19,7 @@
 #import "MypageCatagory.h"
 #import "Player.h"
 #import "PlayerViewController.h"
+#import "PlayListViewController.h"
 
 @interface MyAlbumViewController ()<UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -26,6 +27,9 @@
 @property (weak, nonatomic) IBOutlet UIImageView *albumImg;
 @property (weak, nonatomic) IBOutlet UIButton *allSelectButton;
 @property (strong, nonatomic) UIProgressView *progressBar;
+@property (weak, nonatomic) IBOutlet UIView *netView;
+@property (weak, nonatomic) IBOutlet UIButton *renetButton;
+
 
 @end
 
@@ -44,17 +48,18 @@
     MypageCatagory *myCatagory;
     Player *playerCatagory;
     NSArray *listTrack;
+    UIActivityIndicatorView *indicator;
 }
 
--(IBAction)toggleButton:(id)sender{
-    if(playCatagory.player.rate == 1.0){
-        [playCatagory pause];
-    }
-    else{
-        [playCatagory.player play];
-    }
+-(IBAction)listJoin:(id)sender{
+    PlayListViewController *nextVC = [self.storyboard instantiateViewControllerWithIdentifier:@"playlist"];
+    [self.navigationController pushViewController:nextVC animated:YES];
 }
 
+-(IBAction)restartNet:(id)sender{
+    [self AFNetworkingAD];
+    self.netView.hidden = YES;
+}
 /* 보류
 -(IBAction)selectMusicPlay:(id)sender{
     PlayListViewController *dest = [[PlayListViewController alloc]init];
@@ -77,12 +82,14 @@
     for (NSInteger r = 0; r < [self.tableView numberOfRowsInSection:0]; r++) {
         [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:r inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
         self.allSelectButton.tag = 1;
+        [self.allSelectButton setTitle:@"전체해제" forState:UIControlStateNormal];
     }
     }
     else if(self.allSelectButton.tag == 1){
     for (NSInteger r = 0; r < [self.tableView numberOfRowsInSection:0]; r++) {
         [self.tableView deselectRowAtIndexPath:[NSIndexPath indexPathForRow:r inSection:0] animated:NO];
         self.allSelectButton.tag =0;
+        [self.allSelectButton setTitle:@"전체선택" forState:UIControlStateNormal];
     }
     }
 }
@@ -111,6 +118,8 @@
         
         [playCatagory playStart:soundID];
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+        PlayerViewController *nextVC = [self.storyboard instantiateViewControllerWithIdentifier:@"playerPart"];
+        [self.navigationController presentViewController:nextVC animated:NO completion:nil];
         //고치자    [self.navigationController pushViewController:dest animated:NO];
     }
     else{
@@ -118,27 +127,8 @@
         alert.alertViewStyle = UIAlertViewStyleDefault;
         [alert show];
     }
-    PlayerViewController *nextVC = [self.storyboard instantiateViewControllerWithIdentifier:@"playerPart"];
-    [self.navigationController pushViewController:nextVC animated:YES];
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
-
-
-//-(IBAction)selectMusicPlay:(id)sender{
-//    PlayListViewController *dest = [[PlayListViewController alloc]init];
-//    NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-//    NSArray *indexPathArr = [self.tableView indexPathsForSelectedRows];
-//    for(indexPath in indexPathArr){
-//        AlbumList *albumlist = [[Catalog defaultCatalog] musicAt:indexPath.row];
-//        playlist = [PlayListDB sharedPlaylist];
-//        [playlist addMovieWithName:soundNameArr[indexPath.row] nickName:userName song_id:soundIDArr[indexPath.row]];
-//        [playlist fetchMovies];
-//        dest.albumList = albumlist;
-//    }
-//    [[Player defaultCatalog] setAlbumImg:albumImgURL];
-//    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-//    //[self.navigationController popToRootViewControllerAnimated:YES];
-//}
 
 - (void)test:(NSDictionary *)dic {
     NSLog(@"dic : %@", dic);
@@ -166,17 +156,21 @@
     
 }
 -(void)AFNetworkingAD{
+    [indicator startAnimating];
     NSString *d = [NSString stringWithFormat:@"%@",self.album_ID];
     NSLog(@"albumID : %@",self.album_ID);
-    NSString *i = [NSString stringWithFormat:@"7"]; ///   본인 아이디
+    NSString *i = [NSString stringWithFormat:@"6"]; ///   본인 아이디
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{@"foo":@"bar", @"my_id(user_id(본인))":i , @"album_id":d};
     [manager POST: @"http://mixhips.nowanser.cloulu.com/request_album" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"JSON: %@", responseObject);
         [self test:responseObject];
+        [indicator stopAnimating];
         [self setProfile];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
+        self.netView.hidden = NO;
+        [indicator stopAnimating];
     }];
 }
 
@@ -207,6 +201,10 @@
 
 }
 
+-(void)dismissVC{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -217,6 +215,7 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated{
+    [self.navigationItem.backBarButtonItem setTitle:@" "];
     self.album_ID = [[MypageCatagory defaultCatalog] getalbumID];
     [self AFNetworkingAD];
     playCatagory = [PlaylistCatagory defaultCatalog];
@@ -227,7 +226,19 @@
 {
     [super viewDidLoad];
     
-    self.progressBar = [[UIProgressView alloc] initWithFrame:CGRectMake(93, 25, 200, 2)];
+    self.netView.hidden = YES;
+    CALayer * l = [self.netView layer];
+    [l setMasksToBounds:YES];
+    [l setCornerRadius:6.0];
+    
+    //indicator
+    indicator = [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(135, 200, 50, 50)];
+    indicator.hidesWhenStopped = YES;
+    [self.view addSubview:indicator];
+    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"back.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(dismissVC)];
+
+    
     [self.navigationController.toolbar addSubview:self.progressBar];
 	// Do any additional setup after loading the view.
     [self.tableView setSeparatorInset:UIEdgeInsetsZero];

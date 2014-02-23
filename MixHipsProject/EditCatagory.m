@@ -12,6 +12,7 @@
     NSMutableArray *_arrTest;
     NSData *fileData;
     NSMutableArray *mpArr;
+    NSMutableArray *_fileArr;
     NSMutableData *data11;
     NSMutableArray *datapath;
     NSInteger numCell;
@@ -36,6 +37,7 @@ static EditCatagory *_instance = nil;
     if (self) {
         _arrTest = [[NSMutableArray alloc]init];
         mpArr = [[NSMutableArray alloc]init];
+        _fileArr = [[NSMutableArray alloc]init];
         listData = [[NSMutableArray alloc]init];
         
 //       self.soundNameArr = [[NSMutableArray alloc]init];
@@ -63,6 +65,7 @@ static EditCatagory *_instance = nil;
 -(void)initialize{
     mpArr = [[NSMutableArray alloc]init];
     _arrTest = [[NSMutableArray alloc]init];
+    _fileArr = [[NSMutableArray alloc]init];
  //   listData = [[NSMutableArray alloc]init];
 }
 -(void)setData11:(NSData *)data1
@@ -114,11 +117,16 @@ static EditCatagory *_instance = nil;
     return indexPathRow1;
 }
 
--(void)setFileName:(NSString *)filename{
-    fileName = filename;
+//-(void)setFileName:(NSString *)filename{
+//    NSLog(@"%@",fileName);
+//    [_fileArr addObject:fileName];
+//}
+
+-(void)setFile:(NSString *)filename{
+    [_fileArr addObject:filename];
 }
--(NSString *)getFileName{
-    return fileName;
+-(NSMutableArray *)getFileName{
+    return _fileArr;
 }
 
 @end

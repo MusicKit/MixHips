@@ -32,8 +32,9 @@
 -(void)albumName:(NSString *)albumName;
 
 -(void)setIndex:(NSInteger)indexPathRow;
--(NSInteger)getIndex;
+//-(NSInteger)getIndex;
 
 -(void)setFileName:(NSString *)filename;
--(NSString *)getFileName;
+-(NSMutableArray *)getFileName;
+-(void)setFile:(NSString *)filename;
 @end

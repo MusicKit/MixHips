@@ -18,6 +18,7 @@
     NSString *url = @"http://mixhips.nowanser.cloulu.com";
     url = [url stringByAppendingString:list.user_img];
     NSURL *imgURL = [NSURL URLWithString:url];
+//    self.artistImg setImageWithURL:imgURL placeholderImage:<#(UIImage *)#>
     [self.artistImg setImageWithURL:imgURL];
     NSLog(@"url %@",imgURL);
 }

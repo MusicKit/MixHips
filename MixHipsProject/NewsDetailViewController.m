@@ -10,8 +10,12 @@
 #import "AFHTTPRequestOperationManager.h"
 #import "UIImageView+AFNetworking.h"
 #import "PlaylistCatagory.h"
+#import "PlayListViewController.h"
 @interface NewsDetailViewController ()
 @property (weak, nonatomic) IBOutlet UITextView *contentsTextView;
+@property (weak, nonatomic) IBOutlet UIView *netView;
+@property (weak, nonatomic) IBOutlet UIButton *renetButton;
+
 @property (weak, nonatomic) IBOutlet UIImageView *urlImg;
 @property (strong,nonatomic) UIProgressView *progressBar;
 
@@ -24,16 +28,26 @@
     NSString *adTitle;
     NSString *adContents;
     NSString *adURL;
-    
+    UIActivityIndicatorView *indicator;
 }
 
--(IBAction)toggleButton:(id)sender{
-    if(playCatagory.player.rate == 1.0){
-        [playCatagory pause];
-    }
-    else{
-        [playCatagory.player play];
-    }
+-(IBAction)listJoin:(id)sender{
+    PlayListViewController *nextVC = [self.storyboard instantiateViewControllerWithIdentifier:@"playlist"];
+    [self.navigationController pushViewController:nextVC animated:YES];
+}
+
+-(IBAction)restartNet:(id)sender{
+    [self AFNetworkingAD];
+    self.netView.hidden = YES;
+}
+
+-(IBAction)urlJoin:(id)sender{
+    NSString *fff = [NSString stringWithFormat:@"http://%@",adURL];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: fff]
+     ];
+    NSLog(@"%@%@",@"Failed to open url:",[adURL description]);
+
+    NSLog(@"%@",adURL);
 }
 
 - (void)test:(NSDictionary *)dic {
@@ -49,10 +63,10 @@
     NSLog(@"%@",adContents);
     adTitle = [NSString stringWithFormat:@"%@",[abc[0] objectForKey:@"ad_title"]];
     adURL = [NSString stringWithFormat:@"%@",[abc[0] objectForKey:@"ad_url"]];
-
 }
 
 -(void)AFNetworkingAD{
+    [indicator startAnimating];
     NSString *i = [NSString stringWithFormat:@"%@",self.newsList.ad_id];
     NSLog(@"id: %@",self.newsList.ad_id);
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -60,15 +74,18 @@
     [manager POST: @"http://mixhips.nowanser.cloulu.com/request_ad_detail" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 NSLog(@"JSON: %@", responseObject);
         [self test:responseObject];
+        [indicator stopAnimating];
         [self setDetail];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
+        [indicator stopAnimating];
+        self.netView.hidden = NO;
     }];
 }
 
 -(void)setDetail{
    self.contentsTextView.text = adContents;
-    self.title = adTitle;
+   // self.title = adTitle;
     
    NSString *url = @"http://mixhips.nowanser.cloulu.com/";
    url = [url stringByAppendingString:adURL];
@@ -85,14 +102,33 @@
     return self;
 }
 
+-(void)dismissVC{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 -(void)viewWillAppear:(BOOL)animated{
+
     [self AFNetworkingAD];
     playCatagory = [PlaylistCatagory defaultCatalog];
+
+
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.netView.hidden = YES;
+    CALayer * l = [self.netView layer];
+    [l setMasksToBounds:YES];
+    [l setCornerRadius:6.0];
+    
+    
+    indicator = [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(135, 200, 50, 50)];
+    indicator.hidesWhenStopped = YES;
+    [self.view addSubview:indicator];
+    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"back.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(dismissVC)];
 	// Do any additional setup after loading the view.
 }
 

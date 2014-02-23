@@ -13,6 +13,7 @@
 #import "AFHTTPRequestOperationManager.h"
 #import "AlbumMusicViewController.h"
 #import "PlaylistCatagory.h"
+#import "PlayListViewController.h"
 #define kCellID @"IMG_CELL_ID"
 
 @interface ListViewController ()< UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UISearchBarDelegate, playDelegate2>
@@ -20,8 +21,12 @@
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UIControl *hideView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *searchButton;
+@property (weak, nonatomic) IBOutlet UIView *netView;
+@property (weak, nonatomic) IBOutlet UIButton *renetButton;
+@property (weak, nonatomic) IBOutlet UIView *searchV;
 @property (strong, nonatomic) UIProgressView *progressBar;
 @property (strong , nonatomic) UILabel *titleLabel;
+@property (strong, nonatomic) UIButton *testButton;
 
 @property (strong, nonatomic) NSMutableArray* dataList;
 
@@ -39,18 +44,17 @@
     NSMutableArray *like_count;
     NSMutableArray *albumlistCU;
     NSArray *albumlist;
+    UIActivityIndicatorView *indicator;
+    NSString *soundid11;
+    BOOL ch;
     
     int indexff;
     int index;
 }
 
--(IBAction)toggleButton:(id)sender{
-    if(playCatagory.player.rate == 1.0){
-        [playCatagory pause];
-    }
-    else{
-        [playCatagory.player play];
-    }
+-(IBAction)listJoin:(id)sender{
+    PlayListViewController *nextVC = [self.storyboard instantiateViewControllerWithIdentifier:@"playlist"];
+    [self.navigationController pushViewController:nextVC animated:YES];
 }
 
 //앨범 검색 버튼 눌렀을때
@@ -63,8 +67,13 @@
     self.searchButton.enabled = NO;
 }
 
+-(IBAction)restartNet:(id)sender{
+    [self AFNetworkingAD:collectIndex];
+    self.netView.hidden = YES;
+}
+
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
-    [self AFNetworkingSearchList:[NSString stringWithFormat:@"1"] searchText:self.searchView.text];
+    [self AFNetworkingSearchList:collectIndex searchText:self.searchView.text];
     float height = self.searchView.frame.size.height;
     self.collectionView.center = CGPointMake(self.collectionView.center.x, self.collectionView.center.y - height);
     [self.searchView resignFirstResponder];
@@ -73,7 +82,7 @@
     self.hideView.hidden = YES;
     self.searchView.hidden = YES;
     self.searchButton.enabled = YES;
-    
+    self.searchView.text = @"";
 }
 //여백 눌렀을때 키보드 사라짐
 -(IBAction)dismissKeyboard:(id)sender{
@@ -86,6 +95,27 @@
     self.searchButton.enabled = YES;
 }
 
+-(void)toggleButton:(id)sender{
+    if(ch == YES){
+        [playCatagory playStart:soundid11];
+        [self.testButton setImage:[UIImage imageNamed:@"stop.png"] forState:UIControlStateNormal];
+    }
+    else{
+        if(playCatagory.player.rate == 1.0){
+            [playCatagory.player pause];
+            [self.testButton setImage:[UIImage imageNamed:@"play.png"] forState:UIControlStateNormal];
+        }
+        else{
+            [playCatagory.player play];
+            [self.testButton setImage:[UIImage imageNamed:@"stop.png"] forState:UIControlStateNormal];
+        }
+        
+    }
+}
+
+-(void)notiPlay{
+    ch = NO;
+}
 
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
@@ -102,11 +132,26 @@
 
 -(void)updateProgressViewWithPlayer:(NSString *)string time:(float)time{
     self.progressBar.progress = time;
+    self.progressBar.progress = [[PlaylistCatagory defaultCatalog] getTime];
+    if(playCatagory.player.rate == 1.0){
+        [self.testButton setImage:[UIImage imageNamed:@"stop.png"] forState:UIControlStateNormal];
+    }
+    else{
+        [self.testButton setImage:[UIImage imageNamed:@"play.png"] forState:UIControlStateNormal];
+    }
+
 }
 
 -(void)setUser:(NSString *)userNamef setSound:(NSString *)soundNamef{
     soundName1 = soundNamef;
     userName1 = userNamef;
+    if(soundName1 == NULL){
+        NSLog(@"---");
+    }
+    else{
+        
+        [self.titleLabel setText:[NSString stringWithFormat:@"%@ - %@",soundName1, userName1]];
+    }
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
@@ -115,6 +160,7 @@
 
 //network search album
 - (void)search:(NSDictionary *)dic {
+ 
     NSDictionary *dd = [NSDictionary dictionaryWithDictionary:dic];
     albumlist = [dd objectForKey:@"album_list"];
     ////////////////////
@@ -125,6 +171,10 @@
     userName = [[NSMutableArray alloc ]init];
     like_count = [[NSMutableArray alloc]init];
     albumlistCU = [[NSMutableArray alloc]init];
+    if(albumlist.count == 0){
+        self.searchV.hidden = NO;
+    }
+    else{
     for(int i=0;i<albumlist.count;i++)
     {
         [albumID addObject:[albumlist[i] objectForKey:@"album_id"]];
@@ -134,14 +184,11 @@
         [userName addObject:[albumlist[i] objectForKey:@"user_name"]];
         
         [albumlistCU addObject:[AlbumList Albumlist:albumID[i] album_img:albumImg[i] album_name:albumName[i] like:like_count[i] user_name:userName[i]]];
-        
     }
-
-    NSLog(@"dfdf%d",albumlistCU.count);
-    [self.collectionView reloadData];
-    
+    }
 }
 -(void)AFNetworkingSearchList:(NSString *)indexf searchText:(NSString *)searchText{
+       [indicator startAnimating];
     NSString *i = [NSString stringWithFormat:@"%@",indexf];
     NSString *d = searchText;
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -149,70 +196,20 @@
     [manager POST: @"http://mixhips.nowanser.cloulu.com/search_album" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         //        NSLog(@"JSON: %@", responseObject);
         [self search:responseObject];
+        [indicator stopAnimating];
+        [self.collectionView reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
     }];
 }
 
 
-//- (void)ff:(NSDictionary *)dic {
-//    NSDictionary *dd = [NSDictionary dictionaryWithDictionary:dic];
-//    albumlist = [dd objectForKey:@"album_list"];
-//    ////////////////////
-//    NSLog(@"%d",albumlist.count);
-//    
-//    NSMutableArray *albumid1 =[[NSMutableArray alloc]init];
-//    NSMutableArray *albumimg1 =[[NSMutableArray alloc]init];
-//    NSMutableArray *albumname1 =[[NSMutableArray alloc]init];
-//    NSMutableArray *like_count1 =[[NSMutableArray alloc]init];
-//    NSMutableArray *username1 =[[NSMutableArray alloc]init];
-//    NSMutableArray *albumlistcu1 =[[NSMutableArray alloc]init];
-//    for(int i=0;i<albumlist.count;i++)
-//    {
-//        NSString *lastData = [NSString stringWithFormat:@"%@",albumlist[i]];
-//        if([lastData isEqualToString:@"<null>"]){
-//            
-//            break;
-//        }
-//        else{
-//            [albumid1 addObject:[albumlist[i] objectForKey:@"album_id"]];
-//            [albumimg1 addObject:[albumlist[i] objectForKey:@"album_img_url"]];
-//            [albumname1 addObject:[albumlist[i] objectForKey:@"album_name"]];
-//            [like_count1 addObject:[albumlist[i] objectForKey:@"like_count"]];
-//            [username1 addObject:[albumlist[i] objectForKey:@"user_name"]];
-//            
-//            [albumlistcu1 addObject:[AlbumList Albumlist:albumID[i] album_img:albumImg[i] album_name:albumName[i] like:like_count[i] user_name:userName[i]]];
-//           // albumlistCU addObject:<#(id)#>
-//        }
-//    }
-//    //indexff = albumlistCU.count;
-//    NSLog(@"dfdf%d",albumID.count);
-//    [self.collectionView reloadData];
-//    
-//}
-//
-//-(void)AFNetworkingff:(NSString *)indexfff{
-//    NSLog(@"index : %@",indexfff);
-//    NSString *i = [NSString stringWithFormat:@"%@",indexfff];
-//    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-//    NSDictionary *parameters = @{@"foo":@"bar", @"page_index":i};
-//    [manager POST: @"http://mixhips.nowanser.cloulu.com/request_album_list" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//        //        NSLog(@"JSON: %@", responseObject);
-//        [self ff:responseObject];
-//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        NSLog(@"Error: %@", error);
-//    }];
-//}
-
 //network album list
 - (void)test:(NSDictionary *)dic {
     NSDictionary *dd = [NSDictionary dictionaryWithDictionary:dic];
     albumlist = [dd objectForKey:@"album_list"];
-    ////////////////////
-    NSLog(@"%d",albumlist.count);
-    
 
-    
+    NSLog(@"%d",albumlist.count);
     for(int i=0;i<albumlist.count;i++)
     {
         NSString *lastData = [NSString stringWithFormat:@"%@",albumlist[i]];
@@ -230,14 +227,15 @@
         [albumlistCU addObject:[AlbumList Albumlist:albumID[i+(index-1)*15] album_img:albumImg[i+(index-1)*15] album_name:albumName[i+(index-1)*15] like:like_count[i+(index-1)*15] user_name:userName[i+(index-1)*15]]];
         }
     }
+    NSLog(@"%d",like_count.count);
     indexff = albumlistCU.count;
-    NSLog(@"dfdf%d",albumID.count);
     [self.collectionView reloadData];
 }
 
 
 
 -(void)AFNetworkingAD:(NSString *)indexfff{
+    [indicator startAnimating];
     NSLog(@"index : %@",indexfff);
     NSString *i = [NSString stringWithFormat:@"%@",indexfff];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -245,9 +243,12 @@
     [manager POST: @"http://mixhips.nowanser.cloulu.com/request_album_list" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         //        NSLog(@"JSON: %@", responseObject);
         [self test:responseObject];
+        [indicator stopAnimating];
         [self.collectionView reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
+        [indicator stopAnimating];
+        self.netView.hidden = NO;
     }];
 }
 
@@ -304,8 +305,6 @@
     [cell setPlaylistInfo:self.list];
 	return cell;
 }
-
-
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -315,22 +314,52 @@
     return self;
 }
 
+- (void) loadData
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    NSString *userName11 = [defaults objectForKey:@"userName"];
+    NSString *soundName11 = [defaults objectForKey:@"soundName"];
+    soundid11 = [defaults objectForKey:@"soundId"];
+    
+    
+    [self.titleLabel setText:[NSString stringWithFormat:@"%@ - %@",soundName11, userName11]];
+}
 
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
+    ch = YES;
     
+    self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(92 , 7, 200, 20)];
+    [self.titleLabel setFont:[UIFont fontWithName:@"system - system" size:10]];
+    [self.titleLabel setBackgroundColor:[UIColor clearColor]];
+    [self.titleLabel setTextColor:[UIColor blackColor]];
+    [self.titleLabel setTextAlignment:NSTextAlignmentLeft];
+    [self.navigationController.toolbar addSubview:self.titleLabel];
+     [self loadData];
+    self.netView.hidden = YES;
+    CALayer * l = [self.netView layer];
+    [l setMasksToBounds:YES];
+    [l setCornerRadius:6.0];
     
-	// Do any additional setup after loading the view.
-    self.progressBar = [[UIProgressView alloc] initWithFrame:CGRectMake(93, 25, 200, 2)];
+
+    self.progressBar = [[UIProgressView alloc] initWithFrame:CGRectMake(93, 30, 200, 4)];
+    [self.progressBar setTintColor:[UIColor blackColor]];
     [self.navigationController.toolbar addSubview:self.progressBar];
     playCatagory = [PlaylistCatagory defaultCatalog];
-    playCatagory.delegate2 = self;
+    
+    self.testButton = [[UIButton alloc]initWithFrame:CGRectMake( 50,2,40 ,40)];
+    [self.testButton addTarget:self action:@selector(toggleButton:) forControlEvents:UIControlEventTouchUpInside];
+    [self.testButton setImage:[UIImage imageNamed:@"play.png"] forState:UIControlStateNormal];
+    [self.navigationController.toolbar addSubview:self.testButton];
 
- 
-	
+	//indicator
+    indicator = [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(135, 200, 50, 50)];
+    indicator.hidesWhenStopped = YES;
+    [self.view addSubview:indicator];
 	//[self updateData];
     
     self.hideView.hidden = YES;
@@ -338,11 +367,12 @@
 
 }
 
-
-
-
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    
+    playCatagory.delegate2 = self;
+    
+    self.searchV.hidden = YES;
     albumlistCU = [[NSMutableArray alloc]init];
     albumlist = [[NSArray alloc]init];
     albumID = [[NSMutableArray alloc]init];
@@ -358,23 +388,14 @@
     
     playCatagory = [PlaylistCatagory defaultCatalog];
     self.searchView.hidden = YES;
-//    [self.navigationController setToolbarHidden:NO];
-//    [self.navigationController setToolbarHidden:NO animated:YES];
-    
-    if(soundName1 == NULL){
-        NSLog(@"---");
+    self.progressBar.progress = [[PlaylistCatagory defaultCatalog] getTime];
+    if(playCatagory.player.rate == 1.0){
+        [self.testButton setImage:[UIImage imageNamed:@"stop.png"] forState:UIControlStateNormal];
     }
     else{
-        self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(92 , 5, 200, 20)];
-        [self.titleLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:14]];
-        [self.titleLabel setBackgroundColor:[UIColor clearColor]];
-        [self.titleLabel setTextColor:[UIColor blackColor]];
-        [self.titleLabel setText:[NSString stringWithFormat:@"%@ - %@",soundName1, userName1]];
-        [self.titleLabel setTextAlignment:NSTextAlignmentCenter];
-        // [titleV addSubview:self.titleLabel];
-        [self.navigationController.toolbar addSubview:self.titleLabel];
+        [self.testButton setImage:[UIImage imageNamed:@"play.png"] forState:UIControlStateNormal];
     }
-    
+
 }
 
 - (void)didReceiveMemoryWarning

@@ -11,4 +11,5 @@
 @protocol playDelegate4 <NSObject>
 -(void)updateProgressViewWithPlayer:(NSString *)string time:(float)time;
 -(void)setUser:(NSString *)userNamef setSound:(NSString *)soundNamef;
+-(void)notiPlay;
 @end

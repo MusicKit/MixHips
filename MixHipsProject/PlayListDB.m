@@ -134,12 +134,16 @@ static PlayListDB *_instance = nil;
     sqlite3_finalize(stmt);
 }
 
+-(NSArray *)cacheData{
+    return data;
+}
+
 -(NSArray *)data:(NSIndexPath *)indexPath{
     return _sound_ID[indexPath.row];
 }
 
--(NSInteger)deleteMusic:(NSIndexPath *)indexpath{
-    list = [data objectAtIndex:indexpath.row];
+-(NSInteger)deleteMusic:(NSInteger)indexpath{
+    list = [data objectAtIndex:indexpath];
     NSString *sql = [NSString stringWithFormat:@"DELETE FROM Playlist WHERE rowid = %d", list.rowID];
     NSLog(@"%@",sql);
     

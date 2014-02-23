@@ -11,6 +11,7 @@
 #import "AFHTTPRequestOperationManager.h"
 #import "CommentCell.h"
 #import "SoundIDCatagory.h"
+#import "PlayListViewController.h"
 
 
 @interface CommentViewController ()<UITextFieldDelegate>
@@ -18,6 +19,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *textField;
 @property (weak, nonatomic) IBOutlet UIControl *hideView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UIView *netView;
+@property (weak, nonatomic) IBOutlet UIButton *renetButton;
 @property (strong, nonatomic) UIProgressView *progressBar;
 
 
@@ -34,50 +37,66 @@
     NSMutableArray *commentTime;
     NSMutableArray *contents;
     NSString *sound_ID;
+    UIActivityIndicatorView *indicator;
 }
 
--(IBAction)toggleButton:(id)sender{
-    if(playCatagory.player.rate == 1.0){
-        [playCatagory pause];
-    }
-    else{
-        [playCatagory.player play];
-    }
+-(IBAction)listJoin:(id)sender{
+    PlayListViewController *nextVC = [self.storyboard instantiateViewControllerWithIdentifier:@"playlist"];
+    [self.navigationController pushViewController:nextVC animated:YES];
 }
-
 -(IBAction)dimissKeyboard:(id)sender{
     [self.textField resignFirstResponder];
 }
 
 -(IBAction)comment:(id)sender{
-    [self AFNetworkingSearchListInputComment:self.textField.text];
-    self.hideView.hidden = YES;
-    self.textField.text = @"";
-    [self.textField resignFirstResponder];
+    if(self.textField.text.length >0){
+        [self AFNetworkingSearchListInputComment:self.textField.text];
+        self.hideView.hidden = YES;
+        self.textField.text = @"";
+        [self.textField resignFirstResponder];
+    }
+    else{
+        self.hideView.hidden = YES;
+        [self.textField resignFirstResponder];
+    }
+    
 }
 
 -(IBAction)dismiss:(id)sender{
     [self.textField resignFirstResponder];
 }
 
+-(IBAction)restartNet:(id)sender{
+    [self AFNetworkingSearchList];
+    self.netView.hidden = YES;
+}
+
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
-    [self AFNetworkingSearchListInputComment:self.textField.text];
-    self.hideView.hidden = YES;
-    self.textField.text = @"";
-    [self.textField resignFirstResponder];
+    if(self.textField.text.length >0){
+        [self AFNetworkingSearchListInputComment:self.textField.text];
+        self.hideView.hidden = YES;
+        self.textField.text = @"";
+        [self.textField resignFirstResponder];
+    }
+    else{
+        self.hideView.hidden = YES;
+        [self.textField resignFirstResponder];
+    }
     return YES;
 }
 
 //network comment input
 -(void)AFNetworkingSearchListInputComment:(NSString *)comment{
-    NSString *i = [NSString stringWithFormat:@"7"];
+    NSString *i = [NSString stringWithFormat:@"6"];
     NSString *d = [NSString stringWithFormat:@"%@",sound_ID];
+    NSLog(@"%@",d);
     NSString *x = [NSString stringWithFormat:@"%@",comment];
+    NSLog(@"%@",x);
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{@"foo":@"bar", @"user_id":i, @"sound_id":d, @"contents":x};
     [manager POST: @"http://mixhips.nowanser.cloulu.com/write_comment" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        //        NSLog(@"JSON: %@", responseObject);
+                NSLog(@"JSON: %@", responseObject);
         [self AFNetworkingSearchList];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
@@ -117,6 +136,7 @@
     
 }
 -(void)AFNetworkingSearchList{
+    [indicator startAnimating];
    // sound_ID = [NSString stringWithFormat:@"%d",21];
     NSString *i = [NSString stringWithFormat:@"%@",sound_ID];
     NSLog(@"idididi : %@", sound_ID);
@@ -126,14 +146,17 @@
     [manager POST: @"http://mixhips.nowanser.cloulu.com/request_comment" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 NSLog(@"JSON: %@", responseObject);
         [self search:responseObject];
+        [indicator stopAnimating];
         [self.tableView reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
+        self.netView.hidden = NO;
+        [indicator stopAnimating];
     }];
 }
 
 -(void)AFNetworkingSearchListDelete:(NSInteger)indexpathRow{
-    NSString *i = [NSString stringWithFormat:@"7"];
+    NSString *i = [NSString stringWithFormat:@"6"];
     NSString *d = [NSString stringWithFormat:@"%@",commentID[indexpathRow]];
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -189,7 +212,12 @@
     return self;
 }
 
+-(void)dismissVC{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 -(void)viewWillAppear:(BOOL)animated{
+    [self.navigationItem.backBarButtonItem setImage:[UIImage imageNamed:@"back.png"]];
     sound_ID = [[SoundIDCatagory defaultCatalog] getSoundid] ;
     NSLog(@"-- %@",sound_ID);
     playCatagory = [PlaylistCatagory defaultCatalog];
@@ -209,11 +237,24 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.progressBar = [[UIProgressView alloc] initWithFrame:CGRectMake(93, 25, 200, 2)];
-    [self.navigationController.toolbar addSubview:self.progressBar];
+    
+    self.netView.hidden = YES;
+    CALayer * l = [self.netView layer];
+    [l setMasksToBounds:YES];
+    [l setCornerRadius:6.0];
+
+    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"back.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(dismissVC)];
+    
+    
 	// Do any additional setup after loading the view.
     self.hideView.hidden = YES;
     [self.tableView setSeparatorInset:UIEdgeInsetsZero];
+    
+    //indicator
+    indicator = [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(135, 200, 50, 50)];
+    indicator.hidesWhenStopped = YES;
+    [self.view addSubview:indicator];
 }
 
 - (void)didReceiveMemoryWarning

@@ -58,7 +58,6 @@ static NewsCatalog *_instance = nil;
         [adMenu addObject:[abc[i] objectForKey:@"ad_menu"]];
         [adTitle addObject:[abc[i] objectForKey:@"ad_title"]];
         [newslist addObject:[Newslist newsList:adID[i] ad_menu:adMenu[i] ad_title:adTitle[i]]];
-
     }
     good = newslist;
     [self.newsVC reloadTable];

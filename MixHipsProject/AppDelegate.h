@@ -8,10 +8,28 @@
 
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
+#import "FBLoginViewController.h"
+#import <FacebookSDK/FacebookSDK.h>
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate>{
+    UIActivityIndicatorView * indicator;
+}
+@property (nonatomic, retain) UIActivityIndicatorView * indicator;
+@property (strong, nonatomic) UIWindow *window;
+@property (weak, nonatomic) UIButton *login;
+@property NSDictionary *myLoginInfo;
+@property NSDictionary *foodInfo;
+@property int myLoginTryNum;
+@property (strong, nonatomic) FBLoginViewController *loginViewController;
+@property NSString *whatMainCate;
+
+- (void)sessionStateChanged:(FBSession *)session state:(FBSessionState) state error:(NSError *)error;
+- (void)userLoggedIn;
+- (void)userLoggedOut;
+
 
 @property AVAudioPlayer *player;
-@property (strong, nonatomic) UIWindow *window;
 
+-(void)callIndicator;
+-(void)hideIndicator;
 @end

@@ -18,9 +18,12 @@
 - (void) setPlaylistInfo:(AlbumList *)list
 {
     self.userName.text = list.user_Name;
-    self.commentTime.text = list.comment_time;
+    NSString * urlTextEscaped = [list.comment_time stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    self.commentTime.text = urlTextEscaped;
     self.contents.text = list.contents;
-    NSLog(@"%@",list.user_img);
+    CALayer * l = [self.userImg layer];
+    [l setMasksToBounds:YES];
+    [l setCornerRadius:6.0];
     NSString *url = @"http://mixhips.nowanser.cloulu.com";
     url  = [url stringByAppendingString:list.user_img];
     NSURL *imgURL = [NSURL URLWithString:url];
@@ -29,6 +32,10 @@
     [self.userName sizeToFit];
     [self.commentTime sizeToFit];
     [self.contents sizeToFit];
+    
+    
+    // Get the Layer of any view
+    
 }
 
 - (id)initWithFrame:(CGRect)frame

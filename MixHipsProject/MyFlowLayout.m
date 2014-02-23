@@ -103,8 +103,8 @@
 
 - (void)setup
 {
-    self.itemSize = CGSizeMake(90, 127);
-    self.minimumLineSpacing = 8;
+    self.itemSize = CGSizeMake(97, 138);
+    self.minimumLineSpacing = 6;
     self.sectionInset = UIEdgeInsetsMake(0.f, 0.f, 0.0f, 0.f);
     [self setScrollDirection:UICollectionViewScrollDirectionHorizontal];
 }

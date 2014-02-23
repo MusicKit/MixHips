@@ -11,9 +11,12 @@
 #import "AFHTTPRequestOperationManager.h"
 #import "FollowerCell.h"
 #import "PlaylistCatagory.h"
+#import "PlayListViewController.h"
 
 @interface FollowerViewController ()<UICollectionViewDataSource, UICollectionViewDelegate>
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (weak, nonatomic) IBOutlet UIView *netView;
+@property (weak, nonatomic) IBOutlet UIButton *renetButton;
 @property (strong, nonatomic) UIProgressView *progressBar;
 
 @end
@@ -25,15 +28,17 @@
     NSMutableArray *user_img;
     NSMutableArray *user_name;
     NSMutableArray *followerList;
+    UIActivityIndicatorView *indicator;
 }
 
--(IBAction)toggleButton:(id)sender{
-    if(playCatagory.player.rate == 1.0){
-        [playCatagory pause];
-    }
-    else{
-        [playCatagory.player play];
-    }
+-(IBAction)listJoin:(id)sender{
+    PlayListViewController *nextVC = [self.storyboard instantiateViewControllerWithIdentifier:@"playlist"];
+    [self.navigationController pushViewController:nextVC animated:YES];
+}
+
+-(IBAction)restartNet:(id)sender{
+    [self AFNetworkingAD];
+    self.netView.hidden = YES;
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
@@ -67,15 +72,19 @@
 
 }
 -(void)AFNetworkingAD{
-    NSString *i = [NSString stringWithFormat:@"7"];
+    [indicator startAnimating];
+    NSString *i = [NSString stringWithFormat:@"6"];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{@"foo":@"bar", @"user_id":i};
     [manager POST: @"http://mixhips.nowanser.cloulu.com/show_follower" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         //        NSLog(@"JSON: %@", responseObject);
         [self test:responseObject];
+        [indicator stopAnimating];
         [self.collectionView reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
+        [indicator stopAnimating];
+        self.netView.hidden = NO;
     }];
 }
 
@@ -88,6 +97,10 @@
     self.list = [followerList objectAtIndex:indexPath.row];
     [cell setPlaylistInfo:self.list];
     return cell;
+}
+
+-(void)dismissVC{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -108,6 +121,18 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    indicator = [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(135, 200, 50, 50)];
+    indicator.hidesWhenStopped = YES;
+    [self.view addSubview:indicator];
+    
+    self.netView.hidden = YES;
+    CALayer * l = [self.netView layer];
+    [l setMasksToBounds:YES];
+    [l setCornerRadius:6.0];
+
+    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"back.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(dismissVC)];
     
   
 	// Do any additional setup after loading the view.

@@ -19,8 +19,10 @@
 
 - (void) setPlaylistInfo:(AlbumList *)list
 {
+    NSLog(@"%@",list.like_count);
     self.albumName.text = list.album_name;
     self.userName.text = list.user_Name;
+    self.like_count.text = [NSString stringWithFormat:@"%@",list.like_count];
     NSString *url = @"http://mixhips.nowanser.cloulu.com";
     url  = [url stringByAppendingString:list.album_img];
     NSURL *imgURL = [NSURL URLWithString:url];

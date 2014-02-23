@@ -9,7 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "AlbumList.h"
 
+
 @interface PlaylistCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UIImageView *listImg;
 @property (strong, nonatomic) AlbumList *albumList;
-- (void) setPlaylistInfo:(NSString *)name nickName:(NSString *)nickName;
+- (void) setPlaylistInfo:(NSString *)name nickName:(NSString *)nickName img:(NSString *)img;
 @end

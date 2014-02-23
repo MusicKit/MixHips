@@ -12,10 +12,10 @@
 @interface Player : NSObject 
 
 @property AVAudioPlayer *player;
-@property (nonatomic) NSInteger indexPathRow;
+@property NSInteger indexPathRow;
 
 + (id)defaultCatalog;
-- (NSUInteger)returnIndexPath;
+- (NSInteger)returnIndexPath;
 
 -(void)setAlbumImg:(NSString *)albumimg;
 -(NSString *)getAlbumImg;
@@ -25,4 +25,8 @@
 
 -(void)setAlbumId:(NSString *)albumid;
 -(NSString *)getAlbumId;
+
+-(void)setIndexPathrow:(NSInteger)indexPath;
+
+
 @end

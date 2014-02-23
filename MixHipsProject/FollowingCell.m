@@ -48,7 +48,7 @@
 
 -(void)AFNetworkingADFollow{
     NSString *d = [NSString stringWithFormat:@"%@",user_id];
-    NSString *i = [NSString stringWithFormat:@"7"]; ///   본인 아이디
+    NSString *i = [NSString stringWithFormat:@"6"]; ///   본인 아이디
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{@"send_id":i , @"receive_id":d};
     [manager POST: @"http://mixhips.nowanser.cloulu.com/action_follow" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {

@@ -114,7 +114,7 @@
     
     
    
-   self.pageControl.numberOfPages = IMAGE_NUM;
+    self.pageControl.numberOfPages = IMAGE_NUM;
     
     loadedPageCount =0;
     

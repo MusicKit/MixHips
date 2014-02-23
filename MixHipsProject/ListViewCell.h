@@ -17,6 +17,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *albumName;
 @property (weak, nonatomic) IBOutlet UILabel *userName;
 @property (weak, nonatomic) IBOutlet UILabel *likeCount;
+@property (weak, nonatomic) IBOutlet UILabel *like_count;
 
 
 - (void) setPlaylistInfo:(AlbumList *)list;

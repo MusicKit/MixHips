@@ -8,8 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "AlbumList.h"
+#import "AppDelegate.h"
 
 
 @interface ListViewController : UIViewController
+{
+    AppDelegate * appDelegate;
+}
+@property(nonatomic,retain) AppDelegate * appDelegate;
 @property (strong,nonatomic) AlbumList *list;
 @end

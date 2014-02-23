@@ -13,9 +13,12 @@
 #import "AlbumProfileViewController.h"
 #import "PlaylistCatagory.h"
 #import "FollowDelegate.h"
+#import "PlayListViewController.h"
 @interface FollowViewController () <UICollectionViewDelegate, UICollectionViewDataSource, FollowDelegate>
 
 @property (strong, nonatomic) UIProgressView *progressBar;
+@property (weak, nonatomic) IBOutlet UIView *netView;
+@property (weak, nonatomic) IBOutlet UIButton *renetButton;
 
 
 @end
@@ -26,15 +29,17 @@
     NSMutableArray *user_img;
     NSMutableArray *user_name;
     NSMutableArray *followingList;
+    UIActivityIndicatorView *indicator;
 }
 
--(IBAction)toggleButton:(id)sender{
-    if(playCatagory.player.rate == 1.0){
-        [playCatagory pause];
-    }
-    else{
-        [playCatagory.player play];
-    }
+-(IBAction)listJoin:(id)sender{
+    PlayListViewController *nextVC = [self.storyboard instantiateViewControllerWithIdentifier:@"playlist"];
+    [self.navigationController pushViewController:nextVC animated:YES];
+}
+
+-(IBAction)restartNet:(id)sender{
+    [self AFNetworkingAD];
+    self.netView.hidden = YES;
 }
 
 
@@ -74,15 +79,19 @@
 
 }
 -(void)AFNetworkingAD{
-    NSString *i = [NSString stringWithFormat:@"7"];
+    [indicator startAnimating];
+    NSString *i = [NSString stringWithFormat:@"6"];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{@"foo":@"bar", @"user_id":i};
     [manager POST: @"http://mixhips.nowanser.cloulu.com/show_following" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         //        NSLog(@"JSON: %@", responseObject);
         [self test:responseObject];
+        [indicator stopAnimating];
         [self.collectionView reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
+        [indicator stopAnimating];
+        self.netView.hidden = NO;
     }];
 }
 
@@ -96,6 +105,10 @@
     [cell setPlaylistInfo:self.list];
     cell.delegate = self;
     return cell;
+}
+
+-(void)dismissVC{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -115,6 +128,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.netView.hidden = YES;
+    CALayer * l = [self.netView layer];
+    [l setMasksToBounds:YES];
+    [l setCornerRadius:6.0];
+    
+    indicator = [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(135, 200, 50, 50)];
+    indicator.hidesWhenStopped = YES;
+    [self.view addSubview:indicator];
+    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"back.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(dismissVC)];
  
 	// Do any additional setup after loading the view.
     

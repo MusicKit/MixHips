@@ -20,6 +20,7 @@
 #import "PlayCatalog.h"
 #import "AlbumProfileViewController.h"
 #import "PlayerViewController.h"
+#import "PlayListViewController.h"
 
 @interface AlbumMusicViewController ()<UITableViewDelegate, UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UIButton *allSelectButton;
@@ -28,6 +29,8 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UILabel *artistName;
 @property (weak, nonatomic) IBOutlet UIButton *likeButton;
+@property (weak, nonatomic) IBOutlet UIView *netView;
+@property (weak, nonatomic) IBOutlet UIButton *renetButton;
 @property (weak, nonatomic) IBOutlet UILabel *listCount;
 @end
 
@@ -50,17 +53,12 @@
         PlaylistCatagory *playCatagory;
     PlayerViewController *playerVC;
     NSArray *listTrack;
+    UIActivityIndicatorView *indicator;
 }
--(IBAction)toggleButton:(id)sender{
-    if(playCatagory.player.rate == 1.0){
-        [playCatagory pause];
-    }
-    else{
-        [playCatagory.player play];
-    }
+-(IBAction)listJoin:(id)sender{
+    PlayListViewController *nextVC = [self.storyboard instantiateViewControllerWithIdentifier:@"playlist"];
+    [self.navigationController pushViewController:nextVC animated:YES];
 }
-
-
 -(IBAction)likeButton:(id)sender{
     [self AFNetworkingADLike];
 }
@@ -71,12 +69,15 @@
             [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:r inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
             self.allSelectButton.tag = 1;
         }
+        [self.allSelectButton setTitle:@"전체해제" forState:UIControlStateNormal];
     }
     else if(self.allSelectButton.tag == 1){
         for (NSInteger r = 0; r < [self.tableView numberOfRowsInSection:0]; r++) {
             [self.tableView deselectRowAtIndexPath:[NSIndexPath indexPathForRow:r inSection:0] animated:NO];
             self.allSelectButton.tag =0;
+            
         }
+        [self.allSelectButton setTitle:@"전체선택" forState:UIControlStateNormal];
     }
 }
 
@@ -99,7 +100,7 @@
         playerlist.indexPathRow = playlist.data.count;
     }
         PlayerViewController *nextVC = [self.storyboard instantiateViewControllerWithIdentifier:@"playerPart"];
-        [self.navigationController pushViewController:nextVC animated:YES];
+        [self.navigationController presentViewController:nextVC animated:NO completion:nil];
 
     listTrack =  [playlist data];
 
@@ -118,6 +119,11 @@
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
+-(IBAction)restartNet:(id)sender{
+    [self AFNetworkingAD];
+    self.netView.hidden = YES;
+}
+
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     if([segue.identifier isEqualToString:[NSString stringWithFormat:@"joingUser"]]){
@@ -132,7 +138,7 @@
 //network like{
 -(void)AFNetworkingADLike{
     NSString *d = [NSString stringWithFormat:@"%@",self.album_ID];
-    NSString *i = [NSString stringWithFormat:@"7"]; ///   본인 아이디
+    NSString *i = [NSString stringWithFormat:@"6"]; ///   본인 아이디
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{@"user_id":i , @"album_id":d};
     [manager POST: @"http://mixhips.nowanser.cloulu.com/action_like" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -162,6 +168,8 @@
     soundNameArr = [[NSMutableArray alloc]init];
     soundURLArr = [[NSMutableArray alloc]init];
     soundlist = [[NSMutableArray alloc]init];
+    
+    
     for(int i=0;i<sound.count;i++)
     {
         [soundIDArr addObject:[sound[i] objectForKey:@"sound_id"]];
@@ -174,18 +182,22 @@
     
 }
 -(void)AFNetworkingAD{
+    [indicator startAnimating];
     NSString *d = [NSString stringWithFormat:@"%@",self.album_ID];
-    NSString *i = [NSString stringWithFormat:@"7"]; ///   본인 아이디
+    NSString *i = [NSString stringWithFormat:@"6"]; ///   본인 아이디
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{@"foo":@"bar", @"my_id(user_id(본인))":i , @"album_id":d};
     [manager POST: @"http://mixhips.nowanser.cloulu.com/request_album" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         //        NSLog(@"JSON: %@", responseObject);
         [self test:responseObject];
+        [indicator stopAnimating];
         [self.tableView reloadData];
         [self setProfile];
         //[self setLike];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
+        self.netView.hidden = NO;
+        [indicator stopAnimating];
     }];
 }
 
@@ -237,27 +249,41 @@
     url = [url stringByAppendingString:albumImgURL];
     NSURL *imgURL = [NSURL URLWithString:url];
     [self.albumImg setImageWithURL:imgURL];
+    self.title = [NSString stringWithFormat:@"%@",albumName];
+}
+
+-(void)dismissVC{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
         [self AFNetworkingAD];
- 
-    [self.navigationController setToolbarHidden:NO animated:NO];
+ [self.navigationItem.backBarButtonItem setTitle:@" "];
     [self.navigationController setNavigationBarHidden:NO];
     self.allSelectButton.tag =0;
-//    playDB = [PlayListDB sharedPlaylist];
-//    listTrack =  [playDB data];
+
 }
 
--(void)viewDidAppear:(BOOL)animated{
-    
-}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.netView.hidden = YES;
+    CALayer * l = [self.netView layer];
+    [l setMasksToBounds:YES];
+    [l setCornerRadius:6.0];
+
+    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"back.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(dismissVC)];
+    
+    indicator = [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(135, 200, 50, 50)];
+    indicator.hidesWhenStopped = YES;
+    [self.view addSubview:indicator];
+    
     playCatagory = [PlaylistCatagory defaultCatalog];
     
-    	// Do any additional setup after loading the view.
+
     [self.tableView setSeparatorInset:UIEdgeInsetsZero];
 
 }

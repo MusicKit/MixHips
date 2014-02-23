@@ -16,17 +16,26 @@
 #import "FollowViewController.h"
 #import "PlaylistCatagory.h"
 #import "MypageCatagory.h"
+#import "PlayListViewController.h"
 
 
 @interface MyPageViewController ()<UIImagePickerControllerDelegate, UIActionSheetDelegate ,UINavigationControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, playDelegate4>
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *toggleButton;
-@property (weak, nonatomic) IBOutlet UIImageView *profileImage;
+@property (weak, nonatomic) IBOutlet UIImageView *profileImg;
+@property (strong, nonatomic) UIButton *testButton;
 @property (weak, nonatomic) IBOutlet UILabel *Message;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UILabel *FollowingCount;
 @property (weak, nonatomic) IBOutlet UILabel *FollowerCount;
 @property (strong, nonatomic) UILabel *titleLabel;
 @property (strong, nonatomic ) UIProgressView *progressBar;
+@property (strong, nonatomic) UIActivityIndicatorView *indicator;
+@property (weak, nonatomic) IBOutlet UILabel *Name;
+@property (weak, nonatomic) IBOutlet UIButton *deleteButton;
+@property (weak, nonatomic) IBOutlet UIView *netView;
+@property (weak, nonatomic) IBOutlet UIButton *renetButton;
+@property (weak, nonatomic) IBOutlet UIView *editView;
+@property (weak, nonatomic) IBOutlet UILabel *eidtLable;
+
 
 @end
 
@@ -47,19 +56,39 @@
     UIAlertView *alert;
     UIAlertView *alert1;
     NSString *album_id;
+    NSString *soundid11;
     MyAlbumViewController *dest;
     BOOL editChange;
+    BOOL ch;
+}
+-(IBAction)listJoin:(id)sender{
+    PlayListViewController *nextVC = [self.storyboard instantiateViewControllerWithIdentifier:@"playlist"];
+    [self.navigationController pushViewController:nextVC animated:YES];
 }
 
+-(IBAction)restartNet:(id)sender{
+    [self AFNetworkingAD];
+    self.netView.hidden = YES;
+}
 
--(IBAction)toggleButton:(id)sender{
-    if(playCatagory.player.rate == 1.0){
-        [playCatagory pause];
+-(void)toggleButton:(id)sender{
+    if(ch == YES){
+        [playCatagory playStart:soundid11];
+        [self.testButton setImage:[UIImage imageNamed:@"stop.png"] forState:UIControlStateNormal];
     }
     else{
-        [playCatagory.player play];
+        if(playCatagory.player.rate == 1.0){
+            [playCatagory.player pause];
+            [self.testButton setImage:[UIImage imageNamed:@"play.png"] forState:UIControlStateNormal];
+        }
+        else{
+            [playCatagory.player play];
+            [self.testButton setImage:[UIImage imageNamed:@"stop.png"] forState:UIControlStateNormal];
+        }
+        
     }
 }
+
 
 -(IBAction)getprofileMessage:(id)sender{
     alert = [[UIAlertView alloc]initWithTitle:@"MixHips" message:@"한마디" delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"등록", nil];
@@ -70,13 +99,45 @@
 -(IBAction)editBOOL:(id)sender{
     if(editChange == YES){
         editChange =NO;
-        NSLog(@"%hhd",editChange);
+        self.editView.hidden = NO;
+        CATransition *animation = [CATransition animation];
+        animation.type = kCATransitionFade;
+        animation.duration = 0.5;
+        [self.editView.layer addAnimation:animation forKey:Nil];
+        [UIView beginAnimations:nil context:NULL];
+        [UIView commitAnimations];
+
+        
+        self.eidtLable.text = [NSString stringWithFormat:@"편집모드"];
+        self.deleteButton.selected = YES;
+        [self performSelector:@selector(dismissView) withObject:self.editView afterDelay:1.0];
     }
     else if(editChange == NO){
         editChange =YES
         ;
-        NSLog(@"%hhd",editChange);
+        self.editView.hidden = NO;
+        CATransition *animation = [CATransition animation];
+        animation.type = kCATransitionFade;
+        animation.duration = 0.5;
+        [self.editView.layer addAnimation:animation forKey:Nil];
+        [UIView beginAnimations:nil context:NULL];
+        [UIView commitAnimations];
+        
+
+        self.eidtLable.text = [NSString stringWithFormat:@"편집모드 해제"];
+        self.deleteButton.selected = NO;
+        [self performSelector:@selector(dismissView) withObject:self.editView afterDelay:1.0];
     }
+}
+
+-(void)dismissView{
+    CATransition *animation = [CATransition animation];
+    animation.type = kCATransitionFade;
+    animation.duration = 0.5;
+    self.editView.hidden = YES;
+    [self.editView.layer addAnimation:animation forKey:Nil];
+    [UIView beginAnimations:nil context:NULL];
+    [UIView commitAnimations];
 }
 
 
@@ -125,49 +186,50 @@
         //[self presentModalViewController:imagePicker animated:YES];
         [self presentViewController:imagePicker animated:YES completion:nil];
     }
-    else if(buttonIndex == 2){
-        
-        //기본적인 이미지 나오면 그걸로 구현
-        self.profileImage.image = nil;
-    }
     else if(buttonIndex == actionSheet.cancelButtonIndex)
     {
-        self.profileImage.image = nil;
-        //[actionSheet showInView:self.view];
+       
     }
 }
 
 
 //사진편집 버튼
 -(IBAction)getProfileImage:(id)sender{
-    UIActionSheet *sheet = [[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"취소" destructiveButtonTitle:nil otherButtonTitles:@"사진촬영",@"앨범에서 사진 선택",@"삭제", nil];
-    [sheet showInView:self.view];
+    UIActionSheet *sheet = [[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"취소" destructiveButtonTitle:nil otherButtonTitles:@"사진촬영",@"앨범에서 사진 선택", nil];
+    [sheet showInView:[self.view window]];
 }
 
 
 //바뀐 사진을 선택했을시 프로필 사진이 바뀐다.
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
     UIImage *editedImage = [info objectForKey:UIImagePickerControllerEditedImage];
-    UIImage *originalImage = [info objectForKey:UIImagePickerControllerOriginalImage];
+    UIImage *originalImage = [info objectForKey:UIImagePickerControllerEditedImage];
     
     //편집된 이미지가 있으면 사용, 없으면 원본으로 사용
     UIImage *usingImage = (nil == editedImage)? originalImage : editedImage;
-    self.profileImage.image = usingImage;
+    //self.profileImg.image = usingImage;
+//    [self.profileImg setImage:usingImage];
     [self AFNetworkingUploadImg:usingImage];
+    
     //피커 감추기
     [picker dismissViewControllerAnimated:YES completion:nil];
     //[picker dismissModalViewControllerAnimated:YES];
 }
 
+-(void)notiPlay{
+    ch = NO;
+}
+
 //uploadImg
 -(void)AFNetworkingUploadImg:(UIImage *)img{
     // NSString *d = [NSString stringWithFormat:@"%@",searchField.text];
+    NSString *ff = [NSString stringWithFormat:@"%d.jpeg",arc4random()];
     NSString *i = [NSString stringWithFormat:@"6"]; ///   본인 아이디
     NSData *imageData = UIImageJPEGRepresentation(img, 0.5);
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{@"foo":@"bar", @"user_id":i};
     [manager POST: @"http://mixhips.nowanser.cloulu.com/upload_user_img" parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData){
-        [formData appendPartWithFileData:imageData name:@"user_img" fileName:@"Mixhips" mimeType:@"image/jpeg"];
+        [formData appendPartWithFileData:imageData name:@"user_img" fileName:ff mimeType:@"image/jpeg"];
     }success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"JSON: %@", responseObject);
         [self AFNetworkingAD];
@@ -198,6 +260,7 @@
     NSDictionary *parameters = @{@"foo":@"bar", @"user_id":i , @"user_say":searchField.text};
     [manager POST: @"http://mixhips.nowanser.cloulu.com/update_user_say" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 NSLog(@"JSON: %@", responseObject);
+        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
     }];
@@ -249,6 +312,7 @@
 }
 
 -(void)AFNetworkingAD{
+    [self.indicator startAnimating];
     NSString *d = [NSString stringWithFormat:@"6"];
     NSString *i = [NSString stringWithFormat:@"6"]; ///   본인 아이디
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -256,33 +320,36 @@
     [manager POST: @"http://mixhips.nowanser.cloulu.com/request_user" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 NSLog(@"JSON: %@", responseObject);
         [self test:responseObject];
+        [self.indicator stopAnimating];
         [self setProfile];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        self.netView.hidden = NO;
+        [self.indicator stopAnimating];
         NSLog(@"Error: %@", error);
     }];
 }
 
 -(void)setProfile{
-    self.title = userName;
     self.Message.text = userSay1;
     self.FollowerCount.text = [NSString stringWithFormat:@"%@",follwer];
     self.FollowingCount.text = [NSString stringWithFormat:@"%@",following];
+    self.Name.text = userName;
+    
+    NSLog(@"isMain thread : %d", [NSThread isMainThread]);
     NSString *url = @"http://mixhips.nowanser.cloulu.com";
      url = [url stringByAppendingString:userImg];
+//    NSString *ff = @"http://mixhips.nowanser.cloulu.com/uploads/user_img/6/Mixhips.jpeg";
     NSLog(@" ----%@",url);
-    NSURL *userURL = [NSURL URLWithString:userImg];
-    [self.profileImage setImageWithURL:userURL];
+    NSURL *userURL = [NSURL URLWithString:url];
+//    NSData *d = [[NSData alloc] initWithContentsOfURL:url];
+//    UIImage *ff = [UIImage imageWithData:d];
+//    [self.profileImg setImage:ff];
+    [self.profileImg setImageWithURL:userURL];
 }
 
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
-//    if([segue.identifier isEqualToString:[NSString stringWithFormat:@"addAlbum"]]){
-//        
-//    }
-//    if([segue.identifier isEqualToString:[NSString stringWithFormat:@"album"]]){
-//        
-//    }
     if([segue.identifier isEqualToString:@"following"]){
         FollowViewController *dest1 = (FollowViewController *)segue.destinationViewController;
         dest1.user_ID = userID;
@@ -290,9 +357,6 @@
     if([segue.identifier isEqualToString:@"follower"]){
         
     }
-    
-    //AlbumList *list = [[listCatalog defaultCatalog] albumAt:indexPath.row];
-    //dest.list = list;
 }
 
 // -------------- 콜렉션 뷰-----------------
@@ -315,8 +379,6 @@
             [[MypageCatagory defaultCatalog] setAlbuId:albumID[indexPath.row]];
             MyAlbumViewController *nextVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MyAlbum"];
             [self.navigationController pushViewController:nextVC animated:YES];
-
-           // [self.navigationController pushViewController:dest animated:NO];
         }
         else{
             
@@ -350,12 +412,28 @@
 
 -(void)updateProgressViewWithPlayer:(NSString *)string time:(float)time{
     self.progressBar.progress = time;
+    self.progressBar.progress = [[PlaylistCatagory defaultCatalog] getTime];
+    
+    if(playCatagory.player.rate == 1.0){
+        [self.testButton setImage:[UIImage imageNamed:@"stop.png"] forState:UIControlStateNormal];
+    }
+    else{
+        [self.testButton setImage:[UIImage imageNamed:@"play.png"] forState:UIControlStateNormal];
+    }
 }
 
 -(void)setUser:(NSString *)userNamef setSound:(NSString *)soundNamef{
     soundName1 = soundNamef;
     userName1 = userNamef;
+    if(soundName1 == NULL){
+        
+    }
+    else{
+        [self.titleLabel setText:[NSString stringWithFormat:@"%@ - %@",soundName1, userName1]];
+    }
 }
+
+
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -367,36 +445,54 @@
     return self;
 }
 
+- (void) loadData
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    NSString *userName11 = [defaults objectForKey:@"userName"];
+    NSString *soundName11 = [defaults objectForKey:@"soundName"];
+    soundid11 = [defaults objectForKey:@"soundId"];
+
+    [self.titleLabel setText:[NSString stringWithFormat:@"%@ - %@",soundName11, userName11]];
+}
+
 
 ///////////////////////////////////////////////////////////////////////////
 
 
 -(void)viewWillAppear:(BOOL)animated{
     editChange = YES;
+    
+    self.deleteButton.selected = NO;
+    self.editView.hidden = YES;
+    CALayer * l = [self.editView layer];
+    [l setMasksToBounds:YES];
+    [l setCornerRadius:6.0];
+    
     [self AFNetworkingAD];
     playCatagory = [PlaylistCatagory defaultCatalog];
+    self.progressBar.progress = [playCatagory getTime];
     
-    if(soundName1 == NULL){
-        
+    if(playCatagory.player.rate == 1.0){
+        [self.testButton setImage:[UIImage imageNamed:@"stop.png"] forState:UIControlStateNormal];
     }
     else{
-        self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(92 , 5, 200, 20)];
-        [self.titleLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:14]];
-        [self.titleLabel setBackgroundColor:[UIColor clearColor]];
-        [self.titleLabel setTextColor:[UIColor blackColor]];
-        [self.titleLabel setText:[NSString stringWithFormat:@"%@ - %@",soundName1, userName1]];
-        [self.titleLabel setTextAlignment:NSTextAlignmentCenter];
-        // [titleV addSubview:self.titleLabel];
-        [self.navigationController.toolbar addSubview:self.titleLabel];
+        [self.testButton setImage:[UIImage imageNamed:@"play.png"] forState:UIControlStateNormal];
     }
-    
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    ch = YES;
+
     [self.collectionView reloadData];
     dest = [[MyAlbumViewController alloc]init];
+    
+    self.netView.hidden = YES;
+    CALayer * l = [self.netView layer];
+    [l setMasksToBounds:YES];
+    [l setCornerRadius:6.0];
     
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
@@ -406,8 +502,33 @@
     if (![[NSFileManager defaultManager] fileExistsAtPath:dataPath])
         [[NSFileManager defaultManager] createDirectoryAtPath:dataPath withIntermediateDirectories:NO attributes:nil error:nil];
     
-    self.progressBar = [[UIProgressView alloc] initWithFrame:CGRectMake(93, 25, 200, 2)];
+    self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(92 , 7, 200, 20)];
+    [self.titleLabel setFont:[UIFont fontWithName:@"system - system" size:10]];
+    [self.titleLabel setBackgroundColor:[UIColor clearColor]];
+    [self.titleLabel setTextColor:[UIColor blackColor]];
+    [self.titleLabel setTextAlignment:NSTextAlignmentLeft];
+    [self.navigationController.toolbar addSubview:self.titleLabel];
+     [self loadData];
+    
+	// Do any additional setup after loading the view.
+    
+    self.progressBar = [[UIProgressView alloc] initWithFrame:CGRectMake(93, 30, 200, 4)];
+     [self.progressBar setTintColor:[UIColor blackColor]];
     [self.navigationController.toolbar addSubview:self.progressBar];
+    
+    self.testButton = [[UIButton alloc]initWithFrame:CGRectMake( 50,2,40 ,40)];
+    [self.testButton addTarget:self action:@selector(toggleButton:) forControlEvents:UIControlEventTouchUpInside];
+    [self.testButton setImage:[UIImage imageNamed:@"play.png"] forState:UIControlStateNormal];
+    
+    //indicator
+    self.indicator = [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(135, 200, 50, 50)];
+    self.indicator.hidesWhenStopped = YES;
+    [self.view addSubview:self.indicator];
+
+    
+    
+    
+    [self.navigationController.toolbar addSubview:self.testButton];
     
 	// Do any additional setup after loading the view.
     

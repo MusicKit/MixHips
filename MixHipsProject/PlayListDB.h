@@ -19,10 +19,13 @@
 - (NSString *)getNameOfMovieAtIndex:(NSInteger)index;
 + (id)sharedPlaylist;
 -(NSString *)getNickNameOfMusicAtIndex:(NSInteger)index;
--(NSInteger)deleteMusic:(NSIndexPath *)indexpath;
+-(NSInteger)deleteMusic:(NSInteger)indexpath;
 -(NSString *)getSoundIdAtIndex:(NSInteger)index;
 -(NSArray *)data:(NSIndexPath *)indexPath;
 -(NSArray *)data;
 -(NSString *)getalbumImgAtIndex:(NSInteger)index;
 -(NSArray *)albumimg;
+
+//test
+-(NSArray *)cacheData;
 @end

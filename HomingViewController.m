@@ -17,6 +17,10 @@
 #import "AlbumMusicViewController.h"
 #import "MyCell.h"
 #import "playerDelegate.h"
+#import "PlayListViewController.h"
+#import "cacheList.h"
+#import "PlayListDB.h"
+#import "PlayerViewController.h"
 
 #define IMAGE_NUM 3
 
@@ -32,13 +36,17 @@
     NSInteger setSmallSize;
     NSInteger scrolltime;
     NSMutableArray *userID;
-    
+    NSString *soundid11;
+    cacheList *data;
+    UIActivityIndicatorView *indicator;
     CGRect currentCollectionFrame;
 }
+@property (strong, nonatomic) UIButton *testButton;
 @property (weak, nonatomic) IBOutlet UIPageControl *pageControl;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *toggleButton;
 @property (weak, nonatomic) IBOutlet UICollectionView *hotAlbumCollectionView;
+@property (weak, nonatomic) IBOutlet UIView *networkView;
+@property (weak, nonatomic) IBOutlet UIButton *reNetButton;
 @property (strong, nonatomic) UIProgressView *progressBar;
 @property (strong , nonatomic)UILabel *titleLabel;
 @property (nonatomic,strong) NSMutableArray *collectionData;
@@ -54,24 +62,45 @@
     NSArray *listTrack;
     NSString *soundName1;
     NSString *userName1;
+    BOOL ch;
+}
+
+-(IBAction)listJoin:(id)sender{
+    PlayListViewController *nextVC = [self.storyboard instantiateViewControllerWithIdentifier:@"playlist"];
+    [self.navigationController pushViewController:nextVC animated:YES];
+}
+
+-(IBAction)restartNet:(id)sender{
+    [self AFNetworkingAlbum];
+    self.networkView.hidden = YES;
 }
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     CGFloat pageWidth = self.collectionView.frame.size.width;
     self.pageControl.currentPage = self.hotAlbumCollectionView.contentOffset.x / pageWidth;
-    NSLog(@"넘겨져라");
 }
 
 
--(IBAction)toggleButton:(id)sender{
-    if(playCatagory.player.rate == 1.0){
-        [playCatagory pause];
+
+-(void)toggleButton:(id)sender{
+    if(ch == YES){
+        [playCatagory playStart:soundid11];
+        [self.testButton setImage:[UIImage imageNamed:@"stop.png"] forState:UIControlStateNormal];
     }
     else{
-        [playCatagory.player play];
-    }
-}
+        if(playCatagory.player.rate == 1.0){
+            [playCatagory.player pause];
+            [self.testButton setImage:[UIImage imageNamed:@"play.png"] forState:UIControlStateNormal];
+        }
+        else{
+            [playCatagory.player play];
+            [self.testButton setImage:[UIImage imageNamed:@"stop.png"] forState:UIControlStateNormal];
+        }
 
+    }
+
+
+}
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     if(collectionView == self.hotAlbumCollectionView)
@@ -123,20 +152,24 @@
         [userName addObject:[abc[i] objectForKey:@"user_name"]];
         [HotArtist addObject:[AlbumList hotArtistList:userID[i] userName:userName[i] userImg:image[i]]];
             string = [NSString stringWithFormat:@"%@",abc[i]];
-            NSLog(@"%@",string);
         }
-        NSLog(@"%@",string);
     }
-    [self.collectionView reloadData];
-    NSLog(@"%@",HotArtist);
+    
+}
+
+-(void)notiPlay{
+    ch = NO;
 }
 
 -(void)AFNetworkingAD{
+    [indicator startAnimating];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{@"foo":@"bar"};
     [manager POST: @"http://mixhips.nowanser.cloulu.com/request_hot_user" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         //        NSLog(@"JSON: %@", responseObject);
         [self test:responseObject];
+        [indicator stopAnimating];
+        [self.collectionView reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
     }];
@@ -176,17 +209,22 @@
         NSLog(@"%@",string);
     }
     }
-    [self.hotAlbumCollectionView reloadData];
+    
 }
 
 -(void)AFNetworkingAlbum{
+    [indicator startAnimating];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{@"foo":@"bar"};
     [manager POST: @"http://mixhips.nowanser.cloulu.com/request_hot_album" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         //        NSLog(@"JSON: %@", responseObject);
         [self albumtest:responseObject];
+        [indicator stopAnimating];
+        [self.hotAlbumCollectionView reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
+        [indicator stopAnimating];
+        self.networkView.hidden = NO;
     }];
 }
 
@@ -194,7 +232,7 @@
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     NSInteger i ;
     if(collectionView == self.hotAlbumCollectionView){
-        [self.hotAlbumCollectionView setContentSize:CGSizeMake(960, 100)];
+        [self.hotAlbumCollectionView setContentSize:CGSizeMake(960, 138)];
         i = [HotAlbum count];
     }
     if(collectionView == self.collectionView){
@@ -212,7 +250,7 @@
         cell = cell1;
     }
     if(collectionView == self.hotAlbumCollectionView){
-        [self.hotAlbumCollectionView setContentSize:CGSizeMake(960, 100)];
+        [self.hotAlbumCollectionView setContentSize:CGSizeMake(960, 138)];
         MyCell *cell2 = [collectionView dequeueReusableCellWithReuseIdentifier:@"HotAlbumlist" forIndexPath:indexPath];
         //cell2.label.text = [self.collectionData objectAtIndex:indexPath.row];
         self.list = [HotAlbum objectAtIndex:indexPath.row];
@@ -224,82 +262,113 @@
 
 -(void)updateProgressViewWithPlayer:(NSString *)string time:(float)time{
    self.progressBar.progress = time;
+    self.progressBar.progress = [[PlaylistCatagory defaultCatalog] getTime];
+    if(playCatagory.player.rate == 1.0){
+        [self.testButton setImage:[UIImage imageNamed:@"stop.png"] forState:UIControlStateNormal];
+    }
+    else{
+        [self.testButton setImage:[UIImage imageNamed:@"play.png"] forState:UIControlStateNormal];
+    }
+
 }
 
 -(void)setUser:(NSString *)userNamef setSound:(NSString *)soundNamef{
     soundName1 = soundNamef;
     userName1 = userNamef;
+    if(soundName1 == NULL){
+        
+    }
+    else{
+//        [self.titleLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:14]];
+//        [self.titleLabel setBackgroundColor:[UIColor clearColor]];
+//        [self.titleLabel setTextColor:[UIColor blackColor]];
+        [self.titleLabel setText:[NSString stringWithFormat:@"%@ - %@",soundName1, userName1]];
+//        [self.titleLabel setTextAlignment:NSTextAlignmentLeft];
+//        // [titleV addSubview:self.titleLabel];
+//        [self.navigationController.toolbar addSubview:self.titleLabel];
+    }
 }
 
-////////////////////
-
-//-(void)viewDidLayoutSubviews{
-//    
-//    
-//    [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"top_bAR.png"] forBarMetrics:UIBarMetricsDefault];
-//    //[[UIToolbar appearance]setBackgroundImage:[UIImage imageNamed:@"background_2.png"] forToolbarPosition:UIBarPositionBottom barMetrics:UIBarMetricsDefault];
-//    [[UITabBar appearance]setBackgroundImage:[UIImage imageNamed:@"top_bAR.png"]];
-//}
-
-
+- (void) loadData
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    NSString *userName11 = [defaults objectForKey:@"userName"];
+    NSString *soundName11 = [defaults objectForKey:@"soundName"];
+    soundid11 = [defaults objectForKey:@"soundId"];
+    
+    
+    [self.titleLabel setText:[NSString stringWithFormat:@"%@ - %@",soundName11, userName11]];
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    self.navigationController.toolbar.hidden = NO;
-	// Do any additional setup after loading the view, typically from a nib.
-    self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(92 , 5, 200, 20)];
+    PlayListDB *playDB = [PlayListDB sharedPlaylist];
+    [playDB fetchMovies];
     
-    self.progressBar = [[UIProgressView alloc] initWithFrame:CGRectMake(93, 28, 200, 4)];
+    ch = YES;
+    //musictitle
+    self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(92 , 7, 200, 20)];
+    [self.titleLabel setFont:[UIFont fontWithName:@"system - system" size:10]];
+    [self.titleLabel setBackgroundColor:[UIColor clearColor]];
+    [self.titleLabel setTextColor:[UIColor blackColor]];
+    [self.titleLabel setTextAlignment:NSTextAlignmentLeft];
+    [self.navigationController.toolbar addSubview:self.titleLabel];
+    
+    [self loadData];
+    self.navigationController.toolbar.hidden = NO;
+
+    self.networkView.hidden = YES;
+    CALayer * l = [self.networkView layer];
+    [l setMasksToBounds:YES];
+    [l setCornerRadius:6.0];
+    
+    //재생버튼
+    self.testButton = [[UIButton alloc]initWithFrame:CGRectMake( 50,2,40 ,40)];
+    [self.testButton addTarget:self action:@selector(toggleButton:) forControlEvents:UIControlEventTouchUpInside];
+    [self.testButton setImage:[UIImage imageNamed:@"play.png"] forState:UIControlStateNormal];
+    [self.navigationController.toolbar addSubview:self.testButton];
+    
+    
+    //프로그래스바
+    self.progressBar = [[UIProgressView alloc] initWithFrame:CGRectMake(93, 30, 200, 4)];
+    [self.progressBar setTintColor:[UIColor blackColor]];
     [self.navigationController.toolbar addSubview:self.progressBar];
+    
+    //indicator
+    indicator = [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(135, 200, 50, 50)];
+    indicator.hidesWhenStopped = YES;
+    [self.view addSubview:indicator];
+    
+    
     playCatagory = [PlaylistCatagory defaultCatalog];
     playCatagory.delegate1 = self;
-    
 
     scrolltime = 0;
     setSmallSize = -1;
    
 }
 
+
+
 -(void)viewWillAppear:(BOOL)animated{
+    playCatagory = [PlaylistCatagory defaultCatalog];
+    
+    
+    playCatagory.delegate1 = self;
     [self AFNetworkingAD];
     [self AFNetworkingAlbum];
-    
-    
-    if(soundName1 == NULL){
-        
+    self.progressBar.progress = [[PlaylistCatagory defaultCatalog] getTime];
+    if(playCatagory.player.rate == 1.0){
+        [self.testButton setImage:[UIImage imageNamed:@"stop.png"] forState:UIControlStateNormal];
     }
     else{
-                    [self.titleLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:14]];
-        [self.titleLabel setBackgroundColor:[UIColor clearColor]];
-        [self.titleLabel setTextColor:[UIColor blackColor]];
-        [self.titleLabel setText:[NSString stringWithFormat:@"%@ - %@",soundName1, userName1]];
-        [self.titleLabel setTextAlignment:NSTextAlignmentCenter];
-        // [titleV addSubview:self.titleLabel];
-        [self.navigationController.toolbar addSubview:self.titleLabel];
+        [self.testButton setImage:[UIImage imageNamed:@"play.png"] forState:UIControlStateNormal];
     }
     
-   // UIView *titleV = [[[UIView alloc]init]initWithFrame:CGRectMake(92, 10, 200, 13)];
-    
-    
-    
-   // [self progressBar];
-//    NSLog(@"%d",[[PlaylistCatagory defaultCatalog] getCurTime]);
-//    NSLog(@"%d",[[PlaylistCatagory defaultCatalog] getDuration]);
-//
     [self.navigationController setNavigationBarHidden:YES];
-//    if(playCatagory.player.rate == 1.0){
-//        NSLog(@"%f", [playCatagory getTimer]);
-//        self.progressBar.progress = [playCatagory getTimer];
-//    }
-//    else{
-//        
-//    }
-
-    
 }
-
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil

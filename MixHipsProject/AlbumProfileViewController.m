@@ -15,17 +15,20 @@
 #import "AlbumMusicViewController.h"
 #import "AFHTTPRequestOperationManager.h"
 #import "UIImageView+AFNetworking.h"
+#import "PlayListViewController.h"
 #define kCellID @"IMG_CELL_ID1"
 
 @interface AlbumProfileViewController ()< UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 @property (strong, nonatomic) IBOutlet UICollectionView *collectionView;
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *toggleButton;
 @property (weak, nonatomic) IBOutlet UIButton *followButton;
 @property (strong, nonatomic)UIProgressView *progressBar;
 @property (weak, nonatomic) IBOutlet UILabel *followingCount;
 @property (weak, nonatomic) IBOutlet UILabel *followerCount;
 @property (weak, nonatomic) IBOutlet UILabel *userSay;
 @property (weak, nonatomic) IBOutlet UIImageView *userImgg;
+@property (weak, nonatomic) IBOutlet UIView *netView;
+@property (weak, nonatomic) IBOutlet UIButton *renetButton;
+@property (weak, nonatomic) IBOutlet UIImageView *followImg;
 
 
 @end
@@ -42,40 +45,14 @@
     NSMutableArray *albumID;
     PlaylistCatagory *playCatagory;
     NSString *abc;
+    UIActivityIndicatorView *indicator;
 }
 
--(IBAction)toggleButton:(id)sender{
-    if(playCatagory.player.rate == 1.0){
-        [playCatagory pause];
-    }
-    else{
-        [playCatagory.player play];
-    }
+-(IBAction)listJoin:(id)sender{
+    PlayListViewController *nextVC = [self.storyboard instantiateViewControllerWithIdentifier:@"playlist"];
+    [self.navigationController pushViewController:nextVC animated:YES];
 }
 
-/*
--(IBAction)toggleButton:(id)sender{
-    
-    UIBarButtonItem *pauseButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemPause target:self action:@selector(toggleButton:)];
-    if(playCatagory.player.playing == YES){
-        NSMutableArray *items = [self.toolbarItems mutableCopy];
-        [items removeObjectAtIndex:1];
-        [items insertObject:self.toggleButton atIndex:1];
-        [self.navigationController.toolbar setItems:items animated:NO];
-        [playCatagory stop];
-        NSLog(@"555");
-    }
-    else if(playCatagory.player.playing==NO){
-        NSMutableArray *items = [self.toolbarItems mutableCopy];
-        [items removeObjectAtIndex:1];
-        NSLog(@"%d 2222",items.count);
-        [items insertObject:pauseButton atIndex:1];
-        [self.navigationController.toolbar setItems:items animated:NO];
-        [playCatagory playStart];
-    }
-
-}
- */
 
 -(IBAction)followButton:(id)sender{
     [self AFNetworkingADFollow];
@@ -83,15 +60,21 @@
 //network like{
 -(void)AFNetworkingADFollow{
     NSString *d = [NSString stringWithFormat:@"%@",self.user_ID];
-    NSString *i = [NSString stringWithFormat:@"7"]; ///   본인 아이디
+    NSString *i = [NSString stringWithFormat:@"6"]; ///   본인 아이디
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{@"send_id":i , @"receive_id":d};
     [manager POST: @"http://mixhips.nowanser.cloulu.com/action_follow" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"JSON: %@", responseObject);
         [self AFNetworkingAD];
+        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
     }];
+}
+
+-(IBAction)restartNet:(id)sender{
+    [self AFNetworkingAD];
+    self.netView.hidden = YES;
 }
 
 
@@ -108,12 +91,20 @@
     userSay1 = [NSString stringWithFormat:@"%@",[dd objectForKey:@"user_say"]];
     is_follow = [NSString stringWithFormat:@"%@",[dd objectForKey:@"is_follow"]];
     
+    NSLog(@"%@",userID);
+    NSLog(@"%@",follwer);
+    
     NSArray *album = [dd objectForKey:@"albums"];
     albumID = [[NSMutableArray alloc]init];
     NSMutableArray *albumImg = [[NSMutableArray alloc]init];
     NSMutableArray *albumName = [[NSMutableArray alloc]init];
     NSMutableArray *like = [[NSMutableArray alloc]init];
     albumlist = [[NSMutableArray alloc]init];
+    NSString *string =  [NSString stringWithFormat:@"%@",[dd objectForKey:@"albums"]];
+    if([string isEqualToString:@"<null>"]){
+        
+    }
+    else{
     for(int i=0;i<album.count;i++)
     {
         [albumID addObject:[album[i] objectForKey:@"album_id"]];
@@ -123,23 +114,35 @@
         
         [albumlist addObject:[AlbumList hotArtistAlbumlist:albumID[i] album_img:albumImg[i] album_name:albumName[i] like:like[i]]];
     }
+    }
+    NSLog(@"%@",is_follow);
+    if([is_follow isEqualToString:@"1"]){
+        self.followImg.image = [UIImage imageNamed:@"following.png"];
+    }
+    else{
+        self.followImg.image = [UIImage imageNamed:@"follow.png"];
+    }
 
     [self.collectionView reloadData];
     
 }
 -(void)AFNetworkingAD{
-    NSString *i = [NSString stringWithFormat:@"7"];
+    [indicator startAnimating];
+    NSString *i = [NSString stringWithFormat:@"6"];
     NSString *d = [NSString stringWithFormat:@"%@",self.user_ID];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    NSDictionary *parameters = @{@"foo":@"bar", @"my_id(user_id(본인))":i , @"user_id":d};
+    NSDictionary *parameters = @{@"foo":@"bar", @"my_id":i , @"user_id":d};
     [manager POST: @"http://mixhips.nowanser.cloulu.com/request_user"parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         //        NSLog(@"JSON: %@", responseObject);
         [self test:responseObject];
+        [indicator stopAnimating];
         [self.collectionView reloadData];
         [self setProfile];
         //[self setLike];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
+        [indicator stopAnimating];
+        self.netView.hidden = NO;
     }];
 }
 
@@ -151,8 +154,17 @@
     self.followingCount.text = following;
     NSString *url = @"http://mixhips.nowanser.cloulu.com";
     url = [url stringByAppendingString:userImg];
+    NSLog(@"%@",url);
     NSURL *imgURL = [NSURL URLWithString:url];
     [self.userImgg setImageWithURL:imgURL];
+    self.title = [NSString stringWithFormat:@"%@",userName];
+    
+    if([is_follow isEqualToString:[NSString stringWithFormat:@"1"]]){
+        self.followImg.image = [UIImage imageNamed:@"following.png"];
+    }
+    else{
+        self.followImg.image = [UIImage imageNamed:@"follow.png"];
+    }
 
 }
 
@@ -201,47 +213,38 @@
     return self;
 }
 
--(void)viewWillAppear:(BOOL)animated{
-    
-    
-   // self.userImg =
-    
-    
-//    if(playCatagory.player.playing==NO){
-//        NSMutableArray *items = [self.toolbarItems mutableCopy];
-//        [items removeObjectAtIndex:1];
-//        [items insertObject:self.toggleButton atIndex:1];
-//        [self.navigationController.toolbar setItems:items animated:NO];
-//        NSLog(@"1");
-//    }
-//    else if(playCatagory.player.playing == YES){
-//        NSMutableArray *items = [self.toolbarItems mutableCopy];
-//        [items removeObjectAtIndex:1];
-//        //UIBarButtonItem *pauseButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemPause target:self action:@selector(toggleButton:)];
-//       // [items insertObject:pauseButton atIndex:1];
-//        NSLog(@"44");
-//        [self.navigationController.toolbar setItems:items animated:NO];
-//    }
+-(void)dismissVC{
+    [self.navigationController popViewControllerAnimated:YES];
+}
 
+-(void)viewWillAppear:(BOOL)animated{
+    [self AFNetworkingAD];
+    
+    
+    
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self AFNetworkingAD];
+    
+    self.netView.hidden = YES;
+    CALayer * l = [self.netView layer];
+    [l setMasksToBounds:YES];
+    [l setCornerRadius:6.0];
+    
+    //indicator
+    indicator = [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(135, 200, 50, 50)];
+    indicator.hidesWhenStopped = YES;
+    [self.view addSubview:indicator];
+
+    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"back.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(dismissVC)];
+    
     abc=self.list.user_id;
-    NSLog(@"zzrwt13r13r13r%@",abc);
     
     playCatagory = [[PlaylistCatagory defaultCatalog]init];
     
-    
-    //self.progressBar = [[UIProgressView alloc] initWithFrame:CGRectMake(93, 25, 200, 2)];
-    //[self.navigationController.toolbar addSubview:self.progressBar];
-    
-
-	// Do any additional setup after loading the view.
-    
-//[self updateData];
     [self.collectionView reloadData];
     [self.navigationController setNavigationBarHidden:NO];
 }
