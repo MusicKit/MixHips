@@ -10,25 +10,21 @@
 #import "AppDelegate.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import "HomeViewController.h"
+#import "AFHTTPRequestOperationManager.h"
 
-@interface FBLoginViewController ()
+@interface FBLoginViewController ()<UITextFieldDelegate>
 
-
-@property (weak, nonatomic) IBOutlet UIView *joinView;
-@property (weak, nonatomic) IBOutlet UITextField *myNicTextField;
-@property (weak, nonatomic) IBOutlet UILabel *myNicInfoLabel;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *doingLogin;
-@property (weak, nonatomic) IBOutlet UIScrollView *scroll;
-@property (weak, nonatomic) IBOutlet UIButton *loginBtn;
 
 
 @end
 
 @implementation FBLoginViewController {
     AppDelegate *_appDlg;
-    // UIScrollView *_scrollView;
-    
-    
+}
+
+-(IBAction)nextButton:(id)sender{
+    self.agreeView.hidden  = YES;
+    self.agreeView2.hidden = NO;
 }
 
 
@@ -42,7 +38,7 @@
         
         // If the session state is not any of the two "open" states when the button is clicked
     } else {
-        // Open a session showing the user the login UI
+                // Open a session showing the user the login UI
         // You must ALWAYS ask for basic_info permissions when opening a session
         [FBSession openActiveSessionWithReadPermissions:@[@"basic_info", @"email"]
                                            allowLoginUI:YES
@@ -51,12 +47,16 @@
              
              // Retrieve the app delegate
              AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
+             self.agreeView2.hidden = YES;
+             self.agreeView3.hidden = NO;
+
              // Call the app delegate's sessionStateChanged:state:error method to handle session state changes
              [appDelegate sessionStateChanged:session state:state error:error];
          }];
     }
-    
 }
+
+
 
 
 
@@ -64,14 +64,23 @@
     // get DEVICE_TOKEN for push..
     // 얻기 완료/실패 후 처리는 앱델리깃
     NSLog(@"come");
+    if([_appDlg.pre_login isEqualToString:@"true"]){
+        if([_appDlg.user_name isEqualToString:@""]){
+            self.agreeView3.hidden = NO;
+            self.agreeView2.hidden = YES;
+        }
+        else{
+                UIStoryboard *mainStoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                HomeViewController *VC = [mainStoryBoard instantiateViewControllerWithIdentifier:@"mainVC"];
+            
+                VC.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+            
+            [self presentViewController:VC animated:YES completion:nil];
+        }
+    }
     
     
-    UIStoryboard *mainStoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    HomeViewController *VC = [mainStoryBoard instantiateViewControllerWithIdentifier:@"mainVC"];
-    
-    VC.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-    
-    [self presentViewController:VC animated:YES completion:nil];
+
     
   
     
@@ -87,25 +96,53 @@
 }
 
 
+//-(BOOL)textFieldShouldReturn:(UITextField *)textField{
+//    if(self.textField.text.length >0){
+//        [self AFNetworkingSearchListInputComment:self.textField.text];
+//        self.hideView.hidden = YES;
+//        self.textField.text = @"";
+//        [self.textField resignFirstResponder];
+//    }
+//    else{
+//        self.hideView.hidden = YES;
+//        [self.textField resignFirstResponder];
+//    }
+//    return YES;
+//}
+//
+
+-(void)AFNetworkingAlbum{
+//    [indicator startAnimating];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSDictionary *parameters = @{@"foo":@"bar", @"user_id":_appDlg.user_id, @"user_name":self.nickTextField.text};
+    [manager POST: @"http://mixhips.nowanser.cloulu.com/check_user_name" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        //        NSLog(@"JSON: %@", responseObject);
+//        [indicator stopAnimating];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+//        [indicator stopAnimating];
+//        self.networkView.hidden = NO;
+    }];
+}
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.view addSubview:self.scroll];
-    [self.view addSubview:self.FBloginButton];
+    self.agreeView.hidden = YES;
+    self.agreeView2.hidden = YES;
+    self.agreeView3.hidden = YES;
    
     
     
     _appDlg = [UIApplication sharedApplication].delegate;
-    [self.doingLogin startAnimating];
     
     NSNotificationCenter *noti = [NSNotificationCenter defaultCenter];
     [noti addObserver:self selector:@selector(afterLoggedIn) name:@"afterLogin" object:nil];
 //    [noti addObserver:self selector:@selector(makeNicname) name:@"makeNic" object:nil];
     [noti addObserver:self selector:@selector(logout) name:@"logout" object:nil];
     
-    self.joinView.layer.cornerRadius = 8.0;
-    self.joinView.layer.masksToBounds = YES;
-    self.joinView.alpha = 0;
+    
     
 }
 

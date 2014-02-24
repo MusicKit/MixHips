@@ -176,6 +176,38 @@ static PlaylistCatagory *_instance = nil;
     [[MPNowPlayingInfoCenter defaultCenter] setNowPlayingInfo:mediaInfo];
 }
 
+- (void)remoteControlReceivedWithEvent:(UIEvent *)receivedEvent
+{
+    if ( receivedEvent.type == UIEventTypeRemoteControl ) {
+        switch (receivedEvent.subtype) {
+            case UIEventSubtypeRemoteControlPlay:
+            case UIEventSubtypeRemoteControlPause:
+            case UIEventSubtypeRemoteControlStop:
+            case UIEventSubtypeRemoteControlTogglePlayPause:
+                if ( self.player.rate ==1.0 ) {
+                    [self.player pause];
+                    [[MPMusicPlayerController applicationMusicPlayer] pause];
+                } else {
+                    [self.player play];
+                    [[MPMusicPlayerController applicationMusicPlayer] play];
+                }
+                break;
+                
+            case UIEventSubtypeRemoteControlBeginSeekingBackward:
+            case UIEventSubtypeRemoteControlBeginSeekingForward:
+            case UIEventSubtypeRemoteControlEndSeekingBackward:
+            case UIEventSubtypeRemoteControlEndSeekingForward:
+            case UIEventSubtypeRemoteControlPreviousTrack:
+            case UIEventSubtypeRemoteControlNextTrack:
+//                self.player.currentTime = 0;
+                break;
+                
+            default:
+                break;
+        }
+    }
+}
+
 
  //
 //- (void)changeLockScreen{

@@ -303,7 +303,7 @@
     NSString *ff = [NSString stringWithFormat:@"%d",arc4random()];
     NSString *d = [NSString stringWithFormat:@"%@",albumName];
     NSLog(@"dfdfdf name : %@",d);
-    NSString *i = [NSString stringWithFormat:@"6"]; ///   본인 아이디
+    NSString *i = [NSString stringWithFormat:@"4"]; ///   본인 아이디
     NSString *x = [NSString stringWithFormat:@"%d",soundNameArr.count];
     
     
@@ -445,6 +445,7 @@ success:^(AFHTTPRequestOperation *operation, id responseObject) {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     searchField = [[UITextField alloc] init];
     
     
@@ -463,7 +464,7 @@ success:^(AFHTTPRequestOperation *operation, id responseObject) {
     [indicator setTintColor:[UIColor blackColor]];
     indicator.hidesWhenStopped = YES;
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"back.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(dismissVC)];
-//    [self.navigationItem.leftBarButtonItem = [UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(dismissVC)];
+
     [self.hideView1 addSubview:indicator];
     
 	// Do any additional setup after loading the view.

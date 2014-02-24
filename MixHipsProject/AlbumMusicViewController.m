@@ -138,7 +138,7 @@
 //network like{
 -(void)AFNetworkingADLike{
     NSString *d = [NSString stringWithFormat:@"%@",self.album_ID];
-    NSString *i = [NSString stringWithFormat:@"6"]; ///   본인 아이디
+    NSString *i = [NSString stringWithFormat:@"4"]; ///   본인 아이디
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{@"user_id":i , @"album_id":d};
     [manager POST: @"http://mixhips.nowanser.cloulu.com/action_like" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -184,7 +184,7 @@
 -(void)AFNetworkingAD{
     [indicator startAnimating];
     NSString *d = [NSString stringWithFormat:@"%@",self.album_ID];
-    NSString *i = [NSString stringWithFormat:@"6"]; ///   본인 아이디
+    NSString *i = [NSString stringWithFormat:@"4"]; ///   본인 아이디
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{@"foo":@"bar", @"my_id(user_id(본인))":i , @"album_id":d};
     [manager POST: @"http://mixhips.nowanser.cloulu.com/request_album" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -258,7 +258,6 @@
 
 -(void)viewWillAppear:(BOOL)animated{
         [self AFNetworkingAD];
- [self.navigationItem.backBarButtonItem setTitle:@" "];
     [self.navigationController setNavigationBarHidden:NO];
     self.allSelectButton.tag =0;
 

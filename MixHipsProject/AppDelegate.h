@@ -17,6 +17,9 @@
 @property (nonatomic, retain) UIActivityIndicatorView * indicator;
 @property (strong, nonatomic) UIWindow *window;
 @property (weak, nonatomic) UIButton *login;
+@property (strong) NSString *user_id;
+@property (strong)     NSString *user_name;
+@property (strong)     NSString *pre_login;
 @property NSDictionary *myLoginInfo;
 @property NSDictionary *foodInfo;
 @property int myLoginTryNum;
@@ -26,6 +29,7 @@
 - (void)sessionStateChanged:(FBSession *)session state:(FBSessionState) state error:(NSError *)error;
 - (void)userLoggedIn;
 - (void)userLoggedOut;
+-(void)agreeView;
 
 
 @property AVAudioPlayer *player;

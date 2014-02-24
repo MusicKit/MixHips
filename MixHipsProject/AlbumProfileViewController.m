@@ -60,7 +60,7 @@
 //network like{
 -(void)AFNetworkingADFollow{
     NSString *d = [NSString stringWithFormat:@"%@",self.user_ID];
-    NSString *i = [NSString stringWithFormat:@"6"]; ///   본인 아이디
+    NSString *i = [NSString stringWithFormat:@"4"]; ///   본인 아이디
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{@"send_id":i , @"receive_id":d};
     [manager POST: @"http://mixhips.nowanser.cloulu.com/action_follow" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -128,7 +128,7 @@
 }
 -(void)AFNetworkingAD{
     [indicator startAnimating];
-    NSString *i = [NSString stringWithFormat:@"6"];
+    NSString *i = [NSString stringWithFormat:@"4"];
     NSString *d = [NSString stringWithFormat:@"%@",self.user_ID];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{@"foo":@"bar", @"my_id":i , @"user_id":d};

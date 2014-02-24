@@ -73,7 +73,7 @@
 }
 -(void)AFNetworkingAD{
     [indicator startAnimating];
-    NSString *i = [NSString stringWithFormat:@"6"];
+    NSString *i = [NSString stringWithFormat:@"4"];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{@"foo":@"bar", @"user_id":i};
     [manager POST: @"http://mixhips.nowanser.cloulu.com/show_follower" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {

@@ -19,6 +19,8 @@
 {
     self.userName.text = list.user_Name;
     NSString * urlTextEscaped = [list.comment_time stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+  
+    
     self.commentTime.text = urlTextEscaped;
     self.contents.text = list.contents;
     CALayer * l = [self.userImg layer];

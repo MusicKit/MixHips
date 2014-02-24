@@ -9,8 +9,8 @@
             <objects>
                 <viewController id="Qcq-Ed-BHi" customClass="MyPageViewController" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="EUB-j4-fw4"/>
-                        <viewControllerLayoutGuide type="bottom" id="vXU-f2-Ode"/>
+                        <viewControllerLayoutGuide type="top" id="txF-2W-FZc"/>
+                        <viewControllerLayoutGuide type="bottom" id="5jG-lE-H2d"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="AMV-tw-EOj">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
@@ -300,8 +300,8 @@
             <objects>
                 <viewController storyboardIdentifier="playlist" id="Iq7-MW-NNL" customClass="PlayListViewController" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="e6s-RH-ReN"/>
-                        <viewControllerLayoutGuide type="bottom" id="Zab-A6-Ope"/>
+                        <viewControllerLayoutGuide type="top" id="LFO-F5-WzG"/>
+                        <viewControllerLayoutGuide type="bottom" id="1Wl-2P-Xz5"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="hPF-fp-SwW">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
@@ -378,15 +378,15 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SwV-Es-fIF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1889" y="-2130"/>
+            <point key="canvasLocation" x="1617" y="-2058"/>
         </scene>
         <!--Player View Controller-->
         <scene sceneID="dV8-Uv-lRy">
             <objects>
                 <viewController storyboardIdentifier="playerPart" id="Kje-Z2-6D1" customClass="PlayerViewController" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="y69-Am-SRZ"/>
-                        <viewControllerLayoutGuide type="bottom" id="pph-bO-bb5"/>
+                        <viewControllerLayoutGuide type="top" id="Lvf-f5-od0"/>
+                        <viewControllerLayoutGuide type="bottom" id="Y1c-Uk-HiO"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8Su-OU-IOK">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
@@ -489,13 +489,6 @@
                                 <rect key="frame" x="0.0" y="64" width="320" height="2"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="s89-VD-maZ">
-                                <rect key="frame" x="39" y="153" width="222" height="34"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <connections>
-                                    <action selector="sliding:" destination="Kje-Z2-6D1" eventType="valueChanged" id="yiK-ug-MtA"/>
-                                </connections>
-                            </slider>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="top_bAR_2.png" translatesAutoresizingMaskIntoConstraints="NO" id="EdU-D8-iTG">
                                 <rect key="frame" x="0.0" y="432" width="320" height="2"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -510,7 +503,6 @@
                         <outlet property="play" destination="4tZ-NG-0nX" id="upx-cB-1Kr"/>
                         <outlet property="progressLabel" destination="cOJ-fD-wut" id="ebk-Qd-ncD"/>
                         <outlet property="progresss" destination="Y9u-X3-5cv" id="X1f-W6-asw"/>
-                        <outlet property="sliderTimer" destination="s89-VD-maZ" id="11U-T6-0Hg"/>
                         <outlet property="titleNavi" destination="mNv-OZ-TK1" id="DbI-9X-xQX"/>
                     </connections>
                 </viewController>
@@ -523,8 +515,8 @@
             <objects>
                 <viewController storyboardIdentifier="MyAlbum" id="pbm-fF-tsd" customClass="MyAlbumViewController" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="abG-Bh-AOy"/>
-                        <viewControllerLayoutGuide type="bottom" id="oSo-zn-66B"/>
+                        <viewControllerLayoutGuide type="top" id="FGb-0g-ihl"/>
+                        <viewControllerLayoutGuide type="bottom" id="xsA-Nw-1tI"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Y3I-Wl-f6L">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
@@ -562,7 +554,7 @@
                                                     </connections>
                                                 </button>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="그날에 우리" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yck-JK-Gs3">
-                                                    <rect key="frame" x="57" y="7" width="79" height="19"/>
+                                                    <rect key="frame" x="57" y="7" width="206" height="19"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <color key="textColor" red="0.7843137255" green="0.71764705880000002" blue="0.65098039220000004" alpha="1" colorSpace="calibratedRGB"/>
@@ -696,15 +688,15 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="G56-8M-ruX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1398" y="-1459"/>
+            <point key="canvasLocation" x="1558" y="-1483"/>
         </scene>
         <!--Follower View Controller - Follower-->
         <scene sceneID="0E0-Ry-yAI">
             <objects>
                 <viewController id="GzD-eC-CoJ" customClass="FollowerViewController" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="ORF-Xz-GoE"/>
-                        <viewControllerLayoutGuide type="bottom" id="SV0-MX-Poh"/>
+                        <viewControllerLayoutGuide type="top" id="aZ2-eQ-Io1"/>
+                        <viewControllerLayoutGuide type="bottom" id="G5Z-IL-FjE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="2EO-O5-hbP">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
@@ -821,8 +813,8 @@
             <objects>
                 <viewController id="oaA-kG-rqe" customClass="FollowViewController" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="s3F-UZ-QtC"/>
-                        <viewControllerLayoutGuide type="bottom" id="MPG-T7-aWM"/>
+                        <viewControllerLayoutGuide type="top" id="gcW-se-PTF"/>
+                        <viewControllerLayoutGuide type="bottom" id="wKe-1y-Mpq"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="4d7-q7-wBQ">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
@@ -951,8 +943,8 @@
             <objects>
                 <viewController id="Qrv-00-G3N" customClass="AlbumEditViewController" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="aW3-N9-0V8"/>
-                        <viewControllerLayoutGuide type="bottom" id="tkp-qq-dzL"/>
+                        <viewControllerLayoutGuide type="top" id="kHo-yb-YKl"/>
+                        <viewControllerLayoutGuide type="bottom" id="XZk-qP-h3J"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="BTP-bd-ubo">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
@@ -1198,8 +1190,8 @@
             <objects>
                 <viewController id="Eee-Lv-UxE" customClass="MusicFileViewController" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="aIs-ma-Mqi"/>
-                        <viewControllerLayoutGuide type="bottom" id="scC-6U-Ip9"/>
+                        <viewControllerLayoutGuide type="top" id="tWG-Po-F1o"/>
+                        <viewControllerLayoutGuide type="bottom" id="hDE-al-bUv"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="DWg-ld-pY9">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
@@ -1266,8 +1258,8 @@
             <objects>
                 <viewController id="rA8-Ld-fxl" customClass="CommentViewController" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="W5R-W9-f32"/>
-                        <viewControllerLayoutGuide type="bottom" id="bQX-5H-Bb3"/>
+                        <viewControllerLayoutGuide type="top" id="2ef-qh-Sku"/>
+                        <viewControllerLayoutGuide type="bottom" id="FdX-ep-4YP"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="MWc-Cy-zoJ" customClass="UIControl">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
@@ -1300,15 +1292,15 @@
                                                     <color key="textColor" red="0.78431372549019607" green="0.71764705882352942" blue="0.65098039215686276" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="characterWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="224" translatesAutoresizingMaskIntoConstraints="NO" id="Csy-le-7Pa">
-                                                    <rect key="frame" x="65" y="25" width="224" height="34"/>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="characterWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="237" translatesAutoresizingMaskIntoConstraints="NO" id="Csy-le-7Pa">
+                                                    <rect key="frame" x="65" y="25" width="237" height="34"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <color key="textColor" red="0.78431372549019607" green="0.71764705882352942" blue="0.65098039215686276" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BEq-Ej-FCl">
-                                                    <rect key="frame" x="125" y="11" width="177" height="14"/>
+                                                    <rect key="frame" x="175" y="11" width="127" height="14"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <color key="textColor" red="0.36862745098039218" green="0.38039215686274508" blue="0.42745098039215684" alpha="1" colorSpace="calibratedRGB"/>
@@ -1424,15 +1416,15 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6yg-GT-je5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2411" y="-1501"/>
+            <point key="canvasLocation" x="2115" y="-1397"/>
         </scene>
         <!--Homing View Controller-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
                 <viewController storyboardIdentifier="home" id="vXZ-lx-hvc" customClass="HomingViewController" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="PZ0-8m-T7W"/>
-                        <viewControllerLayoutGuide type="bottom" id="taW-oD-c4r"/>
+                        <viewControllerLayoutGuide type="top" id="P5H-hm-a75"/>
+                        <viewControllerLayoutGuide type="bottom" id="wnI-3k-az2"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
@@ -1645,8 +1637,8 @@
             <objects>
                 <viewController id="Kj3-P7-nvz" customClass="AlbumProfileViewController" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="n6F-Os-6yd"/>
-                        <viewControllerLayoutGuide type="bottom" id="y4w-a8-gkx"/>
+                        <viewControllerLayoutGuide type="top" id="zBb-2X-sQM"/>
+                        <viewControllerLayoutGuide type="bottom" id="dvI-4G-oNl"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="eP1-Ft-vgq">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
@@ -1843,15 +1835,15 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tCg-GA-JYj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="922" y="-2307"/>
+            <point key="canvasLocation" x="402" y="-2739"/>
         </scene>
         <!--Log Log View Controller-->
         <scene sceneID="2Bc-JY-rqc">
             <objects>
                 <viewController id="kKQ-RD-XVr" customClass="LogLogViewController" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="xV3-qv-qlo"/>
-                        <viewControllerLayoutGuide type="bottom" id="Kji-XS-6dJ"/>
+                        <viewControllerLayoutGuide type="top" id="Bp9-pP-8m9"/>
+                        <viewControllerLayoutGuide type="bottom" id="x4D-SW-VdJ"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="VRu-M2-tcb">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
@@ -1916,8 +1908,8 @@
             <objects>
                 <viewController id="h9c-dq-0uZ" customClass="NewsViewController" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="yWg-Tr-rvp"/>
-                        <viewControllerLayoutGuide type="bottom" id="5Sb-1j-VZq"/>
+                        <viewControllerLayoutGuide type="top" id="xgT-zQ-X78"/>
+                        <viewControllerLayoutGuide type="bottom" id="sEk-zo-sQL"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="I4F-Bf-xaV">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
@@ -2005,8 +1997,8 @@
             <objects>
                 <viewController title="News" id="XKP-ba-lQ1" customClass="NewsDetailViewController" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="HZo-mo-oEg"/>
-                        <viewControllerLayoutGuide type="bottom" id="2YC-CB-hGy"/>
+                        <viewControllerLayoutGuide type="top" id="aec-LT-yaE"/>
+                        <viewControllerLayoutGuide type="bottom" id="AgP-fU-Ur6"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="1ut-V4-aDd">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
@@ -2056,10 +2048,10 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lKG-ZY-pdw">
-                                <rect key="frame" x="254" y="349" width="46" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lKG-ZY-pdw">
+                                <rect key="frame" x="233" y="335" width="92" height="49"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button">
+                                <state key="normal" image="m_link.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -2093,8 +2085,8 @@
             <objects>
                 <viewController id="XfV-tD-z6b" customClass="ListViewController" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="fb1-jF-l01"/>
-                        <viewControllerLayoutGuide type="bottom" id="XVv-J7-hex"/>
+                        <viewControllerLayoutGuide type="top" id="sza-3h-OUo"/>
+                        <viewControllerLayoutGuide type="bottom" id="vQr-gW-DcC"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="3mf-YF-w2W" customClass="UIControl">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
@@ -2272,8 +2264,8 @@
             <objects>
                 <viewController id="oQ4-K1-Gy3" customClass="AlbumMusicViewController" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="6D7-5y-swT"/>
-                        <viewControllerLayoutGuide type="bottom" id="1zh-TH-K4J"/>
+                        <viewControllerLayoutGuide type="top" id="eLa-1f-qKU"/>
+                        <viewControllerLayoutGuide type="bottom" id="vay-oF-tZv"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Tdf-0E-aLG">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
@@ -2322,7 +2314,7 @@
                                                     </connections>
                                                 </button>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="그날에 우리" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PwR-nO-Rk1">
-                                                    <rect key="frame" x="57" y="7" width="79" height="19"/>
+                                                    <rect key="frame" x="57" y="7" width="200" height="19"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <color key="textColor" red="0.78431372549019607" green="0.71764705882352942" blue="0.65098039215686276" alpha="1" colorSpace="calibratedRGB"/>
@@ -2479,7 +2471,7 @@
         <scene sceneID="gfe-p3-bYd">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="bWW-Qc-N5d" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="My" image="my_icon.png" id="50m-Kh-Zfg"/>
+                    <tabBarItem key="tabBarItem" title="My" image="my2.png" id="50m-Kh-Zfg"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="yPv-QK-iSH">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -2489,7 +2481,7 @@
                     <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" id="vBI-4B-mQw">
                         <rect key="frame" x="0.0" y="436" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <color key="tintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </toolbar>
@@ -2501,11 +2493,11 @@
             </objects>
             <point key="canvasLocation" x="-904" y="-973"/>
         </scene>
-        <!--Navigation Controller - list-->
+        <!--Navigation Controller - List-->
         <scene sceneID="fcc-fo-z92">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="hZP-w0-C3t" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="list" image="music_icon.png" id="a0e-gF-yjV"/>
+                    <tabBarItem key="tabBarItem" title="List" image="music2_.png" id="a0e-gF-yjV"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="gb1-gg-Xph">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -2515,7 +2507,7 @@
                     <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" id="EXU-oz-esB">
                         <rect key="frame" x="0.0" y="436" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <color key="tintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </toolbar>
@@ -2531,7 +2523,7 @@
         <scene sceneID="fqH-Pf-c3v">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="3Bq-S4-WNL" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="NEWS" image="news_icon.png" id="55p-Ca-SED"/>
+                    <tabBarItem key="tabBarItem" title="NEWS" image="news211.png" id="55p-Ca-SED"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="OMV-PP-Ev0">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -2541,7 +2533,7 @@
                     <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" id="QMh-Qb-7hF">
                         <rect key="frame" x="0.0" y="436" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <color key="tintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </toolbar>
@@ -2578,7 +2570,7 @@
         <scene sceneID="Jtm-3i-RCC">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="jZ3-po-EDu" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Home" image="home_icon.png" id="eeQ-g5-p9P"/>
+                    <tabBarItem key="tabBarItem" title="Home" image="home22.png" id="eeQ-g5-p9P"/>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="Q3T-tH-dg0"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="fwp-Kl-kvA">
@@ -2589,8 +2581,9 @@
                     <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="IYX-QT-6uS">
                         <rect key="frame" x="0.0" y="436" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <color key="tintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </toolbar>
                     <connections>
                         <segue destination="vXZ-lx-hvc" kind="relationship" relationship="rootViewController" id="sF1-e4-6wx"/>
@@ -2613,7 +2606,7 @@
         <image name="gold.png" width="16" height="16"/>
         <image name="gray.png" width="16" height="16"/>
         <image name="heart.png" width="10" height="9"/>
-        <image name="home_icon.png" width="32" height="29"/>
+        <image name="home22.png" width="29" height="42"/>
         <image name="img.png" width="196" height="197"/>
         <image name="iphone4_modify.png" width="23" height="23"/>
         <image name="iphone4_was.png" width="17" height="20"/>
@@ -2622,10 +2615,12 @@
         <image name="line" width="47" height="47"/>
         <image name="list.png" width="30" height="28"/>
         <image name="m_line_2.png" width="3" height="892"/>
+        <image name="m_link.png" width="37" height="37"/>
+        <image name="music2_.png" width="33" height="41"/>
         <image name="music_icon.png" width="30" height="29"/>
         <image name="my11.png" width="286" height="91"/>
-        <image name="my_icon.png" width="36" height="41"/>
-        <image name="news_icon.png" width="34" height="29"/>
+        <image name="my2.png" width="32" height="41"/>
+        <image name="news211.png" width="33" height="40"/>
         <image name="next.png" width="179" height="73"/>
         <image name="play11.png" width="48" height="48"/>
         <image name="plus.png" width="93" height="94"/>
@@ -2646,8 +2641,8 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="8lT-xE-hdG"/>
-        <segue reference="Ufh-uJ-VtA"/>
-        <segue reference="oNP-jK-1qX"/>
+        <segue reference="TlG-Li-Sfb"/>
+        <segue reference="CXl-uh-1lJ"/>
+        <segue reference="HOX-pX-Kuy"/>
     </inferredMetricsTieBreakers>
 </document>

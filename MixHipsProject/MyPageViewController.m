@@ -224,7 +224,7 @@
 -(void)AFNetworkingUploadImg:(UIImage *)img{
     // NSString *d = [NSString stringWithFormat:@"%@",searchField.text];
     NSString *ff = [NSString stringWithFormat:@"%d.jpeg",arc4random()];
-    NSString *i = [NSString stringWithFormat:@"6"]; ///   본인 아이디
+    NSString *i = [NSString stringWithFormat:@"4"]; ///   본인 아이디
     NSData *imageData = UIImageJPEGRepresentation(img, 0.5);
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{@"foo":@"bar", @"user_id":i};
@@ -241,7 +241,7 @@
 //network deleteAlbum
 -(void)AFNetworkingDeleteAlbum:(NSString *)albumid{
     // NSString *d = [NSString stringWithFormat:@"%@",searchField.text];
-    NSString *i = [NSString stringWithFormat:@"6"]; ///   본인 아이디
+    NSString *i = [NSString stringWithFormat:@"4"]; ///   본인 아이디
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{@"foo":@"bar", @"user_id":i , @"album_id":albumid};
     [manager POST: @"http://mixhips.nowanser.cloulu.com/delete_album" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -255,7 +255,7 @@
 //network say
 -(void)AFNetworkingADSay{
    // NSString *d = [NSString stringWithFormat:@"%@",searchField.text];
-    NSString *i = [NSString stringWithFormat:@"6"]; ///   본인 아이디
+    NSString *i = [NSString stringWithFormat:@"4"]; ///   본인 아이디
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{@"foo":@"bar", @"user_id":i , @"user_say":searchField.text};
     [manager POST: @"http://mixhips.nowanser.cloulu.com/update_user_say" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -302,9 +302,7 @@
         
         [albumlist addObject:[AlbumList hotArtistAlbumlist:albumID[i] album_img:albumImg[i] album_name:albumName[i] like:like[i]]];
     }
-        
-    NSLog(@"arr %@",albumName);
-    NSLog(@"counn ; %d",albumlist.count);
+    
         
     
     }
@@ -313,8 +311,8 @@
 
 -(void)AFNetworkingAD{
     [self.indicator startAnimating];
-    NSString *d = [NSString stringWithFormat:@"6"];
-    NSString *i = [NSString stringWithFormat:@"6"]; ///   본인 아이디
+    NSString *d = [NSString stringWithFormat:@"4"];
+    NSString *i = [NSString stringWithFormat:@"4"]; ///   본인 아이디
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{@"foo":@"bar", @"my_id(user_id)":i , @"user_id":d};
     [manager POST: @"http://mixhips.nowanser.cloulu.com/request_user" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {

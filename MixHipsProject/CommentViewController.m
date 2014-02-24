@@ -87,7 +87,7 @@
 
 //network comment input
 -(void)AFNetworkingSearchListInputComment:(NSString *)comment{
-    NSString *i = [NSString stringWithFormat:@"6"];
+    NSString *i = [NSString stringWithFormat:@"4"];
     NSString *d = [NSString stringWithFormat:@"%@",sound_ID];
     NSLog(@"%@",d);
     NSString *x = [NSString stringWithFormat:@"%@",comment];
@@ -156,7 +156,7 @@
 }
 
 -(void)AFNetworkingSearchListDelete:(NSInteger)indexpathRow{
-    NSString *i = [NSString stringWithFormat:@"6"];
+    NSString *i = [NSString stringWithFormat:@"4"];
     NSString *d = [NSString stringWithFormat:@"%@",commentID[indexpathRow]];
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];

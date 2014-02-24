@@ -60,20 +60,6 @@
     [self AFNetworkingAD];
     self.netView.hidden = YES;
 }
-/* 보류
--(IBAction)selectMusicPlay:(id)sender{
-    PlayListViewController *dest = [[PlayListViewController alloc]init];
-    NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-    NSArray *indexPathArr = [self.tableView indexPathsForSelectedRows];
-    for(indexPath in indexPathArr){
-        AlbumList *albumlist = [[Catalog defaultCatalog] musicAt:indexPath.row];
-        playlist = [PlayListDB sharedPlaylist];
-        [playlist addMovieWithName:albumlist.songTitle nickName:albumlist.nickName];
-        [playlist fetchMovies];
-        dest.albumList = albumlist;
-    }
-}
- */
 
 
 
@@ -159,7 +145,7 @@
     [indicator startAnimating];
     NSString *d = [NSString stringWithFormat:@"%@",self.album_ID];
     NSLog(@"albumID : %@",self.album_ID);
-    NSString *i = [NSString stringWithFormat:@"6"]; ///   본인 아이디
+    NSString *i = [NSString stringWithFormat:@"4"]; ///   본인 아이디
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{@"foo":@"bar", @"my_id(user_id(본인))":i , @"album_id":d};
     [manager POST: @"http://mixhips.nowanser.cloulu.com/request_album" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {

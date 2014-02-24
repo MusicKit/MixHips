@@ -59,7 +59,7 @@ static PlayListDB *_instance = nil;
     }
     
     if (existFile == NO) {
-        char *creatSQL = "CREATE TABLE IF NOT EXISTS Playlist (song_title TEXT, song_url TEXT, Nick_name TEXT, album_img TEXT)";
+        char *creatSQL = "CREATE TABLE IF NOT EXISTS playlist (song_title TEXT, song_url TEXT, Nick_name TEXT, album_img TEXT)";
         char *errorMsg;
         ret = sqlite3_exec(db, creatSQL, NULL, NULL, &errorMsg);
         if (SQLITE_OK != ret) {
@@ -78,7 +78,7 @@ static PlayListDB *_instance = nil;
 }
 /////////
 - (NSInteger)addMovieWithName:(NSString *)name nickName:(NSString *)nickName song_id:(NSString *)song_id album_img:(NSString *)album_img{
-    NSString *sql = [NSString stringWithFormat:@"INSERT INTO Playlist (song_title, Nick_name, song_url, album_img) VALUES ('%@','%@','%@','%@')", name, nickName, song_id, album_img];
+    NSString *sql = [NSString stringWithFormat:@"INSERT INTO playlist (song_title, Nick_name, song_url, album_img) VALUES ('%@','%@','%@','%@')", name, nickName, song_id, album_img];
   
     char *errMsg;
     int ret = sqlite3_exec(db, [sql UTF8String], NULL, nil, &errMsg);
@@ -102,7 +102,7 @@ static PlayListDB *_instance = nil;
 
     data = [[NSMutableArray alloc]init];
     
-    NSString *queryStr = @"SELECT rowid, song_title, Nick_name, song_url, album_img FROM Playlist";
+    NSString *queryStr = @"SELECT rowid, song_title, Nick_name, song_url, album_img FROM playlist";
     sqlite3_stmt *stmt;
     int ret = sqlite3_prepare_v2(db, [queryStr UTF8String], -1, &stmt, NULL);
     
@@ -144,7 +144,7 @@ static PlayListDB *_instance = nil;
 
 -(NSInteger)deleteMusic:(NSInteger)indexpath{
     list = [data objectAtIndex:indexpath];
-    NSString *sql = [NSString stringWithFormat:@"DELETE FROM Playlist WHERE rowid = %d", list.rowID];
+    NSString *sql = [NSString stringWithFormat:@"DELETE FROM playlist WHERE rowid = %d", list.rowID];
     NSLog(@"%@",sql);
     
     char *errMsg;
